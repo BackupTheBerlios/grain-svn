@@ -1,0 +1,71 @@
+<gml xmlns="http://www.haw.co.jp/ns/gml" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:my="http://www.haw.co.jp/ns/my">
+	<head>
+		<title>gml layout test</title>
+		<xforms:model>
+			<xforms:instance >
+				<my:payment as="credit">
+					<my:card-code>4929-9993-3313-3311</my:card-code>
+					<my:exp-year />
+					<my:exp-month />
+				</my:payment>
+			</xforms:instance>
+			<xforms:submission action="http://sphere2.haw.jp/grain/index.xml" method="post" id="s00" />
+			<xforms:bind nodeset="card-code" relevant="../@as='credit'" required="true()" />
+			<xforms:bind nodeset="exp-date" relevant="../@as='credit'" required="true()" />
+		</xforms:model>
+	</head>
+	<body>
+		welcome to index2.xml<br/>
+		<xforms:input ref="card-code">
+			<xforms:label>card-code</xforms:label>
+		</xforms:input>
+
+			<right>
+				<xforms:select1>
+					<xforms:label>exp-year</xforms:label>
+					<xforms:choices>
+						<xforms:item>
+							<xforms:label>2004</xforms:label>
+							<xforms:value>2004</xforms:value>
+						</xforms:item>
+						<xforms:item>
+							<xforms:label>2005</xforms:label>
+							<xforms:value>2005</xforms:value>
+						</xforms:item>
+						<xforms:item>
+							<xforms:label>2006</xforms:label>
+							<xforms:value>2006</xforms:value>
+						</xforms:item>
+					</xforms:choices>
+				</xforms:select1>
+			</right>
+			<center>
+				<xforms:select1 appearance="full">
+					<xforms:label>exp-month</xforms:label>
+					<xforms:choices>
+						<xforms:item>
+							<xforms:label>1</xforms:label>
+							<xforms:value>1</xforms:value>
+						</xforms:item>
+						<xforms:item>
+							<xforms:label>2</xforms:label>
+							<xforms:value>2</xforms:value>
+						</xforms:item>
+						<xforms:item>
+							<xforms:label>3</xforms:label>
+							<xforms:value>3</xforms:value>
+						</xforms:item>
+					</xforms:choices>
+				</xforms:select1>
+			</center>
+		<xforms:output ref="card-code">
+			<xforms:label>cardcode</xforms:label>
+		</xforms:output>
+		<xforms:trigger>
+			<xforms:label>next</xforms:label>
+		</xforms:trigger><br/>
+		<xforms:submit submission="s00">
+			<xforms:label>submit</xforms:label>
+		</xforms:submit>
+	</body>
+</gml>
