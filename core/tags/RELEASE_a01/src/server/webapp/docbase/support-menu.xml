@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<html xmlns:xf="http://www.w3c.org/2002/xforms" xmlns:gr="http://www.haw.jp/grain" xmlns:ev="xmlevents" xmlns="http://www.w3c.org/1999/xhtml">
+	<head>
+		<title>保守業務</title>
+		<xf:model>
+			<xf:instance>
+				<pInfo xmlns="">
+					<serialNo/><typeNo/><pName/>
+					<cpu/><mem/><hdd/><other/>
+					<parchas/><chage/><start/><note/>
+				</pInfo>
+			</xf:instance>
+			<xf:submission action="http://sphere2.haw.jp/grain/support/getProductInfo" id="getProductInfo" ref="serialNo" replace="instance" method="post"/>
+		</xf:model>
+		<xf:model id="history">
+			<xf:instance>
+				<histories xmlns="">
+					<serialNo/>
+					<history/>
+				</histories>
+			</xf:instance>
+		</xf:model>
+		<xf:model id="page">
+			<xf:instance>
+				<pages xmlns="">
+					<pagename/>
+					<prev/>
+					<next/>
+				</pages>
+			</xf:instance>
+		</xf:model>
+	</head>
+	<body>
+		<xf:group gr:menuid="menu1">
+			<xf:trigger>
+				<xf:label>保守履歴一覧</xf:label>
+			</xf:trigger>
+			<xf:trigger>
+				<xf:label>保守履歴入力</xf:label>
+			</xf:trigger>
+		</xf:group>
+		<xf:switch>
+			<xf:case id="menu">
+				<xf:trigger>
+					<xf:label>製品情報</xf:label>
+					<xf:toggle ev:event="DOMActivate" case="productInfo"/>
+				</xf:trigger>
+				<xf:trigger>
+					<xf:label>保守履歴入力</xf:label>
+					<xf:toggle ev:event="DOMActivate" case="supportEntry"/>
+				</xf:trigger>
+			</xf:case>
+			<xf:case id="productInfo">
+				<xf:switch>
+					<xf:case id="main">
+						<gr:layout justification="equal">
+							<xf:output value="&lt;&lt;"/>
+							<xf:output value="製品情報[1/4]"/>
+							<xf:trigger gr:appearance="anchor">
+								<xf:label>&gt;&gt;</xf:label>
+								<xf:toggle ev:event="DOMActivate" case="spec"/>
+							</xf:trigger>
+						</gr:layout>
+						<xf:input ref="serialNo" gr:device="qr">
+							<xf:label>製品番号</xf:label>
+							<send submission="getProductInfo" ev:event="xforms-value-changed"/>
+						</xf:input><br/>
+						<xf:output ref="typeNo">
+							<xf:label>型番</xf:label>
+						</xf:output><br/>
+						<xf:output ref="pName">
+							<xf:label>製品名</xf:label>
+						</xf:output><br/>
+					</xf:case>
+					<xf:case id="spec">
+						<gr:layout justification="equal">
+							<xf:trigger gr:appearance="anchor">
+								<xf:label>&lt;&lt;</xf:label>
+								<xf:toggle ev:event="DOMActivate" case="main"/>
+							</xf:trigger>
+							<xf:output value="製品情報[2/4]"/>
+							<xf:trigger gr:appearance="anchor">
+								<xf:label>&gt;&gt;</xf:label>
+								<xf:toggle ev:event="DOMActivate" case="support"/>
+							</xf:trigger>
+						</gr:layout>
+						<xf:output ref="cpu">
+							<xf:label>CPU</xf:label>
+						</xf:output><br/>
+						<xf:output ref="mem">
+							<xf:label>メモリ</xf:label>
+						</xf:output><br/>
+						<xf:output ref="hdd">
+							<xf:label>HDD</xf:label>
+						</xf:output><br/>
+						<xf:output ref="other">
+							<xf:label>その他</xf:label>
+						</xf:output><br/>
+					</xf:case>
+					<xf:case id="support">
+						<gr:layout justification="equal">
+							<xf:trigger gr:appearance="anchor">
+								<xf:label>&lt;&lt;</xf:label>
+								<xf:toggle ev:event="DOMActivate" case="spec"/>
+							</xf:trigger>
+							<xf:output value="製品情報[3/4]"/>
+							<xf:trigger gr:appearance="anchor">
+								<xf:label>&gt;&gt;</xf:label>
+								<xf:toggle ev:event="DOMActivate" case="memo"/>
+							</xf:trigger>
+						</gr:layout>
+						<xf:output ref="parchas">
+							<xf:label>購入日</xf:label>
+						</xf:output><br/>
+						<xf:output ref="chage">
+							<xf:label>保守責任者</xf:label>
+						</xf:output><br/>
+						<xf:output ref="start">
+							<xf:label>保守開始日</xf:label>
+						</xf:output><br/>
+						<xf:output ref="note">
+							<xf:label>備考</xf:label>
+						</xf:output><br/>
+					</xf:case>
+					<xf:case id="memo">
+						<gr:layout justification="equal">
+							<xf:trigger gr:appearance="anchor">
+								<xf:label>&lt;&lt;</xf:label>
+								<xf:toggle ev:event="DOMActivate" case="support"/>
+							</xf:trigger>
+							<xf:output value="製品情報[4/4]"/>
+							<xf:output value="&gt;&gt;"/>
+						</gr:layout>
+						<xf:output ref="note">
+							<xf:label>備考</xf:label>
+						</xf:output><br/>
+					</xf:case>
+				</xf:switch>
+			</xf:case>
+			<xf:case id="supportList">
+				<table>
+					<tr>
+						<td align="left">
+							<xf:trigger>
+								<xf:label>&lt;&lt;</xf:label>
+							</xf:trigger>
+						</td>
+						<td align="right">
+							<xf:trigger>
+								<xf:label>&gt;&gt;</xf:label>
+							</xf:trigger>
+						</td>
+					</tr>
+				</table>
+			</xf:case>
+			<xf:case id="supportEntry">
+				<table>
+					<tr>
+						<td align="left">
+							<xf:trigger>
+								<xf:label>&lt;&lt;</xf:label>
+							</xf:trigger>
+						</td>
+						<td align="right">
+							<xf:trigger>
+								<xf:label>&gt;&gt;</xf:label>
+							</xf:trigger>
+						</td>
+					</tr>
+				</table>
+			</xf:case>
+		</xf:switch>
+	</body>
+</html>

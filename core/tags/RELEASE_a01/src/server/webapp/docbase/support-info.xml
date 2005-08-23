@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<gml xmlns:xf="http://www.w3.org/2002/xforms" xmlns:gr="http://www.haw.jp/grain" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns="http://www.w3c.org/1999/xhtml">
+	<head>
+		<title>保守業務</title>
+		<xf:model schema="aaa.xml"> 
+			<xf:instance>
+				<root xmlns="">
+					<search-serialNo/>
+					<pInfo>
+						<serialNo/><typeNo/><pName/>
+						<cpu/><mem/><hdd/><other/>
+						<parchas/><chage/><start/><note/>
+					</pInfo>
+				</root>
+			</xf:instance>
+			<xf:instance id="history_list_inst">
+				<root xmlns="">
+					<search-serialNo/>
+					<historyList>
+						<history>
+							<maintenanceDate>20050101</maintenanceDate>
+							<applyerCode/>
+							<kind/>
+							<note>test</note>
+						</history>
+					</historyList>
+				</root>
+			</xf:instance>
+			<xf:instance id="history_input_inst">
+				<root xmlns="">
+					<search-serialNo/>
+					<history>
+						<maintenanceDate/>
+						<applyerCode/>
+						<kind/>
+						<note/>
+					</history>
+				</root>
+			</xf:instance>
+			<xf:bind id="has_product_info" ref="pInfo/typeNo" type="xsd:decimal" required="pInfo/pName[='aaa']" relevant="searchDone"/>
+			<xf:bind id="readonly_product_info" readonly="searchDone"/>
+			<xf:submission action="control.do?method=getProductInfo" id="getProductInfo" ref="search-serialNo" replace="instance" method="post"/>
+			<xf:bind id="has_history_list" relevant="instance('history_list_inst')/serchDone"/>
+			<xf:submission action="control.do?method=getHistoryList" id="getHistoryList" ref="instance('history_list_inst')/search-serialNo" replace="instance" method="post"/>
+			<xf:submission action="control.do?method=addHistory" id="addHistory" ref="instance('history_input_inst')" replace="instance" method="post">
+				<xf:toggle case="history_input_done" ev:event="xforms-submit-done"/>
+			</xf:submission>
+			<xf:submission action="file:///aaa.data" id="addHistory" ref="instance('history_input_inst')" replace="none" method="post"/>
+		</xf:model>
+	</head>
+	<body>
+		<xf:switch>
+			<xf:case id="top_menu" selected="true">
+				<center>保守業務メインメニュー</center><br/>
+				<xf:trigger gr:type="anchor">
+					<xf:label>製品情報照会</xf:label>
+					<xf:toggle case="product" ev:event="DOMActivate"/>
+				</xf:trigger><br/>
+				<xf:trigger gr:type="anchor">
+					<xf:label>保守履歴入力</xf:label>
+					<xf:toggle case="history_input" ev:event="DOMActivate"/>
+				</xf:trigger>
+			</xf:case>
+			<xf:case id="product_menu" selected="false">
+				<center>製品検索メニュー</center><br/>
+				<xf:trigger bind="has_product_info" gr:type="anchor">
+					<xf:label>保守履歴照会</xf:label>
+					<xf:action ev:event="DOMActivate">
+						<xf:setvalue ref="instance('history_list_inst')/search-serialNo" value="pInfo/serialNo"/> 
+						<xf:send submission="getHistoryList"/>
+						<xf:toggle case="history_list"/>
+					</xf:action>
+				</xf:trigger><br/>
+				<xf:trigger bind="has_product_info" gr:type="anchor">
+					<xf:label>保守履歴入力</xf:label>
+					<xf:action ev:event="DOMActivate">
+						<xf:setvalue ref="instance('history_input_inst')/search-serialNo" value="pInfo/serialNo"/> 
+						<xf:send submission="getHistoryList"/>
+						<xf:toggle case="history_input"/>
+					</xf:action>
+				</xf:trigger><br/>
+				<xf:trigger gr:type="anchor">
+					<xf:label>メインメニュー</xf:label>
+					<xf:toggle case="top_menu" ev:event="DOMActivate"/>
+				</xf:trigger><br/>
+				<xf:trigger gr:type="soft-1">
+					<xf:label>戻る</xf:label>
+					<xf:toggle case="product" ev:event="DOMActivate"/>
+				</xf:trigger>
+			</xf:case>
+			<xf:case id="history_list_menu" selected="false">
+				<center>保守履歴照会メニュー</center><br/>
+				<xf:trigger gr:type="anchor">
+					<xf:label>製品情報照会</xf:label>
+					<xf:toggle case="product" ev:event="DOMActivate"/>
+				</xf:trigger><br/>
+				<xf:trigger bind="has_product_info" gr:type="anchor">
+					<xf:label>保守履歴入力</xf:label>
+					<xf:action ev:event="DOMActivate">
+						<xf:setvalue ref="instance('history_input_inst')/search-serialNo" value="pInfo/serialNo"/> 
+						<xf:toggle case="history_input"/>
+					</xf:action>
+				</xf:trigger><br/>
+				<xf:trigger gr:type="anchor">
+					<xf:label>メインメニュー</xf:label>
+					<xf:toggle case="top_menu" ev:event="DOMActivate"/>
+				</xf:trigger><br/>
+				<xf:trigger gr:type="soft-1">
+					<xf:label>戻る</xf:label>
+					<xf:toggle case="history_list" ev:event="DOMActivate"/>
+				</xf:trigger>
+			</xf:case>
+			<xf:case id="history_input_menu" selected="false">
+				<center>保守履歴入力メニュー</center><br/>
+				<xf:trigger bind="has_product_info" gr:type="anchor">
+					<xf:label>製品情報照会</xf:label>
+					<xf:toggle case="product" ev:event="DOMActivate"/>
+				</xf:trigger><br/>
+				<xf:trigger bind="has_history_list" gr:type="anchor">
+					<xf:label>保守履歴照会</xf:label>
+					<xf:toggle case="history_list" ev:event="DOMActivate"/>
+				</xf:trigger><br/>
+				<xf:trigger gr:type="anchor">
+					<xf:label>メインメニュー</xf:label>
+					<xf:toggle case="top_menu" ev:event="DOMActivate"/>
+				</xf:trigger><br/>
+				<xf:trigger gr:type="soft-1">
+					<xf:label>戻る</xf:label>
+					<xf:toggle case="history_input" ev:event="DOMActivate"/>
+				</xf:trigger>
+			</xf:case>
+			<xf:case id="product" selected="false">
+				<center>製品情報検索</center><br/>
+				<xf:input ref="search-serialNo">
+					<xf:label>検索製品番号</xf:label>
+				</xf:input>
+				<xf:input ref="search-serialNo" gr:device="qr">
+					<xf:label>QR入力</xf:label>
+				</xf:input>
+				<xf:submit submission="getProductInfo">
+					<xf:label>検索</xf:label>
+				</xf:submit><br/><br/>
+				<center>検索結果</center><br/>
+				<xf:output ref="pInfo/serialNo">
+					<xf:label>製品番号</xf:label>
+				</xf:output><br/>
+				<xf:output ref="pInfo/typeNo">
+					<xf:label>型番</xf:label>
+				</xf:output><br/>
+				<xf:output ref="pInfo/pName">
+					<xf:label>製品名</xf:label>
+				</xf:output><br/>
+				<xf:trigger gr:type="soft-1">
+					<xf:label>MONU</xf:label>
+					<xf:toggle case="product_menu" ev:event="DOMActivate"/>
+				</xf:trigger>
+			</xf:case>
+			<xf:case id="history_list" ref="instance('history_list_inst')" selected="false">
+				<center>保守履歴照会（最新）</center><br/>
+				<xf:output ref="historyList/history/maintenanceDate">
+					<xf:label>保守日付</xf:label>
+				</xf:output><br/>
+				<xf:output ref="historyList/history/applyerCode">
+					<xf:label>保守担当者コード</xf:label>
+				</xf:output><br/>
+				<xf:output ref="historyList/history/kind">
+					<xf:label>種別</xf:label>
+				</xf:output><br/>
+				<xf:output ref="historyList/history/note">
+					<xf:label>備考</xf:label>
+				</xf:output><br/>
+				<xf:trigger gr:type="soft-1">
+					<xf:label>MONU</xf:label>
+					<xf:toggle case="history_list_menu" ev:event="DOMActivate"/>
+				</xf:trigger>
+			</xf:case>
+			<xf:case id="history_input" ref="instance('history_input_inst')" selected="false">
+				<center>保守履歴入力</center><br/>
+				<xf:input bind="readonly_product_info" ref="search-serialNo">
+					<xf:label>製品番号</xf:label>
+				</xf:input>
+				<xf:input bind="readonly_product_info" ref="search-serialNo" gr:device="qr">
+					<xf:label>製品番号QR入力</xf:label>
+				</xf:input><br/>
+				<xf:input ref="history/maintenanceDate">
+					<xf:label>保守日付</xf:label>
+				</xf:input><br/>
+				<xf:input ref="history/applyerCode">
+					<xf:label>保守担当者コード</xf:label>
+				</xf:input><br/>
+				<xf:input ref="history/applyerCode" gr:device="qr">
+					<xf:label>保守担当者コードQR入力</xf:label>
+				</xf:input><br/>
+				<xf:input ref="history/kind">
+					<xf:label>種別</xf:label>
+				</xf:input><br/>
+				<xf:input ref="history/note">
+					<xf:label>備考</xf:label>
+				</xf:input><br/>
+				<xf:submit submission="addHistory">
+					<xf:label>送信</xf:label>
+				</xf:submit><br/><br/>
+				<xf:trigger gr:type="soft-1">
+					<xf:label>ﾒﾆｭｰ</xf:label>
+					<xf:toggle case="history_input_menu" ev:event="DOMActivate"/>
+				</xf:trigger>
+			</xf:case>
+			<xf:case id="history_input_done" ref="instance('history_input_inst')" selected="false">
+				<center>保守履歴入力</center><br/>
+				登録しました<br/>
+				<xf:trigger>
+					<xf:label>戻る</xf:label>
+					<xf:toggle case="history_input" ev:event="DOMActivate"/>
+				</xf:trigger>						
+			</xf:case>
+		</xf:switch>
+	</body>
+</gml>
