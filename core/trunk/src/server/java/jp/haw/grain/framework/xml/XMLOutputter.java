@@ -26,6 +26,7 @@ public class XMLOutputter {
     private static final Logger log = Logger.getLogger(XMLOutputter.class);
     
     private BinaryXMLParser parser;
+    private boolean versionread = false;
     
     public XMLOutputter(byte[] bs, String encoding) {
         this(new ByteArrayInputStream(bs), encoding);
@@ -37,39 +38,47 @@ public class XMLOutputter {
     
     public XMLOutputter(InputStream is, String encoding) {
         this.parser = BinaryXMLParser.newInstance(is, encoding);
-;    }
-    
-    boolean versionread=false;
+    }
+        
+    /**
+     * @return
+     */
+    public String getEncoding() {
+        return this.parser.getInputEncoding();
+    }
+
+    public boolean isEndOfDocument() {
+        return (this.parser.getEventType() == BinaryXMLParser.END_DOCUMENT); 
+    }
     
     public void writeTo(Writer writer) throws IOException, XmlPullParserException {
-        
         for (int et = parser.getEventType(); et != BinaryXMLParser.END_DOCUMENT; et = parser.next()) {
-        	
-             if (et == BinaryXMLParser.START_TAG) {
-            	if(versionread==false){
-            		 writer.write("<?xml version=\"");
-            	     writer.write(this.parser.getProperty(BinaryXMLParser.XMLDECL_VERSION).toString());
-            	     writer.write("\" encoding=\"");
-            	     writer.write(this.parser.getInputEncoding());
-            	     writer.write("\" ?>\n");
-            	     versionread=true;
-            	}
+            if (et == BinaryXMLParser.START_TAG) {
+                if (versionread == false) {
+                    writer.write("<?xml version=\"");
+                    writer.write(this.parser.getProperty(
+                            BinaryXMLParser.XMLDECL_VERSION).toString());
+                    writer.write("\" encoding=\"");
+                    writer.write(this.parser.getInputEncoding());
+                    writer.write("\" ?>\n");
+                    versionread = true;
+                }
                 log.debug("start tag name: ");
                 writer.write('<');
                 writeNameWithPrefix(writer);
-                writePrefixMappings(writer);               
+                writePrefixMappings(writer);
                 writeAttributes(writer);
-                if(this.parser.isEmptyElementTag()) {
-                	writer.write("/>\n");
-                	et=parser.next();
-                }
-                else writer.write(">\n");
-                
+                if (this.parser.isEmptyElementTag()) {
+                    writer.write("/>\n");
+                    et = parser.next();
+                } else
+                    writer.write(">\n");
+
             } else if (et == BinaryXMLParser.END_TAG) {
-                	writer.write("</");
-                	log.debug("end tag name: ");
-                	writeNameWithPrefix(writer);
-                	writer.write(">\n");
+                writer.write("</");
+                log.debug("end tag name: ");
+                writeNameWithPrefix(writer);
+                writer.write(">\n");
             } else if (et == BinaryXMLParser.TEXT) {
                 writer.write(parser.getText());
                 writer.write("\n");
@@ -79,6 +88,41 @@ public class XMLOutputter {
         log.debug(writer.toString());
     }
 
+    public void writeNextTagTo(Writer writer) throws XmlPullParserException, IOException {
+        int et = this.parser.next();
+        if (et == BinaryXMLParser.START_TAG) {
+            if(versionread==false){
+                 writer.write("<?xml version=\"");
+                 writer.write(this.parser.getProperty(BinaryXMLParser.XMLDECL_VERSION).toString());
+                 writer.write("\" encoding=\"");
+                 writer.write(this.parser.getInputEncoding());
+                 writer.write("\"?>\n");
+                 versionread=true;
+            }
+            log.debug("start tag name: ");
+            writer.write('<');
+            writeNameWithPrefix(writer);
+            writePrefixMappings(writer);               
+            writeAttributes(writer);
+            if(this.parser.isEmptyElementTag()) {
+                writer.write("/>");
+                et=parser.next();
+            } else {
+                writer.write(">");
+            }
+                
+        } else if (et == BinaryXMLParser.END_TAG) {
+            writer.write("</");
+            log.debug("end tag name: ");
+            writeNameWithPrefix(writer);
+            writer.write(">");
+        } else if (et == BinaryXMLParser.TEXT) {
+            writer.write(parser.getText());
+            log.debug(this.parser.getText());
+        }
+        log.debug(writer.toString());
+    }
+    
     private void writeNameWithPrefix(Writer writer) throws IOException, XmlPullParserException {
         String prefix = getCurrentPrefix();
         if(prefix!=null){
