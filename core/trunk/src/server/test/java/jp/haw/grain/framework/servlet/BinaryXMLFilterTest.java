@@ -1,16 +1,20 @@
 /*
- * $Id: BinaryXMLFilterTest.java 3228 2005-06-26 04:28:14Z go $
+ * $Id$
  * 
  * Created on 2005/05/09
  *
  */
 package jp.haw.grain.framework.servlet;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.io.Writer;
+import java.util.Arrays;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -19,6 +23,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import jp.haw.grain.framework.xml.BinaryXMLEncoderTest;
+import jp.haw.grain.framework.xml.BinaryXMLInputStreamTest;
 import jp.haw.grain.framework.xml.ParseException;
 
 import org.apache.cactus.FilterTestCase;
@@ -160,9 +165,8 @@ public class BinaryXMLFilterTest extends FilterTestCase {
         }
     }
     
-    public void testUseWriterAndOutputStream(WebResponse response) throws IOException {
-        assertEquals("text/html", response.getHeaderField("Content-Type"));
-        assertEquals(BinaryXMLEncoderTest.TEST_TEXT_NS, response.getText());
+    public void endUseWriterAndOutputStream(WebResponse response) throws IOException {
+        assertEquals("no contents", 0, response.getContentLength());
     }
 
     /*
@@ -254,7 +258,6 @@ public class BinaryXMLFilterTest extends FilterTestCase {
      * contentType設定のタイミングと、streamやwriter取得時のエンコーディングの
      * 関係の調査
      */    
-    
     public void beginSetContentTypeWithWriter(WebRequest request) {
         request.setContentType(APPLICATION_GBXML);
     }    
@@ -302,6 +305,89 @@ public class BinaryXMLFilterTest extends FilterTestCase {
         assertEquals(APPLICATION_GBXML, response.getContentType());
         assertEquals(-1, response.getContentLength());
     }    
+
+    
+    /*
+     * gbXMLデータをPOSTして、フィルタにてXMLデータに変換されていることを確認するテスト。
+     * requestからReaderを取得して、その結果を書き込む。
+     */
+    public void beginReadFromRequstUsingReader(WebRequest request) {
+        request.setContentType(APPLICATION_GBXML);
+        request.setUserData(new ByteArrayInputStream(BinaryXMLInputStreamTest.TEST_BIN_STREAM_NS));
+    }    
+    
+    public void testReadFromRequstUsingReader() throws ServletException, IOException {
+        BinaryXMLFilter filter = new BinaryXMLFilter();
+        filter.init(config);
+        MockFilterChain chain = new MockFilterChain(null) {
+            public void readRequest(ServletRequest req) throws IOException {
+                req.setCharacterEncoding("UTF-8");
+                assertEquals("application/xml", req.getContentType());
+                assertEquals(-1, req.getContentLength());
+                assertEquals("UTF-8", req.getCharacterEncoding());
+                Reader reader = req.getReader();
+                StringBuffer buf = new StringBuffer();
+                for (;;) {
+                    int i = reader.read();
+                    if (i < 0) break;
+                    buf.append((char)i);
+                }
+                System.out.println(BinaryXMLEncoderTest.TEST_TEXT_NS);
+                System.out.println(buf.toString());
+                assertEquals("incollect xml data", BinaryXMLInputStreamTest.TEST_TEXT_NS, buf.toString());
+            } 
+        };
+        chain.setContentType(null);
+        filter.doFilter(request, response, chain);        
+    }
+    
+    public void endReadFromRequstUsingReader(WebResponse response) throws IOException {        
+    }
+    
+    
+    
+    /*
+     * POSTしたgbXMLデータをフィルタにてXMLデータに変換した後、再びフィルタでgbXMLに
+     * 変換。受信したデータがPOSTしたデータと同一かどうかをテスト。
+     */
+    public void beginDataIdentity(WebRequest request) {
+        request.setContentType(APPLICATION_GBXML);
+        request.setUserData(new ByteArrayInputStream(BinaryXMLInputStreamTest.TEST_BIN_STREAM_NS));
+    }    
+    
+    public void testDataIdentity() throws ServletException, IOException {
+        BinaryXMLFilter filter = new BinaryXMLFilter();
+        filter.init(config);
+        MockFilterChain chain = new MockFilterChain(null) {
+            public void doFilter(ServletRequest req, ServletResponse res) throws IOException, ServletException {
+                req.setCharacterEncoding("UTF-8");
+                assertEquals("application/xml", req.getContentType());
+                assertEquals(-1, req.getContentLength());
+                assertEquals("UTF-8", req.getCharacterEncoding());
+                res.setContentType("application/xml; charset=UTF-8");
+                Reader reader = req.getReader();
+                Writer writer = res.getWriter();
+                for (;;) {
+                    int i = reader.read();
+                    if (i < 0) break;
+                    writer.write(i);
+                }
+            }            
+        };
+        chain.setContentType("application/xml; charset=UTF-8");
+        filter.doFilter(request, response, chain);        
+    }
+    
+    public void endDataIdentity(WebResponse response) throws IOException {
+        InputStream is = response.getInputStream();
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        for (int n = 0; ; ++n) {
+            int i = is.read();
+            if (i < 0) break;
+            os.write(i);
+        }
+        assertTrue("check identity", Arrays.equals(BinaryXMLInputStreamTest.TEST_BIN_STREAM_NS, os.toByteArray()));
+    }
     
     /*
 	 * FilterChainのモックアップ
@@ -321,6 +407,7 @@ public class BinaryXMLFilterTest extends FilterTestCase {
         
         public void doFilter(ServletRequest request, ServletResponse response) throws IOException, ServletException {
         	if (this.contentType != null) response.setContentType(this.contentType);
+            readRequest(request);
         	writeResponse(response);
         }
         
@@ -330,7 +417,11 @@ public class BinaryXMLFilterTest extends FilterTestCase {
         public void destroy() {
         }
 
-        abstract void writeResponse(ServletResponse response) throws IOException;    
+        void writeResponse(ServletResponse response) throws IOException {   
+        }
+        
+        void readRequest(ServletRequest request) throws IOException {
+        }
     }
 
     class WriterChain extends MockFilterChain {

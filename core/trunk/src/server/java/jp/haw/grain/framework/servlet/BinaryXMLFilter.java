@@ -1,11 +1,27 @@
 /*
- * $Id: BinaryXMLFilter.java 3228 2005-06-26 04:28:14Z go $
+ * Grain Core - A XForms processor for mobile terminals.
+ * Copyright (C) 2005 HAW International Inc.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * 
  * Created on 2005/05/06
  *
  */
 package jp.haw.grain.framework.servlet;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.CharArrayWriter;
 import java.io.IOException;
@@ -18,20 +34,27 @@ import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
+import jp.haw.grain.framework.xml.BinaryXMLInputStream;
 import jp.haw.grain.framework.xml.BinaryXMLOutputter;
+import jp.haw.grain.framework.xml.BinaryXMLReader;
 import jp.haw.grain.framework.xml.ParseException;
+import jp.haw.grain.framework.xml.XMLOutputter;
 
 import org.apache.log4j.Logger;
 
 /**
  * Grain Sproutからの要求に対するレスポンスがXMLの場合バイナリ形式に変換する。
+ * 
+ * @version $Id$
  * @author go
  */
 public class BinaryXMLFilter implements Filter {
@@ -69,8 +92,9 @@ public class BinaryXMLFilter implements Filter {
 		log.debug("Request Content-Type: " + contentType);
         if (GBXML_CONTENT_TYPE.equals(contentType) || this.ignoreRequestContentType) {
             try {
+                BinaryXMLEncodedServletRequest xmlRequest = new BinaryXMLEncodedServletRequest((HttpServletRequest)request);
     			BinaryXMLEncodedServletResponse xmlResponse = new BinaryXMLEncodedServletResponse((HttpServletResponse)response);
-    			chain.doFilter(request, xmlResponse);
+    			chain.doFilter(xmlRequest, xmlResponse);
 				xmlResponse.commit();
 			} catch (ParseException e) {
 				throw new ServletException(e);
@@ -89,6 +113,48 @@ public class BinaryXMLFilter implements Filter {
         boolean isCharStream();
     }
 	
+    class BinaryXMLEncodedServletRequest extends HttpServletRequestWrapper {
+
+        private ServletInputStream inputStream;
+        private BufferedReader reader;
+
+        /**
+         * @param arg0
+         */
+        public BinaryXMLEncodedServletRequest(HttpServletRequest request) {
+            super(request);
+        }
+        
+
+        public int getContentLength() {
+            return -1;
+        }
+        
+        public String getContentType() {
+            return "application/xml";
+        }
+                
+        public ServletInputStream getInputStream() throws IOException {
+            if (this.reader != null) throw new IllegalStateException("method getReader() was already called.");
+            if (this.inputStream == null) {
+                XMLOutputter out = new XMLOutputter(super.getInputStream(), super.getCharacterEncoding());
+                this.inputStream = new BinaryXMLInputStream(out);
+            }
+            return this.inputStream;
+        }
+
+        public BufferedReader getReader() throws IOException {
+            log.debug("get reader called.");
+            if (this.inputStream != null) throw new IllegalStateException("method getReader() was already called.");
+            if (this.reader == null) {
+                XMLOutputter out = new XMLOutputter(super.getInputStream(), super.getCharacterEncoding());
+                this.reader = new BufferedReader(new BinaryXMLReader(out));
+            }
+            return this.reader;
+        }
+
+    }
+    
 	class BinaryXMLEncodedServletResponse extends HttpServletResponseWrapper {
 		
 	    private ResponseBuffer buffer;

@@ -40,7 +40,7 @@ import org.xmlpull.v1.XmlPullParserException;
  */
 public class BinaryXMLReader extends Reader {
 
-    private static final Logger log = Logger.getLogger(BinaryXMLReaderTest.class);
+    private static final Logger log = Logger.getLogger(BinaryXMLReader.class);
     private XMLOutputter out;
     private boolean versionread = false;
     private CharBuffer buffer;
@@ -63,7 +63,7 @@ public class BinaryXMLReader extends Reader {
             if (this.buffer == null || this.buffer.remaining() == 0) {
                 allocateBuffer();
             }
-            if (this.buffer == null) return -1;
+            if (this.buffer == null) return (pos > 0) ? pos : -1;
             int size = this.buffer.remaining();
             if (pos + size > len) size = len - pos;
             this.buffer.get(cbuf, off + pos, size);
@@ -88,7 +88,9 @@ public class BinaryXMLReader extends Reader {
                 }
                 StringWriter writer = new StringWriter();
                 this.out.writeNextTagTo(writer);
+                log.debug("read tag while allocate buffer: " + writer.toString());
                 this.buffer = CharBuffer.wrap(writer.getBuffer());
+                log.debug("initial remaining: " + this.buffer.remaining());
             } while (this.buffer.limit() == 0);
         } catch (XmlPullParserException e) {
             log.warn("parse error while filling buffer", e);
