@@ -42,7 +42,7 @@ import com.nttdocomo.ui.TextBox;
 /**
  * FormView‚ÌŽÀ‘•ƒNƒ‰ƒXl
  * 
- * @version $Id: FormViewImpl.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public class FormViewImpl extends Canvas implements FormView {
@@ -169,65 +169,69 @@ public class FormViewImpl extends Canvas implements FormView {
     }
     
     public void processEvent(int type, int param) {
-        this.imeText = null;
-        if (type == Display.KEY_RELEASED_EVENT) {
-            if (this.activeTimer != null) {
-                this.activeTimer.stop();
-                this.activeTimer.dispose();
-                this.activeTimer = null;
-                if (this.accelaration != 0) return;
-            }
-            if (param == Display.KEY_RIGHT || param == Display.KEY_LEFT) {
-                InlineElement current = this.focused;
-                this.focused = (param == Display.KEY_RIGHT) ? findNextNavigation() : findPreviousNavigation();
-                if (this.focused == null) return;
-                if (current == this.focused) return;
-                current.action(this, FormView.ACT_FOCUS_OUT, FormView.SEL_NONE);
-                sctollToFocusedElement();
-                this.focused.action(this, FormView.ACT_FOCUS_IN, FormView.SEL_NONE);                
-                refresh();
-            } else if (param == Display.KEY_DOWN) {
-                scroll(10);
-                refresh();
-            } else if (param == Display.KEY_UP) {
-                scroll(-10);
-                refresh();
-            } else if (param == Display.KEY_SELECT) {
-                boolean repaint = this.focused.action(this, FormView.ACT_RELEASED, FormView.SEL_SELECT);
-                if (repaint) refresh();
-            } else if (param == Display.KEY_SOFT2) {
-                Processor.getInstance().getCurrentApp().openApplicationMenu();
-            }
-        } else if (type == Display.KEY_PRESSED_EVENT) {
-            if (param == Display.KEY_DOWN || param == Display.KEY_UP) {
-                this.pressedKey = param; 
-                this.accelaration = 0;
-                this.activeTimer = ShortTimer.getShortTimer(this, KEY_REPEAT_TIMER, 400, false);
-                this.activeTimer.start();
-            } else if (param == Display.KEY_SELECT){
-                boolean repaint = this.focused.action(this, FormView.ACT_PRESSED, FormView.SEL_SELECT);
-                if (repaint) refresh();
-            }
-        } else if (type == Display.TIMER_EXPIRED_EVENT) {
-            if (param == KEY_REPEAT_TIMER) {
-                if (this.pressedKey == Display.KEY_DOWN) {
-                    this.accelaration = 3;
-                } else if (this.pressedKey == Display.KEY_UP) {
-                    this.accelaration = -3;
+        try {
+            this.imeText = null;
+            if (type == Display.KEY_RELEASED_EVENT) {
+                if (this.activeTimer != null) {
+                    this.activeTimer.stop();
+                    this.activeTimer.dispose();
+                    this.activeTimer = null;
+                    if (this.accelaration != 0) return;
                 }
-                scroll(this.accelaration);
-                refresh();
-                this.activeTimer.dispose();
-                this.activeTimer = ShortTimer.getShortTimer(this, ACCERALATION_TIMER, 80, true);
-                this.activeTimer.start();
-            } else if (param == ACCERALATION_TIMER) {
-                if (Math.abs(this.accelaration) < 30) this.accelaration = this.accelaration * 2;
-                scroll(this.accelaration);
-                refresh();
+                if (param == Display.KEY_RIGHT || param == Display.KEY_LEFT) {
+                    InlineElement current = this.focused;
+                    this.focused = (param == Display.KEY_RIGHT) ? findNextNavigation() : findPreviousNavigation();
+                    if (this.focused == null) return;
+                    if (current == this.focused) return;
+                    current.action(this, FormView.ACT_FOCUS_OUT, FormView.SEL_NONE);
+                    sctollToFocusedElement();
+                    this.focused.action(this, FormView.ACT_FOCUS_IN, FormView.SEL_NONE);                
+                    refresh();
+                } else if (param == Display.KEY_DOWN) {
+                    scroll(10);
+                    refresh();
+                } else if (param == Display.KEY_UP) {
+                    scroll(-10);
+                    refresh();
+                } else if (param == Display.KEY_SELECT) {
+                    boolean repaint = this.focused.action(this, FormView.ACT_RELEASED, FormView.SEL_SELECT);
+                    if (repaint) refresh();
+                } else if (param == Display.KEY_SOFT2) {
+                    Processor.getInstance().getCurrentApp().openApplicationMenu();
+                }
+            } else if (type == Display.KEY_PRESSED_EVENT) {
+                if (param == Display.KEY_DOWN || param == Display.KEY_UP) {
+                    this.pressedKey = param; 
+                    this.accelaration = 0;
+                    this.activeTimer = ShortTimer.getShortTimer(this, KEY_REPEAT_TIMER, 400, false);
+                    this.activeTimer.start();
+                } else if (param == Display.KEY_SELECT){
+                    boolean repaint = this.focused.action(this, FormView.ACT_PRESSED, FormView.SEL_SELECT);
+                    if (repaint) refresh();
+                }
+            } else if (type == Display.TIMER_EXPIRED_EVENT) {
+                if (param == KEY_REPEAT_TIMER) {
+                    if (this.pressedKey == Display.KEY_DOWN) {
+                        this.accelaration = 3;
+                    } else if (this.pressedKey == Display.KEY_UP) {
+                        this.accelaration = -3;
+                    }
+                    scroll(this.accelaration);
+                    refresh();
+                    this.activeTimer.dispose();
+                    this.activeTimer = ShortTimer.getShortTimer(this, ACCERALATION_TIMER, 80, true);
+                    this.activeTimer.start();
+                } else if (param == ACCERALATION_TIMER) {
+                    if (Math.abs(this.accelaration) < 30) this.accelaration = this.accelaration * 2;
+                    scroll(this.accelaration);
+                    refresh();
+                }
             }
-        }
-        if (this.imeText != null) {
-            processIMEEvent(IME_COMMITTED, this.imeText);
+            if (this.imeText != null) {
+                processIMEEvent(IME_COMMITTED, this.imeText);
+            }
+        } catch (RuntimeException e) {
+            Processor.getInstance().notifyError(e.getMessage());
         }
     }
 

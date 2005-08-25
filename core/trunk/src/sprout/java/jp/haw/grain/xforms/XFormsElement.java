@@ -31,7 +31,7 @@ import com.hp.hpl.sparta.Text;
 
 /**
  * 
- * @version $Id: XFormsElement.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author go
  */
 public class XFormsElement extends RenderableElement {
@@ -231,6 +231,9 @@ public class XFormsElement extends RenderableElement {
 	}
 	
 	protected void performDefaultAction(String eventType) {
+        if ("xforms-binding-exception".equals(eventType)) {
+            throw new RuntimeException("xforms-binding-exception");
+        }
 	}
 
 	protected String getCanonicalUri(String attributeName) {

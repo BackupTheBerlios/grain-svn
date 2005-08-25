@@ -39,7 +39,7 @@ import com.hp.hpl.sparta.Text;
 /**
  * XFormsプロセッサ
  * 
- * @version $Id: Processor.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public class Processor {
@@ -78,12 +78,10 @@ public class Processor {
 //	}
 
 	public void initForm(FormDocument doc) throws ParseException {
-		FormView view = _app.createFormView(doc);
         if (doc == null) {
-            view.render();
+            _app.createFormView(null).render();
             return;
         }
-        view_ = view;
 		doc_ = doc;
 		System.out.println("init form begin : " + doc);
 		Vector models = new Vector();
@@ -108,6 +106,7 @@ public class Processor {
 			Element model = (Element)models.elementAt(i);
 			model.dispatchEvent(new Event("xforms-ready", true, false));
 		}
+        view_ = _app.createFormView(doc);
 		view_.render();
 	}
 	
@@ -268,6 +267,7 @@ public class Processor {
 	 */
 	public void processActivateSubmit(FormControlElement element) {
 		SubmissionElement submission = (SubmissionElement)doc_.getElementById(element.getAttribute("submission"));
+        if (submission == null) element.dispatchEvent(new Event("xforms-binding-exception", true, false));
 		submission.dispatchEvent(new Event("xforms-submit", true, true));
 	}
 

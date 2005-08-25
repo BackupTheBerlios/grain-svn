@@ -25,7 +25,7 @@ package jp.haw.grain.xforms;
 /**
  * XFormsのフォームコントロール要素
  * 
- * @version $Id: FormControlElement.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public class FormControlElement extends XFormsElement {
@@ -41,8 +41,10 @@ public class FormControlElement extends XFormsElement {
 		if (getTagName().equals("submit")) {
 			if (eventType.equals("DOMActivate")) {
 				Processor.getInstance().processActivateSubmit(this);
+                return;
 			}
 		}
+        super.performDefaultAction(eventType);
 	}
     
     public void accept(Visitor visitor) {
