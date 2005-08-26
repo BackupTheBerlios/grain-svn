@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+<!--
+
+   $Id$
+
+   Member manager - Grain Sample Code
+
+-->
+
+
+<struts-config>
+
+<!-- ================================================ Form Bean Definitions -->
+
+    <form-beans>
+       <form-bean
+            name="xmlForm"
+            type="jp.grain.samples.membermgr.struts.XMLActionForm"/>
+    </form-beans>
+
+
+<!-- ========================================= Global Exception Definitions -->
+
+    <global-exceptions>
+    </global-exceptions>
+
+
+<!-- =========================================== Global Forward Definitions -->
+
+    <global-forwards>
+    </global-forwards>
+
+<!-- =========================================== Action Mapping Definitions -->
+
+    <action-mappings>
+
+        <action
+            path="/control"
+            type="jp.grain.samples.membermgr.struts.ControlAction"
+            name="xmlForm"
+            scope="request"
+            parameter="method"
+            validate="false">
+            <forward name="xml" path="/xmlResponse.jsp"/>
+         </action>
+            
+     </action-mappings>
+
+
+<!-- ============================================= Controller Configuration -->
+
+
+<!-- ======================================== Message Resources Definitions -->
+
+    <message-resources parameter="MessageResources" />
+
+<!-- =============================================== Plug Ins Configuration -->
+
+  <plug-in className="jp.grain.samples.membermgr.struts.PreloadPlugIn">
+    <set-property property="postalDataPath" value="/WEB-INF/postal.properties"/>
+    <set-property property="jobDataPath" value="/WEB-INF/job.properties"/>
+  </plug-in>
+
+</struts-config>
+

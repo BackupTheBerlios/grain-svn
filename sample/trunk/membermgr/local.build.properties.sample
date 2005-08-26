@@ -1,0 +1,41 @@
+#
+# $Id$
+# 
+# A sample for local.build.properties
+# Member manager - Grain Sample Code
+# 
+
+# Paths for library jar file
+
+grain.server.gbxml-filter.jar = ../core/target/server/dist/lib/grain-gbxml-filter.jar
+grain.sprout.doja.jar = ../core/target/sprout/doja/dist/bin/sprout.jar
+grain.sprout.doja.jam = ../core/target/sprout/doja/dist/bin/sprout.jam.sample
+log4j.jar = lib/log4j.jar
+jam-task.jar = lib/jam-task.jar
+catarina-ant.jar = lib/catalina-ant.jar
+servlet.jar = d:/usr/local/jakarta-tomcat-5.0.28/common/lib/servlet-api.jar
+struts.jar = lib/struts.jar
+jdom.jar = lib/jdom.jar
+commons-logging.jar = lib/commons-logging.jar
+commons-beanutils.jar = lib/commons-beanutils.jar
+commons-digester.jar = lib/commons-digester.jar
+commons-validator.jar = lib/commons-validator.jar
+xmlpull.jar = lib/xmlpull_1_1_3_4b.jar
+
+
+# Server settings
+
+webapp.context.name = grain-sample
+server.url = http://localhost:8080
+
+
+# For tomcat deployer task
+
+catalina.user = admin
+catalina.password = admin
+
+
+# File names of jam and jar to download a mobile phone
+
+jam.filename = sprout.jam
+jar.filename = sprout.jar
