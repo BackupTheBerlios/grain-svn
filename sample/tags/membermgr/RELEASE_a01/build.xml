@@ -1,0 +1,133 @@
+<!-- 
+
+	$Id$
+
+	Member manager - Grain Sample Code
+	Copyright (C) 2005 HAW International Inc.
+	
+	This library is free software; you can redistribute it and/or
+	modify it under the terms of the GNU Lesser General Public
+	License as published by the Free Software Foundation; either
+	version 2.1 of the License, or (at your option) any later version.
+	
+	This library is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	Lesser General Public License for more details.
+	
+	You should have received a copy of the GNU Lesser General Public
+	License along with this library; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+ -->
+
+<project name="grain-sample" default="war" basedir=".">
+
+	<!-- environment depended properties -->
+	<property file="local.build.properties" />
+	
+	<!-- project depended properties -->
+	<property file="build.properties" />
+
+	<path id="server.lib.path">
+		<pathelement location="${log4j.jar}"/>
+		<pathelement location="${jdom.jar}"/>
+		<pathelement location="${grain.server.gbxml-filter.jar}"/>
+		<pathelement location="${servlet.jar}"/>
+		<pathelement location="${struts.jar}"/>
+		
+	</path>
+
+	<!-- init : initializing directories -->
+	<target name="init">
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<!-- compile : compile sources -->
+	<target name="compile" depends="init">
+		<mkdir dir="${build.classes.dir}" />
+		<javac 
+			destdir="${build.classes.dir}" 
+			debug="${compile.debug}" 
+			optimize="${compile.optimize}"
+			fork="true"
+		>
+			<src location="${src.dir}" />
+			<classpath refid="server.lib.path"/>
+		</javac>
+	</target>
+
+	<!-- war : build war file -->
+	<target name="war" depends="compile">
+		<mkdir dir="${build.lib.dir}"/>
+		<copy file="${jdom.jar}" todir="${build.lib.dir}"/>
+		<copy file="${log4j.jar}" todir="${build.lib.dir}"/>
+		<copy file="${grain.server.gbxml-filter.jar}" todir="${build.lib.dir}"/>
+		<copy file="${struts.jar}" todir="${build.lib.dir}"/>
+		<copy file="${commons-logging.jar}" todir="${build.lib.dir}"/>
+		<copy file="${commons-beanutils.jar}" todir="${build.lib.dir}"/>
+		<copy file="${commons-digester.jar}" todir="${build.lib.dir}"/>
+		<copy file="${commons-validator.jar}" todir="${build.lib.dir}"/>
+		<copy file="${xmlpull.jar}" todir="${build.lib.dir}"/>
+		
+		<copy todir="${build.classes.dir}">
+			<fileset dir="${resource.dir}"/>
+		</copy>
+		<mkdir dir="${build.webapp.dir}"/>
+		<copy todir="${build.webapp.dir}">
+			<fileset dir="${webapp.dir}"></fileset>
+		</copy>
+		<mkdir dir="${build.app.dir}" />
+		<copy file="${grain.sprout.doja.jar}" tofile="${build.app.dir}/${jar.filename}"/>
+		<copy file="${grain.sprout.doja.jam}" tofile="${build.app.dir}/${jam.filename}"/>
+		<taskdef name="jam" classname="jp.haw.ant.JamTask" classpath="${jam-task.jar}" />
+		<echo message="jam: ${build.app.dir}/${jam.filename}" />
+		<jam 
+			jam="${build.app.dir}/${jam.filename}" 
+			jar="${build.app.dir}/${jar.filename}" 
+			packageurl="${jam.packageurl}" 
+		/>
+		<war 
+			destfile="${webapp.war.file}" 
+			webxml="${build.webapp.dir}/WEB-INF/web.xml" 
+			update="${war.update}"
+		>
+			<classes dir="${build.classes.dir}" />
+			<lib dir="${build.lib.dir}" />
+			<webinf dir="${build.webapp.dir}/WEB-INF" excludes="web.xml" />
+			<fileset dir="${build.webapp.dir}" excludes="WEB-INF/**/*" />
+		</war>
+	</target>
+
+	<!-- deploy : deploy web apps to server -->
+	<target name="deploy" depends="war">
+	    <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" classpath="${catarina-ant.jar}"/> 
+		<deploy 
+			url="${catalina.manager.url}" 
+			username="${catalina.user}" 
+			password="${catalina.password}" 
+			path="${deploy.path}" 
+			update="${deploy.update}"
+			war="file:/${basedir}/${webapp.war.file}" 
+		/>
+	</target>
+
+	<!-- undeploy : undeploy web apps from server -->
+	<target name="undeploy">
+	    <taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask" classpath="${catarina-ant.jar}"/>
+		<undeploy 
+			url="${catalina.manager.url}" 
+			username="${catalina.user}" 
+			password="${catalina.password}" 
+			path="${deploy.path}" 
+		/>
+	</target>
+
+	<target name="clean">
+		<delete failonerror="no" dir="build" />
+	</target>
+
+	<target name="clean-build" depends="clean, war" />
+	<target name="clean-deploy" depends="clean-build, deploy" />
+
+</project>

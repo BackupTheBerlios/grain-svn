@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!-- 
+
+	Member manager - Grain Sample Code
+	Copyright (C) 2005 HAW International Inc.
+	
+	This library is free software; you can redistribute it and/or
+	modify it under the terms of the GNU Lesser General Public
+	License as published by the Free Software Foundation; either
+	version 2.1 of the License, or (at your option) any later version.
+	
+	This library is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	Lesser General Public License for more details.
+	
+	You should have received a copy of the GNU Lesser General Public
+	License along with this library; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/2002/xforms">
+	<head>
+		<title>member manager</title>
+		<xforms:model>
+			<xforms:instance xmlns="" id="member">
+				<member>
+					<id/>
+					<name/>
+					<post-code/>
+					<address/>
+					<building/>
+					<mail/>
+					<age/>
+					<gender/>
+					<job-code/>
+					<result/>
+				</member>
+			</xforms:instance>
+			<xforms:instance xmlns="" id="post">
+				<post-data>
+					<post-code/>
+					<address/>
+				</post-data>
+			</xforms:instance>
+			<xforms:instance xmlns="" id="job">
+				<job-data>
+					<job-code/>
+					<name/>
+				</job-data>
+			</xforms:instance>
+			<xforms:submission action="control.do?method=searchAddressByPostCode" ref="instance('post')/post-code" replace="instance" method="post" id="search-address">
+				<xforms:action ev:event="xforms-submit-done">
+					<xforms:setvalue ref="instance('member')/post-code" value="instance('post')/post-code"/>
+					<xforms:setvalue ref="instance('member')/address" value="instance('post')/address"/>
+				</xforms:action>
+			</xforms:submission>
+			<xforms:submission action="control.do?method=searchJobByCode" ref="instance('job')/job-code" replace="instance" method="post" id="search-job"/>
+			<xforms:submission action="control.do?method=addMember" replace="instance" method="post" id="add-member" />
+		</xforms:model>
+	</head>
+	<body style="line-height:20px">
+		<p style="background-color:#ccffcc">メンバー登録</p>
+		<xforms:input ref="id" style="width:100px">
+			<xforms:label>希望ID：</xforms:label>
+		</xforms:input><br/>
+		<xforms:input ref="name" style="width:180px">
+			<xforms:label>名前　：</xforms:label>
+		</xforms:input><br/>
+		<xforms:input ref="post-code" style="width:50px">
+			<xforms:label>〒　　：</xforms:label>
+		</xforms:input>
+		<xforms:trigger submission="search-address">
+			<xforms:label>〒→住所検索</xforms:label>
+			<xforms:action ev:event="DOMActivate">
+				<xforms:setvalue ref="instance('post')/post-code" value="post-code"/> 
+				<xforms:send submission="search-address"/>
+			</xforms:action>
+		</xforms:trigger><br/>
+		<xforms:input ref="address" style="width:180px">
+			<xforms:label>住所　：</xforms:label>
+		</xforms:input><br/>
+		<xforms:input ref="building" style="width:180px">
+			<xforms:label>建物等：</xforms:label>
+		</xforms:input><br/>
+		<xforms:input ref="mail" style="width:100px">
+			<xforms:label>Mail　：</xforms:label>
+		</xforms:input><br/>
+		<xforms:input ref="age" style="width:20px">
+			<xforms:label>年齢　：</xforms:label>
+		</xforms:input><br/>
+		<xforms:input ref="gender" style="width:15px">
+			<xforms:label>性別　：</xforms:label>
+		</xforms:input><br/>
+		<xforms:input ref="job-code" style="width:25px">
+			<xforms:label>職業CD：</xforms:label>
+			<xforms:action ev:event="xforms-value-changed">
+				<xforms:setvalue ref="instance('job')/job-code" value="instance('member')/job-code"/>
+				<xforms:send submission="search-job"/>
+			</xforms:action>
+		</xforms:input>
+		<xforms:output ref="instance('job')/name" style="width:150px"/>
+		<br/>
+		<xforms:submit submission="add-member">
+			<xforms:label>登録</xforms:label>
+		</xforms:submit>
+		<xforms:trigger>
+			<xforms:label>一覧へ</xforms:label>
+			<xforms:load ev:event="DOMActivate" resource="memberList.do"/>
+		</xforms:trigger><br/>
+		<p style="background-color:#ffcccc"><xforms:output ref="result" style="width:200px;height:20px"/></p>
+	</body>
+</html>
