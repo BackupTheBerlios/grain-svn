@@ -25,7 +25,7 @@ import jp.haw.grain.xforms.FormControlElement;
 /**
  * TextBox
  * 
- * @version $Id: Label.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public class Label extends InlineElement {
@@ -61,7 +61,7 @@ public class Label extends InlineElement {
         applyStyles(dc);
         String text = ((FormControlElement)this.element).getBindingSimpleContent();
         dc.clipRect(0, 0, getWidth(), getHeight());
-        dc.drawString((text != null) ? text : "", 0, 0);    
+        dc.drawString((text != null) ? text : "", 0, (this.height - Font.getDefaultFont().getHeight()) / 2);
     }
 
     /* (non-Javadoc)

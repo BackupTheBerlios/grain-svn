@@ -35,7 +35,7 @@ import com.hp.hpl.sparta.Text;
 
 /**
  * BinaryXMLSerializer
- * @version $Id: BinaryXMLSerializer.java 3279 2005-08-06 23:52:13Z go $
+ * @version $Id$
  * @author Le Phuong Thuy
  */
 
@@ -88,8 +88,7 @@ public class BinaryXMLSerializer {
      */
 
     public void serializeTo(OutputStream os) throws IOException {
-        DOMWrite(this.node);
-        this.out.write(this.toVariableLengthNumber(ELEMENT_END_TAG));
+        serializeNode(this.node);
         System.out.println("size: " + this.out.size());
         os.write(toVariableLengthNumber(this.out.size()));
         System.out.println("dic-size: " + this.nameMap.size());
@@ -98,7 +97,6 @@ public class BinaryXMLSerializer {
         os.write(TEXT_TERMINATOR);
         os.write(toVariableLengthText(this.textEncoding));
         os.write(TEXT_TERMINATOR);
-
         for (int i = 0; i < this.nameList.size(); ++i) {
             String name = (String) this.nameList.elementAt(i);
             os.write(toVariableLengthNumber(i + 1));
@@ -107,11 +105,11 @@ public class BinaryXMLSerializer {
             System.out.println("dic entry: " + (i + 1) + " = " + name);
         }
         os.write(this.out.toByteArray());
-
     }
 
     // DOMツリーのすべてのノードをバイナリ変換
-    private void DOMWrite(Node node) throws UnsupportedEncodingException, IOException {
+    private void serializeNode(Node node) throws UnsupportedEncodingException, IOException {
+        boolean empty = false;
         if (node instanceof Element) {
             Element ne = (Element) node;
             // 要素のすべてのnamespaceの取得
@@ -119,34 +117,24 @@ public class BinaryXMLSerializer {
                 Vector pf = ne.getPrefixList();
                 for (Enumeration e = pf.elements(); e.hasMoreElements();) {
                     String[] prefix_map = (String[]) e.nextElement();
-                    this.registPrefix(prefix_map);
+                    registPrefix(prefix_map);
                 }
-            }
-            if (ne.getTagName() != null) {
-                this.registName(ne.getTagName());
-                if (ne.getFirstChild() != null) {
-                    this.writeStartEmptyTag(false, ne.getPrefix(), ne.getTagName(), ne.getAttributes());
-                } else
-                    this.writeStartEmptyTag(true, ne.getPrefix(), ne.getTagName(), ne.getAttributes());
             }
             Node child = ne.getFirstChild();
+            empty = (child == null) ? true : false;
+            if (ne.getTagName() != null) registName(ne.getTagName());
+            writeStartOrEmptyTag(empty, ne.getPrefix(), ne.getTagName(), ne.getAttributes());
             while (child != null) {
-                DOMWrite(child);
-                if (child instanceof Element) {
-                    Element echild = (Element) child;
-                    if (echild.getFirstChild() != null) {
-                        this.out.write(this.toVariableLengthNumber(ELEMENT_END_TAG));
-                    }
-                }
+                serializeNode(child);
                 child = child.getNextSibling();
             }
+            if (!empty) this.out.write(this.toVariableLengthNumber(ELEMENT_END_TAG));
         } else if (node instanceof Text) {
             this.out.write(this.toVariableLengthNumber(TEXT_TAG));
             System.out.println("Text:" + node);
             String text = node.toString();
             this.out.write(this.toVariableLengthText(text));
             this.out.write(this.toVariableLengthNumber(TEXT_TERMINATOR));
-            return;
         }
     }
 
@@ -262,7 +250,7 @@ public class BinaryXMLSerializer {
         System.out.println("write value: " + value);
     }
 
-    void writeStartEmptyTag(boolean empty, String Prefix, String Name,
+    void writeStartOrEmptyTag(boolean empty, String Prefix, String Name,
             Enumeration attributes) throws IOException {
         System.out.println("write start tag...");
         this.writeTagHeader(empty, Prefix, Name);

@@ -53,7 +53,7 @@ import com.nttdocomo.ui.IApplication;
 /**
  * Doja用のアプリケーション
  * 
- * @version $Id: GrainApp.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author go
  */
 public class GrainApp extends IApplication implements SproutApp {
@@ -317,7 +317,8 @@ public class GrainApp extends IApplication implements SproutApp {
             String uri = element.getCanonicalActionUri();
     		String contentType = "application/xml";
     		Node node = element.getBindingNode();
-    		if (node == null) 
+            if (node == null) node = element.getContextModel().getInitialContextNode();
+//    		if (node == null) node = element.getContextModel().getInstanceNode("/");
     		System.out.println("createSubmissionOperation: bindingNode = " + node);
     		return new FormSubmissionOperation(uri, contentType, node);
         }

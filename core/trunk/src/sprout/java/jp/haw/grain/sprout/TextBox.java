@@ -20,13 +20,15 @@
  */
 package jp.haw.grain.sprout;
 
+import com.hp.hpl.sparta.Event;
+
 import jp.haw.grain.xforms.FormControlElement;
 import jp.haw.grain.xforms.XFormsElement;
 
 /**
  * TextBox
  * 
- * @version $Id: TextBox.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public class TextBox extends InlineElement {
@@ -99,6 +101,7 @@ public class TextBox extends InlineElement {
             if (selector == FormView.SEL_IME_COMMIT) {
                 FormControlElement fce = (FormControlElement)this.element;
                 fce.setBindingSimpleContent(view.getIMEText());
+                fce.dispatchEvent(new Event("xforms-value-changed", true, false));
                 return true;
             }
         }

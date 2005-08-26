@@ -93,13 +93,13 @@ public class Processor {
 		_constractDoneProcessed = false;
 		for (int i = 0; i < models.size(); ++i) {
 			Element model = (Element)models.elementAt(i);
-			System.out.println("xforms-model-constract : " + model);
-			model.dispatchEvent(new Event("xforms-model-constract", true, false));
+			System.out.println("xforms-model-construct : " + model);
+			model.dispatchEvent(new Event("xforms-model-construct", true, false));
 		}
 		
 		for (int i = 0; i < models.size(); ++i) {
 			Element model = (Element)models.elementAt(i);
-			model.dispatchEvent(new Event("xforms-model-constract-done", true, false));
+			model.dispatchEvent(new Event("xforms-model-construct-done", true, false));
 		}
 		
 		for (int i = 0; i < models.size(); ++i) {
@@ -112,9 +112,9 @@ public class Processor {
 	
 	public void initModel(ModelElement model) {
 		System.out.println("init model begin : " + model);
-		model.dispatchEvent(new Event("xforms-model-constract", true, false));
-		doc_.evaluateContext();
-		view_.refresh();
+		model.dispatchEvent(new Event("xforms-model-construct", true, false));
+		//doc_.evaluateContext();
+		//view_.refresh();
 	}
 	
 	public FormDocument getCurrentFormDocument() {
@@ -240,12 +240,15 @@ public class Processor {
 			if (replace == null || "all".equals(replace)) {
 				initForm(ope.getFormDocuemnt());
 			} else if ("instance".equals(replace)) {
-				InstanceDocument instance = (InstanceDocument)element.getBindingNode().getOwnerDocument();
+                Node bindingNode = element.getBindingNode();
+                if (bindingNode == null) bindingNode = element.getContextModel().getInitialContextNode();
+                InstanceDocument instance = (InstanceDocument)bindingNode.getOwnerDocument();
 				InstanceElement ie = instance.getOwner();
 				ie.loadExternalInstanceData(ope.getFormDocuemnt());
 				
 				element.getParentModel().dispatchEvent(new Event("xforms-model-construct", true, false));
-				initModel(element.getParentModel());
+//				initModel(element.getParentModel());
+                element.getParentModel().dispatchEvent(new Event("xforms-refresh", true, false));
 			}
 		} else {
 			if ("instance".equals(replace)) {

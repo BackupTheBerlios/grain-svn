@@ -30,7 +30,7 @@ import com.hp.hpl.sparta.ParseException;
 /**
  * XForms‚Ìmodel—v‘f
  * 
- * @version $Id: ModelElement.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public class ModelElement extends XFormsElement {
@@ -61,9 +61,9 @@ public class ModelElement extends XFormsElement {
 	protected void performDefaultAction(String eventType) {
 		System.out.println("handle default action : " + eventType);
 		try {
-			if (eventType.equals("xforms-model-constract")) {
+			if (eventType.equals("xforms-model-construct")) {
 				Processor.getInstance().processModelConstract(this);
-			} else if (eventType.equals("xforms-model-constract-done")) {
+			} else if (eventType.equals("xforms-model-construct-done")) {
 				Processor.getInstance().processModelConstractDone(this);
 			} else if (eventType.equals("xforms-ready")) {
 				Processor.getInstance().processReady(this);
