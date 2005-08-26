@@ -1,0 +1,11 @@
+<html>
+	<head>
+		<title>Grain Sprout download</title>
+		<object declare id="application.declaration" 
+		data="http://localhost:8080/grain-sample/app/sprout.jam" type="application/x-jam">
+		</object>
+	</head>
+	<body>
+		<a ijam="#application.declaration" href="notapplicable.html">ƒAƒvƒŠ‹N“®</a>
+	</body>
+</html>
