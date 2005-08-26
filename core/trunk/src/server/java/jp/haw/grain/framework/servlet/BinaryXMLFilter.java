@@ -25,6 +25,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.CharArrayWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.regex.Matcher;
@@ -97,8 +98,21 @@ public class BinaryXMLFilter implements Filter {
     			chain.doFilter(xmlRequest, xmlResponse);
 				xmlResponse.commit();
 			} catch (ParseException e) {
+                log.error("do filter", e);
 				throw new ServletException(e);
-			}
+            } catch (ServletException e) {
+                log.error("do filter", e);
+                throw e;
+            } catch (IOException e) {
+                log.error("do filter", e);
+                throw e;
+			} catch (RuntimeException e) {
+                log.error("do filter", e);
+			    throw e;
+            } catch (Error e) {
+                log.error("do filter", e);
+                throw e;
+            }
 		} else {
 			chain.doFilter(request, response);
 		}
@@ -135,9 +149,18 @@ public class BinaryXMLFilter implements Filter {
         }
                 
         public ServletInputStream getInputStream() throws IOException {
+            log.debug("get input stream called.");
+            InputStream is = super.getInputStream();
+//            for (;;) {
+//                int i = is.read();
+//                if (i < 0) break;
+//                String hex = Integer.toHexString(i);
+//                hex = hex.length() == 2 ? hex : "0" + hex;
+//                System.out.print("0x" + hex + ", ");
+//            }
             if (this.reader != null) throw new IllegalStateException("method getReader() was already called.");
             if (this.inputStream == null) {
-                XMLOutputter out = new XMLOutputter(super.getInputStream(), super.getCharacterEncoding());
+                XMLOutputter out = new XMLOutputter(super.getInputStream(), BinaryXMLFilter.this.textEncoding);
                 this.inputStream = new BinaryXMLInputStream(out);
             }
             return this.inputStream;
@@ -147,7 +170,7 @@ public class BinaryXMLFilter implements Filter {
             log.debug("get reader called.");
             if (this.inputStream != null) throw new IllegalStateException("method getReader() was already called.");
             if (this.reader == null) {
-                XMLOutputter out = new XMLOutputter(super.getInputStream(), super.getCharacterEncoding());
+                XMLOutputter out = new XMLOutputter(super.getInputStream(), BinaryXMLFilter.this.textEncoding);
                 this.reader = new BufferedReader(new BinaryXMLReader(out));
             }
             return this.reader;
@@ -356,21 +379,23 @@ public class BinaryXMLFilter implements Filter {
         
         class BufferedPrintWriter extends PrintWriter implements ResponseBuffer {
             
+            private CharArrayWriter buf;
+            
             public BufferedPrintWriter() {
                 super(new CharArrayWriter());
+                this.buf = (CharArrayWriter)this.out;
             }
 
             public void commit() throws IOException, ParseException {
-                CharArrayWriter buf = (CharArrayWriter)this.out;
                 if (BinaryXMLEncodedServletResponse.this.isXML()) {
                     OutputStream os = BinaryXMLEncodedServletResponse.this.getResponse().getOutputStream();
                     log.debug("encoded commit");
-                    BinaryXMLOutputter bxo = new BinaryXMLOutputter(buf.toCharArray());
+                    BinaryXMLOutputter bxo = new BinaryXMLOutputter(this.buf.toCharArray());
                     bxo.writeTo(os);
                 } else {
                     log.debug("non encoded commit");
                     PrintWriter writer = BinaryXMLEncodedServletResponse.this.getResponse().getWriter();
-                    writer.print(buf.toCharArray());
+                    writer.print(this.buf.toCharArray());
                 }
             }
 

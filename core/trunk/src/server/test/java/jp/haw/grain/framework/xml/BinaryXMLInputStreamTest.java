@@ -36,7 +36,7 @@ import junit.framework.TestCase;
  */
 public class BinaryXMLInputStreamTest extends TestCase {
     
-    public void testRead() throws ParseException, IOException {
+    public void testReadNS() throws ParseException, IOException {
         XMLOutputter out = new XMLOutputter(new ByteArrayInputStream(TEST_BIN_STREAM_NS), "UTF-8");
         BinaryXMLInputStream is = new BinaryXMLInputStream(out);
         InputStreamReader isr = new InputStreamReader(is, "UTF-8");
@@ -50,7 +50,37 @@ public class BinaryXMLInputStreamTest extends TestCase {
         System.out.println(buf.toString());
         assertEquals("incollect xml data", TEST_TEXT_NS, buf.toString());
     }    
+   
+    public void testRead() throws ParseException, IOException {
+        XMLOutputter out = new XMLOutputter(new ByteArrayInputStream(TEST_BIN_STREAM), "UTF-8");
+        BinaryXMLInputStream is = new BinaryXMLInputStream(out);
+        InputStreamReader isr = new InputStreamReader(is, "UTF-8");
+        StringBuffer buf = new StringBuffer();
+        for (;;) {
+            int i = isr.read();
+            if (i < 0) break;
+            buf.append((char)i);
+        }
+        System.out.println(TEST_TEXT);
+        System.out.println(buf.toString());
+        assertEquals("incollect xml data", TEST_TEXT, buf.toString());
+    }    
     
+    public void testEmptyRoot() throws ParseException, IOException {
+        System.out.println("**** empty root");
+        XMLOutputter out = new XMLOutputter(new ByteArrayInputStream(TEST_BIN_EMPTY_ROOT), "Windows-31J");
+        BinaryXMLInputStream is = new BinaryXMLInputStream(out);
+        InputStreamReader isr = new InputStreamReader(is, "Windows-31J");
+        StringBuffer buf = new StringBuffer();
+        for (;;) {
+            int i = isr.read();
+            if (i < 0) break;
+            buf.append((char)i);
+        }
+        System.out.println(TEST_EMPTY_ROOT);
+        System.out.println(buf.toString());
+        assertEquals("incollect xml data", TEST_EMPTY_ROOT, buf.toString());
+    }      
     
 	public static final String SRC = 
 		"<?xml version=\"1.0\" encoding=\"Shift_JIS\"?>\n"
@@ -125,9 +155,9 @@ public class BinaryXMLInputStreamTest extends TestCase {
     
     public static final String TEST_TEXT =
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-        +"<haw type=\"now\" unit=\"yen\">\n"
-        +"\t<scf file=\"test\">abc</scf>\n"
-        +"\t<scf file=\"x\"/>\n"
+        +"<haw type=\"now\" unit=\"yen\">"
+        +"<scf file=\"test\">abc</scf>"
+        +"<scf file=\"x\"/>"
         +"</haw>";
     
     public static final byte[] TEST_BIN_STREAM_NS = {
@@ -166,6 +196,15 @@ public class BinaryXMLInputStreamTest extends TestCase {
         0x09,                                                       // </xforms:model>
         0x09                                                        // </haw>     1
     };
+    
+    public static final byte[] TEST_BIN_EMPTY_ROOT = { 
+        0x03, 0x01, 0x31, 0x2e, 0x30, 0x00, 0x53, 0x4a, 0x49, 0x53, 0x00, 0x01, 
+        0x70, 0x6f, 0x73, 0x74, 0x2d, 0x63, 0x6f, 0x64, 0x65, 0x00, 0x02, 0x01
+    };
+
+    public static final String TEST_EMPTY_ROOT =  
+        "<?xml version=\"1.0\" encoding=\"Windows-31J\"?>\n"
+        +"<post-code/>";
     
     public static final String TEST_TEXT_NS =
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"

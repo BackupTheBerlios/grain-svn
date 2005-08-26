@@ -161,6 +161,7 @@ public class XMLOutputter {
         }
         return "";
     }
+    
     private void writePrefixMappings(Writer writer)throws IOException,XmlPullParserException{
     	
     	int nsCount = this.parser.getNamespaceCount(this.parser.getDepth());

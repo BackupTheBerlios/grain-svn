@@ -451,6 +451,7 @@ public class BinaryXMLParser implements XmlPullParser {
                     case ELEMENT_END_TAG:
                         if (!reportAll && buf != null) break; 
                         applyNode();
+//                        if (depth == 0)
                         this.eventType = XmlPullParser.END_TAG;
                         return this.eventType;
                         
@@ -639,6 +640,7 @@ public class BinaryXMLParser implements XmlPullParser {
         if (this.processingEmptyElement) {
             this.node = ELEMENT_END_TAG;
             this.processingEmptyElement = false;
+           // if (this.nextNode)
         } else {
             this.node = readNode();
         }
@@ -650,7 +652,7 @@ public class BinaryXMLParser implements XmlPullParser {
         if (this.nodeApplied) throw new XmlPullParserException("already applied");
         if (this.afterEndTag) {
             this.depth -= 1;
-            this.elementStack.pop();
+            if (this.elementStack.size() > 0) this.elementStack.pop();
             this.afterEndTag = false;
         }
         int tag = this.node & TAG_MASK;
