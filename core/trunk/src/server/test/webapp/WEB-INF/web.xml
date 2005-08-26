@@ -6,26 +6,12 @@
 
 <web-app>
   <display-name>Struts Blank Application</display-name>
-  
-	<filter>
-		<filter-name>Set Character Encoding</filter-name>
-		<filter-class>jp.haw.generic.SetCharacterEncodingFilter</filter-class>
-		<init-param>
-			<param-name>encoding</param-name>
-			<param-value>Windows-31J</param-value>
-		</init-param>
-	</filter>
-
+ 
 	<filter>
 		<filter-name>Encodes request to Binary XML</filter-name>
 		<filter-class>jp.haw.grain.framework.servlet.BinaryXMLFilter</filter-class>
 	</filter>
 
-	<filter-mapping>
-		<filter-name>Set Character Encoding</filter-name>
-		<url-pattern>*.do</url-pattern>
-	</filter-mapping> 
-	
 	<filter-mapping>
 		<filter-name>Encodes request to Binary XML</filter-name>
 		<url-pattern>/test/*</url-pattern>
