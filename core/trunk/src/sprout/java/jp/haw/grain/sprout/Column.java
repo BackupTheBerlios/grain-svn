@@ -30,7 +30,7 @@ import jp.haw.grain.xforms.RenderableElement;
  * インライン要素を内包する物理レイアウト要素
  * ボックス要素を内包することはできない。
  * 
- * @version $Id: Column.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public class Column extends Box {
@@ -56,7 +56,7 @@ public class Column extends Box {
         this.width = element.getStyleByPixel("width");
         if (this.width < 0) {
             if (this.parent != null) {
-                this.width = this.parent.getWidth();
+                this.width = this.parent.getBoxWidth();
             } else {
                 this.width = 0;
             }
@@ -67,7 +67,7 @@ public class Column extends Box {
         InlineElement ie = null;
         boolean pending = false;
         while (elems.hasMoreElements() || pending) {
-            Row row = new Row(this.element, getWidth());
+            Row row = new Row(this.element, getBoxWidth());
             while(elems.hasMoreElements() || pending) {
                 if (!pending) ie = (InlineElement)elems.nextElement();
                 pending = !row.append(ie) || ie.isContinue();

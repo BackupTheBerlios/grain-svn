@@ -29,7 +29,7 @@ import com.hp.hpl.sparta.Text;
 /**
  * ButtonŽÀ‘•ƒNƒ‰ƒX
  * 
- * @version $Id: Button.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public class Button extends InlineElement {
@@ -43,9 +43,9 @@ public class Button extends InlineElement {
     private static final int SIZE_EDGE = 1;
     private static final int SIZE_MARGIN = SIZE_EDGE + SIZE_BORDER;
     private static final int SIZE_MINIMUM = SIZE_MARGIN + 3;
+    private static final int SIZE_PADDING = 2;
     
     private Text label;
-    private int padding = 2;
     private boolean pressed;
     
     public Button(FormControlElement element, Text label) {
@@ -60,9 +60,9 @@ public class Button extends InlineElement {
     public void apply() {
         super.apply();
         if (width < SIZE_MINIMUM) 
-            this.width = Font.getDefaultFont().getWidth(getLabelName()) + (SIZE_MARGIN + this.padding) * 2;
+            this.width = Font.getDefaultFont().getWidth(getLabelName()) + (SIZE_MARGIN + SIZE_PADDING) * 2;
         if (height < SIZE_MINIMUM) 
-            this.height = Font.getDefaultFont().getHeight() + (SIZE_MARGIN + this.padding) * 2;        
+            this.height = Font.getDefaultFont().getHeight() + (SIZE_MARGIN + SIZE_PADDING) * 2;        
     }
 
     /* (non-Javadoc)
@@ -70,19 +70,19 @@ public class Button extends InlineElement {
      */
     public void draw(DrawContext dc) {
         dc.setColor(COLOR_BUTTON);
-        dc.fillRect(SIZE_MARGIN, SIZE_MARGIN, getWidth() - SIZE_MARGIN * 2, getHeight() - SIZE_MARGIN * 2);
+        dc.fillRect(SIZE_MARGIN, SIZE_MARGIN, getBoxWidth() - SIZE_MARGIN * 2, getBoxHeight() - SIZE_MARGIN * 2);
         dc.setColor(this.pressed ?COLOR_EDGE_DARK :COLOR_EDGE_LIGHT);
-        dc.drawLine(SIZE_BORDER, SIZE_BORDER, getWidth() - SIZE_MARGIN * 2, SIZE_BORDER);
-        dc.drawLine(SIZE_BORDER, SIZE_BORDER, SIZE_BORDER, getHeight() - SIZE_MARGIN * 2);
+        dc.drawLine(SIZE_BORDER, SIZE_BORDER, getBoxWidth() - SIZE_MARGIN - 1, SIZE_BORDER);
+        dc.drawLine(SIZE_BORDER, SIZE_BORDER, SIZE_BORDER, getBoxHeight() - SIZE_MARGIN - 1);
         dc.setColor(this.pressed ? COLOR_EDGE_LIGHT : COLOR_EDGE_DARK);
-        dc.drawLine(getWidth() - SIZE_BORDER * 2, SIZE_BORDER, getWidth() - SIZE_BORDER * 2, getHeight() - SIZE_BORDER * 2);
-        dc.drawLine(SIZE_BORDER, getHeight() - SIZE_BORDER * 2, getWidth() - SIZE_BORDER * 2, getHeight() - SIZE_BORDER * 2);
+        dc.drawLine(getBoxWidth() - SIZE_BORDER - 1, SIZE_BORDER, getBoxWidth() - SIZE_BORDER - 1, getHeight() - SIZE_BORDER - 1);
+        dc.drawLine(SIZE_BORDER, getHeight() - SIZE_BORDER - 1, getBoxWidth() - SIZE_BORDER - 1, getHeight() - SIZE_BORDER - 1);
         if (dc.getFormView().getFocused() == this) {
             dc.setColor(COLOR_FOCUS);
-            dc.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+            dc.drawRect(0, 0, getBoxWidth() - 1, getBoxHeight() - 1);
         }
         dc.setColor(COLOR_BLACK);
-        dc.drawString(this.label.getData(), SIZE_MARGIN + this.padding, SIZE_MARGIN + this.padding);
+        dc.drawString(this.label.getData(), SIZE_MARGIN + SIZE_PADDING, SIZE_MARGIN + SIZE_PADDING);
     }
 
     /* (non-Javadoc)

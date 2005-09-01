@@ -24,12 +24,13 @@ package jp.haw.grain.sprout;
 import java.util.Vector;
 
 import jp.haw.grain.xforms.RenderableElement;
+import jp.haw.grain.xforms.XHTMLElement;
 
 /**
  * ボックス要素を内包できる物理レイアウト要素。
  * インライン要素を直接、内包することはできない。
  * 
- * @version $Id: Block.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public class Block extends Box {
@@ -52,7 +53,7 @@ public class Block extends Box {
             if (this.maxWidth >= 0) {
                 this.width = this.maxWidth;
             } else if (this.parent != null) {
-                this.width = this.parent.getWidth();
+                this.width = this.parent.getBoxWidth();
             } else {
                 this.width = 0;
             }
@@ -64,7 +65,16 @@ public class Block extends Box {
                 Box box = (Box)this.children.elementAt(i);
                 box.setRelativePosition(0, height);
                 box.apply();
-                this.height += box.getHeight();
+                this.height += box.getBoxHeight();
+            }
+        }
+        this.border = this.element.getStyleByPixel("border");
+        if (this.border < 0) {
+            if (isHrTag()) {
+                this.border = 1;
+                this.element.setStyle("border-style", "inset");
+            } else {
+                this.border = 0;
             }
         }
     }
@@ -117,6 +127,9 @@ public class Block extends Box {
             child.draw(dc.moveTo(child.x, child.y));
         }        
     }
-
+    
+    private boolean isHrTag() {
+        return (this.element instanceof XHTMLElement && "hr".equals(this.element.getTagName()));
+    }
 
 }

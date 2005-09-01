@@ -28,7 +28,7 @@ import jp.haw.grain.xforms.FormControlElement;
 /**
  * インライン要素をあらわす抽象クラス。
  * 
- * @version $Id: InlineElement.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 abstract public class InlineElement extends Renderer {
@@ -37,7 +37,7 @@ abstract public class InlineElement extends Renderer {
     }
     
     public InlineElement fitWidth(int width, boolean force) {
-        if (!force && width < getWidth()) return null;
+        if (!force && width < getBoxWidth()) return null;
         return this;
     }    
     

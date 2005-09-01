@@ -40,7 +40,7 @@ import com.hp.hpl.sparta.Text;
 /**
  * フォームドキュメントから物理レイアウトを構築する。
  * 
- * @version $Id: LayoutManager.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public class LayoutManager implements Visitor {
@@ -315,7 +315,7 @@ public class LayoutManager implements Visitor {
      */
     public void visit(XHTMLElement element) {
         String name = element.getTagName();
-        if ("div".equals(name)) {
+        if ("div".equals(name) || "hr".equals(name)) {
             Block block = new Block(element);
             this.box.addChildBox(block);
             this.box = block;

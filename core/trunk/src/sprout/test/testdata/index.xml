@@ -58,11 +58,12 @@
 					<xforms:setvalue ref="card-code-input"/>
 					<xforms:setvalue ref="name">GO TAKAHASHI</xforms:setvalue>
 				</xforms:action>	
-			</xforms:trigger>				
-			<br/>
+			</xforms:trigger><br/>
 			<xforms:output style="width:100px" ref="card-code-input">
 				<xforms:label>card-code-input : </xforms:label>
 			</xforms:output>
 		</p>
+		<hr/>
+		è„ÇÕâ°årê¸
 	</body>
 </html>

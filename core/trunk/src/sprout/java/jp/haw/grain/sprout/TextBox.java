@@ -67,11 +67,11 @@ public class TextBox extends InlineElement {
         dc.setColor(COLOR_FIELD);
         dc.fillRect(SIZE_MARGIN, SIZE_MARGIN, getWidth() - SIZE_MARGIN * 2, getHeight() - SIZE_MARGIN * 2);
         dc.setColor(COLOR_EDGE_DARK);
-        dc.drawLine(SIZE_BORDER, SIZE_BORDER, getWidth() - SIZE_MARGIN * 2, SIZE_BORDER);
-        dc.drawLine(SIZE_BORDER, SIZE_BORDER, SIZE_BORDER, getHeight() - SIZE_MARGIN * 2);
+        dc.drawLine(SIZE_BORDER, SIZE_BORDER, getWidth() - SIZE_MARGIN - 1, SIZE_BORDER);
+        dc.drawLine(SIZE_BORDER, SIZE_BORDER, SIZE_BORDER, getHeight() - SIZE_MARGIN - 1);
         dc.setColor(COLOR_EDGE_LIGHT);
-        dc.drawLine(getWidth() - SIZE_BORDER * 2, SIZE_BORDER, getWidth() - SIZE_BORDER * 2, getHeight() - SIZE_BORDER * 2);
-        dc.drawLine(SIZE_BORDER, getHeight() - SIZE_BORDER * 2, getWidth() - SIZE_BORDER * 2, getHeight() - SIZE_BORDER * 2);
+        dc.drawLine(getWidth() - SIZE_BORDER - 1, SIZE_BORDER, getWidth() - SIZE_BORDER - 1, getHeight() - SIZE_BORDER - 1);
+        dc.drawLine(SIZE_BORDER, getHeight() - SIZE_BORDER - 1, getWidth() - SIZE_BORDER - 1, getHeight() - SIZE_BORDER - 1);
         if (dc.getFormView().getFocused() == this) {
             dc.setColor(COLOR_FOCUS);
             dc.drawRect(0, 0, getWidth() - 1, getHeight() - 1);

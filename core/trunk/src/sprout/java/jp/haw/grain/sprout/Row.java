@@ -28,7 +28,7 @@ import jp.haw.grain.xforms.RenderableElement;
 /**
  * 物理レイアウト上の一行を表す。
  * 
- * @version $Id: Row.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public class Row extends Renderer {
@@ -51,8 +51,8 @@ public class Row extends Renderer {
         int x = 0;
         for (int i = 0; i < this.inlineElements.size(); ++i) {
             InlineElement ie = (InlineElement)this.inlineElements.elementAt(i);
-            ie.setRelativePosition(x, ie.getLeading(this.height) / 2);
-            x += ie.getWidth();
+            ie.setRelativePosition(x, ie.getLeading(getBoxHeight()) / 2);
+            x += ie.getBoxWidth();
         }
     }
     
@@ -69,8 +69,8 @@ public class Row extends Renderer {
         }
         this.inlineElements.addElement(e);
         e.setParent(this);
-        this.width += e.getWidth();
-        if (this.minHeight < e.getHeight()) this.minHeight = e.getHeight();
+        this.width += e.getBoxWidth();
+        if (this.minHeight < e.getBoxHeight()) this.minHeight = e.getBoxHeight();
         return true;
     }
 

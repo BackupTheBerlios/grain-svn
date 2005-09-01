@@ -26,17 +26,23 @@ import jp.haw.grain.xforms.RenderableElement;
 /**
  * Renderer is an element draws something to display.
  * 
- * @version $Id: Renderer.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public abstract class Renderer {
     
-    static final int DEFAULT_BG_COLOR = 0xFFFFFF;
+    public static final int DEFAULT_BG_COLOR = 0xFFFFFF;
+    
+    public static final int COLOR_EDGE_DARK = 0x333333; // エッジ(暗）
+    public static final int COLOR_EDGE_LIGHT = 0xCCCCCC; // エッジ(明)
     
     protected int x;
     protected int y;
     protected int width;
     protected int height;
+    protected int margin;
+    protected int border;
+    protected int padding;
     protected RenderableElement element;
     protected Renderer parent;
     
@@ -48,12 +54,28 @@ public abstract class Renderer {
         return this.y;
     }
     
+    public int getContentX() {
+        return this.margin + this.border + this.padding;
+    }
+    
+    public int getContentY() {
+        return this.margin + this.border + this.padding;
+    }
+    
     public int getWidth() {
         return this.width;
     }
     
     public int getHeight() {
         return this.height;
+    }
+    
+    public int getBoxWidth() {
+        return this.width + (this.margin + this.border + this.padding) * 2;
+    }
+
+    public int getBoxHeight() {
+        return this.height + (this.margin + this.border + this.padding) * 2;
     }
     
     public boolean isIncludedIn(int bx, int by, int width, int height) {
@@ -97,12 +119,21 @@ public abstract class Renderer {
     
     protected void applyStyles(DrawContext dc) {
         int bgColor = dc.getColorByHex(this.element.getStyle("background-color"));
-        if (bgColor != -1) {
-            dc.setColor(bgColor);
-            dc.fillRect(0, 0, getWidth(), getHeight());
-        } else if (this.parent == null){
-            dc.setColor(DEFAULT_BG_COLOR);
-            dc.fillRect(0, 0, getWidth(), getHeight());
+        if (bgColor != -1 || this.parent == null) {
+            dc.setColor((bgColor < 0) ? DEFAULT_BG_COLOR : bgColor);
+            dc.fillRect(this.margin, this.margin, getBoxWidth() - this.margin * 2, getBoxHeight() - this.margin * 2);
+        }
+        if (this.border > 0) {
+            if ("inset".equals(this.element.getStyle("border-style"))) {
+                dc.setColor(COLOR_EDGE_DARK);
+                dc.drawLine(this.margin, this.margin, getBoxWidth() - this.margin - 1, this.margin);
+                dc.drawLine(this.margin, this.margin, this.margin, getBoxHeight() - this.margin - 1);
+                dc.setColor(COLOR_EDGE_LIGHT);
+                dc.drawLine(getBoxWidth() - this.margin - 1, this.margin, getBoxWidth() - this.margin - 1, getBoxHeight() - this.margin - 1);
+                dc.drawLine(this.margin, getBoxHeight() - this.margin - 1, getBoxWidth() - this.margin - 1, getBoxHeight() - this.margin - 1);
+            } else {
+                dc.drawRect(this.margin, this.margin, getBoxWidth() - this.margin * 2 - 1, getBoxHeight() - this.margin * 2 - 1);
+            }
         }
     }
 

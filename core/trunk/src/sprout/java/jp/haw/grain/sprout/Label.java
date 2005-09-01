@@ -60,8 +60,8 @@ public class Label extends InlineElement {
     public void draw(DrawContext dc) {
         applyStyles(dc);
         String text = ((FormControlElement)this.element).getBindingSimpleContent();
-        dc.clipRect(0, 0, getWidth(), getHeight());
-        dc.drawString((text != null) ? text : "", 0, (this.height - Font.getDefaultFont().getHeight()) / 2);
+        dc.clipRect(this.margin, this.margin, getBoxWidth() - this.margin * 2, getBoxHeight() - this.margin * 2);
+        dc.drawString((text != null) ? text : "", getContentX(), getContentY() + (getHeight() - Font.getDefaultFont().getHeight()) / 2);
     }
 
     /* (non-Javadoc)
