@@ -123,7 +123,6 @@ public class CharactorSequence extends InlineElement {
     
     public void apply() {
         if (this.text == null) return;
-        System.out.println("text: " + this.text.getData());
         this.font = Font.getFontOf(this.text);
     }
     

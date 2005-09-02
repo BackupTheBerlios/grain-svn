@@ -24,7 +24,6 @@ package jp.haw.grain.sprout;
 import java.util.Vector;
 
 import jp.haw.grain.xforms.RenderableElement;
-import jp.haw.grain.xforms.XHTMLElement;
 
 /**
  * ボックス要素を内包できる物理レイアウト要素。
