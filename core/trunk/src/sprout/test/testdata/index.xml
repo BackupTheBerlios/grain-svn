@@ -24,6 +24,7 @@
 		</xforms:model>
 	</head>
 	<body>
+		<span style="font-weight:bold;font-size:medium">下は</span>段落
 		<p style="line-height:20px">
 			ようこそ<br/>
 			<xforms:input style="width:100px" inputmode="digits" ref="card-code-input">
@@ -64,6 +65,12 @@
 			</xforms:output>
 		</p>
 		<hr/>
-		上は横罫線
+		<span style="font-weight:bold;font-size:medium">上は</span>横罫線
+		<h1>H1見出しH1見出しH1見出しH1見出しH1見出し</h1>
+		<h2>H2見出しH2見出しH2見出しH2見出し</h2>
+		<h3>H3見出しH3見出しH3見出しH3見出しH3見出しH3見出しH3見出し</h3>
+		<h4>H4見出しH4見出しH4見出しH4見出しH4見出しH4見出しH4見出しH4見出しH4見出し</h4>
+		<h5>H5見出しH5見出しH5見出しH5見出しH5見出しH5見出しH5見出しH5見出しH5見出しH5見出しH5見出しH5見出しH5見出しH5見出しH5見出し</h5>
+		<h6>H6見出しH6見出しH6見出しH6見出しH6見出しH6見出しH6見出しH6見出しH6見出しH6見出しH6見出しH6見出しH6見出しH6見出しH6見出しH6見出しH6見出しH6見出しH6見出しH6見出し</h6>
 	</body>
 </html>

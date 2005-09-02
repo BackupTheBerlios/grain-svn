@@ -31,8 +31,7 @@ import jp.haw.grain.xforms.RenderableElement;
  */
 public abstract class Renderer {
     
-    public static final int DEFAULT_BG_COLOR = 0xFFFFFF;
-    
+    public static final int DEFAULT_BG_COLOR = 0xFFFFFF; 
     public static final int COLOR_EDGE_DARK = 0x333333; // エッジ(暗）
     public static final int COLOR_EDGE_LIGHT = 0xCCCCCC; // エッジ(明)
     
@@ -132,6 +131,7 @@ public abstract class Renderer {
                 dc.drawLine(getBoxWidth() - this.margin - 1, this.margin, getBoxWidth() - this.margin - 1, getBoxHeight() - this.margin - 1);
                 dc.drawLine(this.margin, getBoxHeight() - this.margin - 1, getBoxWidth() - this.margin - 1, getBoxHeight() - this.margin - 1);
             } else {
+                dc.setColor(COLOR_EDGE_DARK);
                 dc.drawRect(this.margin, this.margin, getBoxWidth() - this.margin * 2 - 1, getBoxHeight() - this.margin * 2 - 1);
             }
         }

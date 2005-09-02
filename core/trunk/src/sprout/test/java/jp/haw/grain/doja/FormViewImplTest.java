@@ -51,7 +51,7 @@ import com.nttdocomo.ui.Display;
 
 /**
  * A test of LayoutManager
- * @version $Id: FormViewImplTest.java 3389 2005-08-19 00:53:01Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public class FormViewImplTest extends TestCase {
@@ -141,7 +141,7 @@ public class FormViewImplTest extends TestCase {
         app.start();
         FormViewImpl view = (FormViewImpl)Processor.getInstance().getCurrentFormView();
         Block root = view.getRootBlock();
-        InlineElement element = ((Column)root.getChildBox(0)).getRow(1).getChildElement(1);
+        InlineElement element = ((Column)root.getChildBox(1)).getRow(1).getChildElement(1);
         assertEquals("focus element class name: " + element.getClass().getName(), "jp.haw.grain.sprout.TextBox", element.getClass().getName());
         assertSame("focus element", element, view.getFocused());
         

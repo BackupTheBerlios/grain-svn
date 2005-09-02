@@ -21,12 +21,12 @@
  */
 package jp.haw.grain.sprout;
 
-import jp.haw.grain.xforms.RenderableElement;
+import com.hp.hpl.sparta.Text;
 
 /**
  * スタイルシート指定されるFont
  * 
- * @version $Id: Font.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public abstract class Font {
@@ -41,14 +41,15 @@ public abstract class Font {
         return Font.defaultFont;
     }
     
-    public static Font getFontOf(RenderableElement element) {
-        return Font.defaultFont.createFontOf(element);
+    public static Font getFontOf(Text text) {
+        return Font.defaultFont.createFontOf(text);
     }
-    
-    protected abstract Font createFontOf(RenderableElement element); 
+
+    protected abstract Font createFontOf(Text text);
     public abstract int getLengthUntilLineBreak(String src, int start, int length, int width);
     public abstract int getWidth(String src);
     public abstract int getHeight();
+
 
 
 }

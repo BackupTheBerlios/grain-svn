@@ -75,7 +75,7 @@ public class Column extends Box {
             }
             row.setRelativePosition(0, height);
             row.apply();
-            this.height += row.getHeight();
+            this.height += row.getBoxHeight();
             this.rows.addElement(row);
             row.setParent(this);
         }   

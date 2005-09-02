@@ -48,6 +48,8 @@ public class Block extends Box {
     }
 
     public void apply() {
+        this.border = this.element.getStyleByPixel("border");
+        if (this.border < 0) this.border = 0;
         this.width = this.element.getStyleByPixel("width");
         if (this.width < 0) {
             if (this.maxWidth >= 0) {
@@ -66,15 +68,6 @@ public class Block extends Box {
                 box.setRelativePosition(0, height);
                 box.apply();
                 this.height += box.getBoxHeight();
-            }
-        }
-        this.border = this.element.getStyleByPixel("border");
-        if (this.border < 0) {
-            if (isHrTag()) {
-                this.border = 1;
-                this.element.setStyle("border-style", "inset");
-            } else {
-                this.border = 0;
             }
         }
     }
@@ -128,8 +121,8 @@ public class Block extends Box {
         }        
     }
     
-    private boolean isHrTag() {
-        return (this.element instanceof XHTMLElement && "hr".equals(this.element.getTagName()));
-    }
 
+
+
+    
 }

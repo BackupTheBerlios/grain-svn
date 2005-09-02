@@ -25,7 +25,7 @@ package jp.haw.grain.sprout;
 /**
  * Context to draw something.
  * 
- * @version $Id: DrawContext.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public interface DrawContext {
@@ -96,5 +96,10 @@ public interface DrawContext {
      * @param height
      */
     void clipRect(int x, int y, int width, int height);
+
+    /**
+     * @param font
+     */
+    void setFont(Font font);
 
 }

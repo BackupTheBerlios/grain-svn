@@ -24,7 +24,7 @@ package jp.haw.grain.xforms;
 
 /**
  * 
- * @version $Id: XHTMLElement.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author go
  */
 public class XHTMLElement extends RenderableElement {
@@ -54,5 +54,18 @@ public class XHTMLElement extends RenderableElement {
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }
-
+    
+    /**
+     * 
+     */
+    public int getHeadingLevel() {
+        String name = getTagName();
+        if (name.startsWith("h") && name.length() == 2) {
+            char levelChar = name.charAt(1);
+            if ('1' <= levelChar && levelChar <= '6') {
+                return levelChar - '0';
+            }                
+        }
+        return 0;
+    }
 }

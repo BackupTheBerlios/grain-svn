@@ -30,7 +30,7 @@ import jp.haw.grain.sprout.FormView;
 /**
  * Implementation of interface DrawContext for doja
  * 
- * @version $Id: DrawContextImpl.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public class DrawContextImpl implements DrawContext {
@@ -39,6 +39,7 @@ public class DrawContextImpl implements DrawContext {
     private int originX;
     private int originY;
     private FormView view;
+    private Font font;
     
     /**
      * 
@@ -107,7 +108,8 @@ public class DrawContextImpl implements DrawContext {
      */
     public void drawString(String sub, int x, int y) {
         this.grp.setColor(COLOR_BLACK);
-        this.grp.drawString(sub,  x, y + Font.getDefaultFont().getAscent());
+        Font df = (this.font == null) ? Font.getDefaultFont() : this.font;
+        this.grp.drawString(sub,  x, y + df.getAscent());
     }
 
     /* (non-Javadoc)
@@ -144,6 +146,15 @@ public class DrawContextImpl implements DrawContext {
     public void clipRect(int x, int y, int width, int height) {
         this.grp.clearClip();
         this.grp.clipRect(x, y, width, height);
+    }
+
+    /* (non-Javadoc)
+     * @see jp.haw.grain.sprout.DrawContext#setFont(jp.haw.grain.sprout.Font)
+     */
+    public void setFont(jp.haw.grain.sprout.Font font) {
+        Font df = ((FontImpl)font).getFont();
+        this.grp.setFont(df);
+        this.font = df;
     }
     
 }

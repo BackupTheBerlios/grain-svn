@@ -30,7 +30,7 @@ import com.hp.hpl.sparta.Text;
 /**
  * •¶Žš—ñ‚Ì•”•ª—v‘fB
  * 
- * @version $Id: CharactorSequence.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public class CharactorSequence extends InlineElement {
@@ -48,6 +48,7 @@ public class CharactorSequence extends InlineElement {
     protected Object[][] chunkz;
     protected Vector chunks = new Vector();
     private String type;
+    private Font font;
     
     public CharactorSequence(String type) {
         this.type = type;
@@ -91,7 +92,7 @@ public class CharactorSequence extends InlineElement {
             CharacterChunk chunk = (CharacterChunk)this.chunks.elementAt(this.chunks.size() - 1);
             start = chunk.end;
         }
-        int end = Font.getDefaultFont().getLengthUntilLineBreak(src, start, src.length() - start, width);
+        int end = this.font.getLengthUntilLineBreak(src, start, src.length() - start, width);
         if (start == end) {
             if (!force) {
                 return null;
@@ -121,7 +122,9 @@ public class CharactorSequence extends InlineElement {
     }
     
     public void apply() {
-        
+        if (this.text == null) return;
+        System.out.println("text: " + this.text.getData());
+        this.font = Font.getFontOf(this.text);
     }
     
     /* (non-Javadoc)
@@ -143,12 +146,12 @@ public class CharactorSequence extends InlineElement {
         }
         
         public int getLeading(int height) {
-            return height - Font.getDefaultFont().getHeight();
+            return height - CharactorSequence.this.font.getHeight();
         }
         
         public void apply() {
             String src = CharactorSequence.this.text.getData().substring(this.start, this.end);
-            this.width = Font.getDefaultFont().getWidth(src);
+            this.width = font.getWidth(src);
             this.height = -1;
             for (Node node = CharactorSequence.this.text.getParentNode(); node != null; node = node.getParentNode()) {
                 if (!(node instanceof RenderableElement)) continue;
@@ -156,14 +159,7 @@ public class CharactorSequence extends InlineElement {
                 this.height = re.getStyleByPixel("line-height");
                 if (this.height >= 0) break;
             }
-            if (this.height < 0) this.height = Font.getDefaultFont().getHeight();
-        }
-        
-        /* (non-Javadoc)
-         * @see jp.haw.grain.sprout.InlineElement#paint(int, int)
-         */
-        public void paint(int originX, int originY) {
-            // FIXME delete this.
+            if (this.height < 0) this.height = CharactorSequence.this.font.getHeight();
         }
 
         /* (non-Javadoc)
@@ -173,6 +169,7 @@ public class CharactorSequence extends InlineElement {
             dc.setColor(DrawContext.COLOR_BLACK);
             String txt = CharactorSequence.this.text.getData();
             String src = txt.substring(this.start, this.end);
+            dc.setFont(CharactorSequence.this.font);
             dc.drawString(src, 0, 0);
         }
 

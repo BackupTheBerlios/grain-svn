@@ -21,17 +21,24 @@
  */
 package jp.haw.grain.doja;
 
+import java.util.Hashtable;
+
 import jp.haw.grain.sprout.Font;
+import jp.haw.grain.sprout.LayoutManager;
 import jp.haw.grain.xforms.RenderableElement;
+
+import com.hp.hpl.sparta.Text;
 
 /**
  * A concrete class of Font for doja
  * 
- * @version $Id: FontImpl.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public class FontImpl extends Font {
 
+    Hashtable cache = new Hashtable();
+    
     com.nttdocomo.ui.Font font;
     
     public FontImpl(com.nttdocomo.ui.Font font) {
@@ -46,13 +53,6 @@ public class FontImpl extends Font {
     }
 
     /* (non-Javadoc)
-     * @see jp.haw.grain.sprout.Font#createFontOf(jp.haw.grain.xforms.RenderableElement)
-     */
-    protected Font createFontOf(RenderableElement element) {
-        return new FontImpl(com.nttdocomo.ui.Font.getDefaultFont());
-    }
-
-    /* (non-Javadoc)
      * @see jp.haw.grain.sprout.Font#getWidth()
      */
     public int getWidth(String src) {
@@ -64,6 +64,47 @@ public class FontImpl extends Font {
      */
     public int getHeight() {
         return this.font.getHeight();
+    }
+
+    /* (non-Javadoc)
+     * @see jp.haw.grain.sprout.Font#createFontOf(com.hp.hpl.sparta.Text)
+     */
+    protected Font createFontOf(Text text) {
+        RenderableElement parent = LayoutManager.getImmediatelyEnclosingElementOf(text);
+        if (parent == null) return new FontImpl(com.nttdocomo.ui.Font.getDefaultFont());
+        int type = 0;
+        String fontSize = parent.getStyle("font-size");
+        if ("medium".equals(fontSize)) {
+            type |= com.nttdocomo.ui.Font.SIZE_MEDIUM;
+        } else if ("large".equals(fontSize)) {
+            type |= com.nttdocomo.ui.Font.SIZE_LARGE;
+        } else if ("small".equals(fontSize)) {
+            type |= com.nttdocomo.ui.Font.SIZE_SMALL;
+        } else if ("x-small".equals(fontSize)) {
+            type |= com.nttdocomo.ui.Font.SIZE_TINY;
+        }
+        String fontWeight = parent.getStyle("font-weight");
+        String fontStyle = parent.getStyle("font-style");
+        if ("bold".equals(fontWeight) && "italic".equals(fontWeight)) {
+            type |= com.nttdocomo.ui.Font.STYLE_BOLDITALIC;
+        } else if ("bold".equals(fontWeight)) {
+            type |= com.nttdocomo.ui.Font.STYLE_BOLD;
+        } else if ("italic".equals(fontWeight)) {
+            type |= com.nttdocomo.ui.Font.STYLE_ITALIC;
+        }
+        com.nttdocomo.ui.Font aFont = (com.nttdocomo.ui.Font)this.cache.get(new Integer(type));
+        if (aFont == null) {
+            aFont = com.nttdocomo.ui.Font.getFont(type);
+            this.cache.put(new Integer(type), aFont);
+        }
+        return new FontImpl(aFont);
+    }
+
+    /**
+     * @return
+     */
+    com.nttdocomo.ui.Font getFont() {
+        return this.font;
     }
 
 }

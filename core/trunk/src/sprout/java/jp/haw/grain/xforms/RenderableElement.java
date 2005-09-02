@@ -28,7 +28,7 @@ import com.hp.hpl.sparta.Element;
 /**
  * 物理レイアウト可能な要素
  * 
- * @version $Id: RenderableElement.java 3385 2005-08-18 22:12:13Z go $
+ * @version $Id$
  * @author Go Takahashi
  */
 public abstract class RenderableElement extends Element {
@@ -47,16 +47,26 @@ public abstract class RenderableElement extends Element {
     public abstract void accept(Visitor visitor);
     
     public void setStyle(String name, String value) {
-        this.styles.put(name, value);
+        setStyle(name, value, true);
     }
-    public String getStyle(String name) {
-        for (Element e = this; e != null; e = e.getParentNode()) {
+
+    public void setStyle(String name, String value, boolean overWrite) {
+        if (!overWrite && this.styles.containsKey(name)) return;
+        this.styles.put(name, value);
+    }    
+    
+    public String getStyle(String name, boolean inherit) {
+        for (Element e = this; (e != null) && inherit; e = e.getParentNode()) {
             if (e instanceof RenderableElement) {
                 String value = (String)((RenderableElement)e).styles.get(name);
                 if (value != null) return value;
             }
         }
         return null;
+    }
+    
+    public String getStyle(String name) {
+        return getStyle(name, true);
     }
     
     /**

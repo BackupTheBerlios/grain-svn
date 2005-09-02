@@ -272,7 +272,7 @@ public class LayoutManager implements Visitor {
     public void visit(FormControlElement element) {
         String name = element.getTagName();
         if ("trigger".equals(name) || "submit".equals(name)) {
-            Element labelElem = element.xpathSelectElement("label");
+            Element labelElem = element.xpathSelectElement("label"); 
             Text label = (labelElem != null) ? (Text)labelElem.getFirstChild() : new Text("");
             InlineElement button = new Button(element, label);
             this.box.append(button);
@@ -315,7 +315,26 @@ public class LayoutManager implements Visitor {
      */
     public void visit(XHTMLElement element) {
         String name = element.getTagName();
-        if ("div".equals(name) || "hr".equals(name)) {
+        if ("div".equals(name) || "hr".equals(name) 
+                || "h1".equals(name) || "h2".equals(name) || "h3".equals(name) 
+                || "h4".equals(name) || "h5".equals(name) || "h6".equals(name)) {
+            int level = element.getHeadingLevel();
+            if (level > 5) {
+                element.setStyle("font-size", "x-small", false);
+            } else if (level > 4) {
+                element.setStyle("font-size", "small", false);
+            } else if (level > 2) {
+                element.setStyle("font-size", "medium", false);
+            } else if (level > 0) {
+                element.setStyle("font-size", "large", false);
+            }
+            if (level > 0) {
+                element.setStyle("font-weight", "bold", false);
+            }
+            if ("hr".equals(name)) {
+                element.setStyle("border", "1px", false);                
+                element.setStyle("border-style", "inset", false);                
+            }
             Block block = new Block(element);
             this.box.addChildBox(block);
             this.box = block;
@@ -325,9 +344,26 @@ public class LayoutManager implements Visitor {
             this.box = column;
         } else if ("br".equals(name)) {
             this.box.append(new CharactorSequence(CharactorSequence.LINE_BREAK));
+        } else if ("b".equals(name)) {
+            if (element.getStyle("font-weight", false) == null) {
+                element.setStyle("font-weight", "bold");
+            }
+        } else if ("span".equals(name)) {
+            
         } else {
             throw new RuntimeException("xhe unexpected tag: " +  name);
         }
+    }
+
+    /**
+     * @param parentNode
+     * @return
+     */
+    public static RenderableElement getImmediatelyEnclosingElementOf(Node node) {
+        for (Element e = node.getParentNode(); e != null; e = e.getParentNode()) {
+            if (e instanceof RenderableElement) return (RenderableElement)e;
+        }
+        return null;
     }
     
 }
