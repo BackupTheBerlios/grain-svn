@@ -1,5 +1,5 @@
 
-　Grain Core - alpha 1
+　Grain Core a03
 
 　An XForms processor for mobile terminal
 
@@ -63,7 +63,7 @@
 　　　との XML データの通信を行うことができます。
 
 
-ホームページ
+　ホームページ
 
 	Grain の 公式ホームページは以下の URL です。
 	http://grain.sourceforge.jp/
@@ -71,7 +71,7 @@
 	近日中に grain.jp ドメインでのサービスを開始する予定です。
 
 
-著作権
+　著作権
 
 	Grain Core に関する全ての著作権は、原著作者である株式会社ハウインター
 	ナショナルが所有します。Grain Core  は、GNU Lesser General Public License 
@@ -79,7 +79,7 @@
 	制限はありません。配布する場合は LGPL に従って下さい。
 
 
-無保証
+　無保証
 
 　　Grain Core は無保証です。Grain Core を使って生じたいかなる損害に対しても、
 　　原著作者は一切責任を負いません。詳しくは LGPL の各条項を参照して下さい。
