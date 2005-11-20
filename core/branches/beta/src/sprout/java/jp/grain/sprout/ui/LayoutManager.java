@@ -19,11 +19,11 @@
  * Created on 2005/07/03 16:27:05
  * 
  */
-package jp.grain.sprout;
+package jp.grain.sprout.ui;
 
-import jp.grain.sprout.Block;
-import jp.grain.sprout.Box;
-import jp.grain.sprout.Column;
+import jp.grain.sprout.ui.Block;
+import jp.grain.sprout.ui.Box;
+import jp.grain.sprout.ui.Column;
 import jp.grain.xforms.FormControlElement;
 import jp.grain.xforms.FormDocument;
 import jp.grain.xforms.Processor;
@@ -292,7 +292,7 @@ public class LayoutManager implements Visitor {
                 Text label = (Text)labelElem.getFirstChild();
                 this.box.append(new CharactorSequence(label));
             }
-            InlineElement text = new jp.grain.sprout.Label(element);
+            InlineElement text = new jp.grain.sprout.ui.Label(element);
             this.box.append(text);
         } else {
             throw new RuntimeException("fce unexpected tag: " +  name);

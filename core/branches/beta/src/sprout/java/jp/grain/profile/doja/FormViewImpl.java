@@ -23,10 +23,10 @@ package jp.grain.profile.doja;
 
 import java.util.Vector;
 
-import jp.grain.sprout.Block;
-import jp.grain.sprout.DrawContext;
-import jp.grain.sprout.FormView;
-import jp.grain.sprout.InlineElement;
+import jp.grain.sprout.ui.Block;
+import jp.grain.sprout.ui.DrawContext;
+import jp.grain.sprout.ui.FormView;
+import jp.grain.sprout.ui.InlineElement;
 import jp.grain.xforms.Processor;
 
 

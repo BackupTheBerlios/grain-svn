@@ -23,8 +23,8 @@ package jp.grain.profile.doja;
 
 import java.util.Hashtable;
 
-import jp.grain.sprout.Font;
-import jp.grain.sprout.LayoutManager;
+import jp.grain.sprout.ui.Font;
+import jp.grain.sprout.ui.LayoutManager;
 import jp.grain.xforms.RenderableElement;
 
 import com.hp.hpl.sparta.Text;

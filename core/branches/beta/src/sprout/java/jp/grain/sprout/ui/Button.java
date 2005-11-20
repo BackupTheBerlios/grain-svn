@@ -19,7 +19,7 @@
  * Created on 2005/07/20 14:57:21
  * 
  */
-package jp.grain.sprout;
+package jp.grain.sprout.ui;
 
 import jp.grain.xforms.FormControlElement;
 

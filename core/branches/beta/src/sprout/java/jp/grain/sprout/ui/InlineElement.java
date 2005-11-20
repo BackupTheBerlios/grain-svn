@@ -19,7 +19,7 @@
  * Created on 2005/07/19 13:11:28
  * 
  */
-package jp.grain.sprout;
+package jp.grain.sprout.ui;
 
 import com.hp.hpl.sparta.Event;
 

@@ -19,7 +19,7 @@
  * Created on 2005/08/08 11:48:42
  * 
  */
-package jp.grain.sprout;
+package jp.grain.sprout.ui;
 
 import com.hp.hpl.sparta.Text;
 

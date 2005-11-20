@@ -21,6 +21,7 @@
  */
 package jp.grain.sprout;
 
+import jp.grain.sprout.ui.FormView;
 import jp.grain.xforms.FormDocument;
 import jp.grain.xforms.InstanceElement;
 import jp.grain.xforms.SubmissionElement;

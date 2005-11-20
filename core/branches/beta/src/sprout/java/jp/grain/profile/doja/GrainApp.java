@@ -32,12 +32,12 @@ import javax.microedition.io.InputConnection;
 import javax.microedition.io.OutputConnection;
 
 import jp.grain.sprout.DocumentManager;
-import jp.grain.sprout.Font;
 import jp.grain.sprout.FormDocumentSerializeOperation;
-import jp.grain.sprout.FormView;
-import jp.grain.sprout.LayoutManager;
 import jp.grain.sprout.SerializeOperation;
 import jp.grain.sprout.SproutApp;
+import jp.grain.sprout.ui.Font;
+import jp.grain.sprout.ui.FormView;
+import jp.grain.sprout.ui.LayoutManager;
 import jp.grain.xforms.FormDocument;
 import jp.grain.xforms.InstanceElement;
 import jp.grain.xforms.Processor;

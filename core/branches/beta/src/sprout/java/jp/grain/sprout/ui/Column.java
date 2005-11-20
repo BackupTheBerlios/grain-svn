@@ -19,7 +19,7 @@
  * Created on 2005/07/20 17:26:36
  * 
  */
-package jp.grain.sprout;
+package jp.grain.sprout.ui;
 
 import java.util.Enumeration;
 import java.util.Vector;

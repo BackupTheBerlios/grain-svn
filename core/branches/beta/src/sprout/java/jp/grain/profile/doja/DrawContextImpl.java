@@ -24,8 +24,8 @@ package jp.grain.profile.doja;
 import com.nttdocomo.ui.Font;
 import com.nttdocomo.ui.Graphics;
 
-import jp.grain.sprout.DrawContext;
-import jp.grain.sprout.FormView;
+import jp.grain.sprout.ui.DrawContext;
+import jp.grain.sprout.ui.FormView;
 
 /**
  * Implementation of interface DrawContext for doja
@@ -151,7 +151,7 @@ public class DrawContextImpl implements DrawContext {
     /* (non-Javadoc)
      * @see jp.haw.grain.sprout.DrawContext#setFont(jp.haw.grain.sprout.Font)
      */
-    public void setFont(jp.grain.sprout.Font font) {
+    public void setFont(jp.grain.sprout.ui.Font font) {
         Font df = ((FontImpl)font).getFont();
         this.grp.setFont(df);
         this.font = df;

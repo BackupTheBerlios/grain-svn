@@ -19,7 +19,7 @@
  * Created on 2005/07/21 16:11:59
  * 
  */
-package jp.grain.sprout;
+package jp.grain.sprout.ui;
 
 import java.util.Vector;
 

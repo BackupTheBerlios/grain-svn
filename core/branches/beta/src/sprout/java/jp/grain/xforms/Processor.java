@@ -27,8 +27,8 @@ import java.util.Vector;
 
 import jp.grain.sprout.DocumentManager;
 import jp.grain.sprout.FormDocumentSerializeOperation;
-import jp.grain.sprout.FormView;
 import jp.grain.sprout.SproutApp;
+import jp.grain.sprout.ui.FormView;
 
 import com.hp.hpl.sparta.Element;
 import com.hp.hpl.sparta.Event;

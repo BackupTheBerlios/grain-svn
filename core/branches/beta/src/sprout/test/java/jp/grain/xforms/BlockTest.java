@@ -25,7 +25,7 @@ import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
 import j2meunit.framework.TestSuite;
-import jp.grain.sprout.Block;
+import jp.grain.sprout.ui.Block;
 import jp.grain.xforms.XHTMLElement;
 
 /**

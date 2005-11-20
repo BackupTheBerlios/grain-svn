@@ -21,9 +21,9 @@
  */
 package jp.grain.sprout;
 
-import jp.grain.sprout.Block;
-import jp.grain.sprout.FormView;
-import jp.grain.sprout.InlineElement;
+import jp.grain.sprout.ui.Block;
+import jp.grain.sprout.ui.FormView;
+import jp.grain.sprout.ui.InlineElement;
 
 
 /**

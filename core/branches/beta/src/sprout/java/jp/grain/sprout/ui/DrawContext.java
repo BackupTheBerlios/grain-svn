@@ -19,7 +19,7 @@
  * Created on 2005/08/07 18:07:01
  * 
  */
-package jp.grain.sprout;
+package jp.grain.sprout.ui;
 
 
 /**

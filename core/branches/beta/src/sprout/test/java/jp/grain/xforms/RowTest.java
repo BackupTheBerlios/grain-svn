@@ -25,10 +25,10 @@ import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
 import j2meunit.framework.TestSuite;
-import jp.grain.sprout.DrawContext;
-import jp.grain.sprout.FormView;
-import jp.grain.sprout.InlineElement;
-import jp.grain.sprout.Row;
+import jp.grain.sprout.ui.DrawContext;
+import jp.grain.sprout.ui.FormView;
+import jp.grain.sprout.ui.InlineElement;
+import jp.grain.sprout.ui.Row;
 import jp.grain.xforms.XHTMLElement;
 
 /**
