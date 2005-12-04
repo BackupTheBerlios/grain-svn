@@ -1,0 +1,60 @@
+# Grain Core - A XForms processor for mobile terminals.
+# $Id: local.build.properties.sample 3387 2005-08-18 23:43:19Z go $
+#
+# Copyright (C) 2005 HAW International Inc.
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+# for NTT Docomo Java Environment(DOJA) 
+
+DOJA_HOME = d:/usr/local/iDKDoJa3.5
+doja.doja_g.exe = ${DOJA_HOME}/bin/doja_g.exe
+doja.preverify.exe = ${DOJA_HOME}/bin/preverify.exe
+doja.classes.zip = ${DOJA_HOME}/lib/classes.zip
+doja.doja_classes.zip = ${DOJA_HOME}/lib/doja_classes.zip
+
+doja.jam.src.filename = sprout.jam.sample
+doja.jam.packageurl = http://localhost:8080/grain-sample/sprout.jar
+doja.jar.filename = sprout.jar
+doja.jam.filename = sprout.jam
+
+# cactus
+
+cactus.host = localhost
+cactus.home.tomcat5x = d:/usr/local/jakarta-tomcat-5.0.28
+cactus.port = 8080
+cactus.context = grain-server-test
+# cactus.proxy.port = 28080
+# cactus.webapp.base = ${basedir}/${webapp.dir.docbase}
+
+# libraries
+
+sprout.j2meunit.jar = lib/j2meunit.jar
+sprout.proguard.jar = lib/proguard.jar
+sprout.jam-task.jar = lib/jam-task.jar
+
+server.servlet.jar = lib/servlet.jar
+server.log4j.jar = lib/struts.jar
+server.struts.jar = lib/log4j.jar
+server.jdom.jar = lib/jdom.jar
+server.junit.jar = lib/junit-3.8.1.jar
+server.cuctus.jar = lib/cactus-1.7.jar
+server.cuctus-ant.jar = d:/usr/lib/jakarta-cactus-13-1.7/lib/cactus-ant-1.7.jar
+server.commons-logging.jar = d:/usr/lib/jakarta-cactus-13-1.7/lib/commons-logging-1.0.4.jar
+server.commons-httpclient.jar = d:/usr/lib/jakarta-cactus-13-1.7/lib/commons-httpclient-2.0.2.jar
+server.aspectjrt.jar = d:/usr/lib/aspectj/lib/aspectjrt.jar
+server.httpunit.jar = lib/httpunit.jar
+server.junit.jar = lib/junit-3.8.1.jar
+server.xmlpull.jar = lib/xmlpull_1_1_3_4b.jar
