@@ -19,20 +19,21 @@
  * Created on 2005/07/09 15:30:31
  * 
  */
-package jp.haw.grain.doja;
+package jp.grain.doja;
 
 
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
 import j2meunit.framework.TestSuite;
-import jp.haw.grain.sprout.CharactorSequence;
-import jp.haw.grain.sprout.DrawContext;
-import jp.haw.grain.sprout.Font;
-import jp.haw.grain.sprout.Row;
-import jp.haw.grain.xforms.XHTMLElement;
+import jp.grain.sprout.platform.doja.DrawContextImpl;
+import jp.grain.sprout.platform.doja.FontImpl;
+import jp.grain.sprout.ui.CharactorSequence;
+import jp.grain.sprout.ui.DrawContext;
+import jp.grain.sprout.ui.Font;
+import jp.grain.sprout.ui.Row;
+import jp.grain.xforms.XHTMLElement;
 
-import com.hp.hpl.sparta.Text;
 import com.nttdocomo.ui.Canvas;
 import com.nttdocomo.ui.Graphics;
 
@@ -51,19 +52,19 @@ public class CharactorSequenceTest extends TestCase {
     }
 
     public void testAlphabetSeq() {
-        Text text = new Text("this is test string of testAlphabetSeq. I like test driven development. And you're done?");
+        String text = "this is test string of testAlphabetSeq. I like test driven development. And you're done?";
         XHTMLElement elem = new XHTMLElement("p");
         Font.setDefaultFont(new FontImpl(com.nttdocomo.ui.Font.getDefaultFont()));
         CharactorSequence cs = new CharactorSequence(text);
-        Row row1 = new Row(elem, 240);
+        Row row1 = new Row(240);
         row1.append(cs);
         assertTrue("continue", cs.isContinue());
         row1.apply();
-        Row row2 = new Row(elem, 200);
+        Row row2 = new Row(200);
         row2.append(cs);
         assertTrue("continue", cs.isContinue());
         row2.apply();
-        Row row3 = new Row(elem, 240);
+        Row row3 = new Row(240);
         row3.append(cs);
         assertTrue("not continue", !cs.isContinue());
         row3.apply();

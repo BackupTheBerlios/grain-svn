@@ -19,7 +19,11 @@
  * Created on 2005/07/28 17:43:13
  * 
  */
-package jp.haw.grain.sprout;
+package jp.grain.sprout;
+
+import jp.grain.sprout.ui.Form;
+import jp.grain.sprout.ui.FormContext;
+import jp.grain.sprout.ui.InlineElement;
 
 
 /**
@@ -28,9 +32,9 @@ package jp.haw.grain.sprout;
  * @version $Id$
  * @author Go Takahashi
  */
-public class MockView implements FormView {
+public class MockView implements FormContext {
 
-    Block root;
+    Form form;
 
     /* (non-Javadoc)
      * @see jp.haw.grain.xforms.FormView#render()
@@ -69,15 +73,15 @@ public class MockView implements FormView {
     /* (non-Javadoc)
      * @see jp.haw.grain.xforms.FormView#setRootBlock(jp.haw.grain.xforms.Block)
      */
-    public void setRootBlock(Block root) {
-        this.root = root;
+    public void setForm(Form form) {
+        this.form = form;
     }
 
     /* (non-Javadoc)
      * @see jp.haw.grain.xforms.FormView#getRootBlock()
      */
-    public Block getRootBlock() {
-        return this.root;
+    public Form getForm() {
+        return this.form;
     }
 
     /* (non-Javadoc)
@@ -119,4 +123,5 @@ public class MockView implements FormView {
         // TODO Auto-generated method stub
         
     }
+
 }

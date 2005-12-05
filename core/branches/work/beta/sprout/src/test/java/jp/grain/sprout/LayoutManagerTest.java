@@ -19,17 +19,22 @@
  * Created on 2005/07/09 15:30:31
  * 
  */
-package jp.haw.grain.sprout;
+package jp.grain.sprout;
 
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
 import j2meunit.framework.TestSuite;
-import jp.haw.grain.doja.FontImpl;
-import jp.haw.grain.sprout.Block;
-import jp.haw.grain.xforms.FormControlElement;
-import jp.haw.grain.xforms.FormDocument;
-import jp.haw.grain.xforms.XHTMLElement;
+import jp.grain.sprout.platform.doja.FontImpl;
+import jp.grain.sprout.ui.Block;
+import jp.grain.sprout.ui.Column;
+import jp.grain.sprout.ui.Font;
+import jp.grain.sprout.ui.InlineElement;
+import jp.grain.sprout.ui.LayoutManager;
+import jp.grain.sprout.ui.Row;
+import jp.grain.xforms.FormControlElement;
+import jp.grain.xforms.FormDocument;
+import jp.grain.xforms.XHTMLElement;
 
 import com.hp.hpl.sparta.Element;
 import com.hp.hpl.sparta.Text;
@@ -82,7 +87,7 @@ public class LayoutManagerTest extends TestCase {
         MockView view = new MockView();
         LayoutManager manager = new LayoutManager(doc, view);
         manager.layout();
-        Block bodyBlock = view.getRootBlock();
+        Block bodyBlock = view.getForm();
         assertEquals("body block width by pixel", view.getWidth(), bodyBlock.getWidth());
         assertEquals("body count", 2, bodyBlock.getChildCount());        
         assertEquals("body height by pixel", 75, bodyBlock.getHeight());
@@ -110,7 +115,7 @@ public class LayoutManagerTest extends TestCase {
         MockView view = new MockView();
         LayoutManager manager = new LayoutManager(doc, view);
         manager.layout();
-        Block bodyBlock = view.getRootBlock();
+        Block bodyBlock = view.getForm();
         assertEquals("body block width by pixel", view.getWidth(), bodyBlock.getWidth());
         assertEquals("body count", 1, bodyBlock.getChildCount());
         Column column = (Column)bodyBlock.getChildBox(0);
@@ -147,7 +152,7 @@ public class LayoutManagerTest extends TestCase {
         MockView view = new MockView();
         LayoutManager manager = new LayoutManager(doc, view);
         manager.layout();
-        Block bodyBlock = view.getRootBlock();
+        Block bodyBlock = view.getForm();
         assertEquals("body count", 2, bodyBlock.getChildCount());
         Column fc = (Column)bodyBlock.getChildBox(1);
         assertEquals("line count", 3, fc.getRowCount());

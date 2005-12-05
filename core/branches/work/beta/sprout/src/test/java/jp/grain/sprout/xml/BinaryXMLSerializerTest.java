@@ -19,7 +19,7 @@
  * Created on 2005/06/16 14:11:18
  * 
  */
-package jp.haw.grain.sprout.xml;
+package jp.grain.sprout.xml;
 
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
@@ -28,6 +28,8 @@ import j2meunit.framework.TestSuite;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import jp.grain.sprout.xml.BinaryXMLSerializer;
 
 import org.xmlpull.v1.XmlPullParserException;
 

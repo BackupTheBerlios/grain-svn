@@ -19,13 +19,14 @@
  * Created on 2005/07/09 15:30:31
  * 
  */
-package jp.haw.grain.xforms;
+package jp.grain.xforms;
 
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
 import j2meunit.framework.TestSuite;
-import jp.haw.grain.sprout.Block;
+import jp.grain.sprout.ui.Block;
+import jp.grain.sprout.ui.Form;
 
 /**
  * A test of LayoutManager
@@ -42,21 +43,17 @@ public class BlockTest extends TestCase {
     }
 
     public void testNonFixedBlock() {
-        XHTMLElement body = new XHTMLElement("body");
-        body.setStyle("width", "300px");
-        Block outer = new Block(body);
-        XHTMLElement div1 = new XHTMLElement("div");
-        div1.setStyle("height", "100px");
-        Block inner1 = new Block(div1);
+        Form outer = new Form();
+        outer.setWidth(300);
+        Block inner1 = new Block();
         outer.addChildBox(inner1);
         outer.apply();
         assertEquals("outer width", 300, outer.getWidth());
         assertEquals("outer heght", 100, outer.getHeight());
         assertEquals("inner1 width", 300, inner1.getWidth());
         assertEquals("inner1 heght", 100, inner1.getHeight());
-        XHTMLElement div2 = new XHTMLElement("div");
-        div2.setStyle("height", "150px");
-        Block inner2 = new Block(div2);
+        Block inner2 = new Block();
+        inner2.setHeight(150);
         outer.addChildBox(inner2);
         outer.apply();
         assertEquals("outer width", 300, outer.getWidth());

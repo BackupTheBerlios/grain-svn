@@ -19,18 +19,20 @@
  * Created on 2005/06/16 14:11:18
  * 
  */
-package jp.haw.grain.sprout.xml;
+package jp.grain.sprout.xml;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-
-import jp.haw.grain.sprout.xml.BinaryXMLParser;
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
 import j2meunit.framework.TestSuite;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+
+import jp.grain.sprout.xml.BinaryXMLParser;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * BinaryXMLParserTest

@@ -19,7 +19,7 @@
  * Created on 2005/07/09 15:30:31
  * 
  */
-package jp.haw.grain.doja;
+package jp.grain.doja;
 
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
@@ -33,17 +33,19 @@ import javax.microedition.io.Connection;
 import javax.microedition.io.Connector;
 import javax.microedition.io.InputConnection;
 
-import jp.haw.grain.sprout.Block;
-import jp.haw.grain.sprout.Column;
-import jp.haw.grain.sprout.FormDocumentSerializeOperation;
-import jp.haw.grain.sprout.InlineElement;
-import jp.haw.grain.sprout.xml.BinaryXMLParser;
-import jp.haw.grain.xforms.FormControlElement;
-import jp.haw.grain.xforms.FormDocument;
-import jp.haw.grain.xforms.FormDocumentBuilder;
-import jp.haw.grain.xforms.InstanceElement;
-import jp.haw.grain.xforms.Processor;
-import jp.haw.grain.xforms.SubmissionElement;
+import jp.grain.sprout.FormDocumentSerializeOperation;
+import jp.grain.sprout.platform.doja.FormContextImpl;
+import jp.grain.sprout.platform.doja.GrainApp;
+import jp.grain.sprout.ui.Column;
+import jp.grain.sprout.ui.Form;
+import jp.grain.sprout.ui.InlineElement;
+import jp.grain.sprout.xml.BinaryXMLParser;
+import jp.grain.xforms.FormControlElement;
+import jp.grain.xforms.FormDocument;
+import jp.grain.xforms.FormDocumentBuilder;
+import jp.grain.xforms.InstanceElement;
+import jp.grain.xforms.Processor;
+import jp.grain.xforms.SubmissionElement;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -139,8 +141,8 @@ public class FormViewImplTest extends TestCase {
           
         MockSproutApp app = new MockSproutApp("resource:///index.gbxml");
         app.start();
-        FormViewImpl view = (FormViewImpl)Processor.getInstance().getCurrentFormView();
-        Block root = view.getRootBlock();
+        FormContextImpl view = (FormContextImpl)Processor.getInstance().getCurrentFormView();
+        Form root = view.getForm();
         InlineElement element = ((Column)root.getChildBox(1)).getRow(1).getChildElement(1);
         assertEquals("focus element class name: " + element.getClass().getName(), "jp.haw.grain.sprout.TextBox", element.getClass().getName());
         assertSame("focus element", element, view.getFocused());

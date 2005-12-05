@@ -19,7 +19,7 @@
  * Created on 2005/06/25 14:46:01
  * 
  */
-package jp.haw.grain.xforms;
+package jp.grain.xforms;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -30,8 +30,10 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import com.hp.hpl.sparta.Element;
 
-import jp.haw.grain.sprout.xml.BinaryXMLParser;
-import jp.haw.grain.sprout.xml.BinaryXMLParserTest;
+import jp.grain.sprout.xml.BinaryXMLParser;
+import jp.grain.sprout.xml.BinaryXMLParserTest;
+import jp.grain.xforms.FormDocument;
+import jp.grain.xforms.FormDocumentBuilder;
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;

@@ -19,17 +19,13 @@
  * Created on 2005/07/09 15:30:31
  * 
  */
-package jp.haw.grain.doja;
-
-import jp.haw.grain.sprout.Button;
-import jp.haw.grain.xforms.FormControlElement;
-
-import com.hp.hpl.sparta.Text;
+package jp.grain.doja;
 
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
 import j2meunit.framework.TestSuite;
+import jp.grain.sprout.ui.Button;
 
 /**
  * A test of Button
@@ -46,12 +42,12 @@ public class ButtonTest extends TestCase {
     }
 
     public void testSimpleButton() {
-        FormControlElement trigger = new FormControlElement("trigger");
-        FormControlElement label = new FormControlElement("label");
-        trigger.appendChild(label);
-        Text labelText = new Text("button test"); 
-        label.appendChild(labelText);
-        Button btn = new Button(trigger, labelText);
+//        FormControlElement trigger = new FormControlElement("trigger");
+//        FormControlElement label = new FormControlElement("label");
+//        trigger.appendChild(label);
+//        Text labelText = new Text("button test"); 
+//        label.appendChild(labelText);
+        Button btn = new Button("button test");
         btn.apply();
         assertEquals("width", 74, btn.getWidth());
         assertEquals("height", 20, btn.getHeight());

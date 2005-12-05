@@ -19,16 +19,16 @@
  * Created on 2005/07/09 15:30:31
  * 
  */
-package jp.haw.grain.xforms;
+package jp.grain.xforms;
 
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
 import j2meunit.framework.TestSuite;
-import jp.haw.grain.sprout.DrawContext;
-import jp.haw.grain.sprout.FormView;
-import jp.haw.grain.sprout.InlineElement;
-import jp.haw.grain.sprout.Row;
+import jp.grain.sprout.ui.DrawContext;
+import jp.grain.sprout.ui.FormContext;
+import jp.grain.sprout.ui.InlineElement;
+import jp.grain.sprout.ui.Row;
 
 /**
  * A test of LayoutManager
@@ -45,8 +45,7 @@ public class RowTest extends TestCase {
     }
 
     public void testSimpleInlineElement() {
-        XHTMLElement elem = new XHTMLElement("p");
-        Row row = new Row(elem, 300);
+        Row row = new Row(300);
         assertEquals("max width", 300, row.getMaxWidth());
         assertTrue("1st element", row.append(new MockInlineElement(100, 20)));
         row.apply();
@@ -68,8 +67,7 @@ public class RowTest extends TestCase {
     }
     
     public void testLargeInlineElement() {
-        XHTMLElement elem = new XHTMLElement("p");
-        Row row = new Row(elem, 300);
+        Row row = new Row(300);
         assertEquals("max width", 300, row.getMaxWidth());
         assertTrue("1st element", row.append(new MockInlineElement(350, 20)));
         row.apply();
@@ -120,7 +118,7 @@ public class RowTest extends TestCase {
         /* (non-Javadoc)
          * @see jp.haw.grain.sprout.InlineElement#action(jp.haw.grain.sprout.FormView, int, int)
          */
-        public boolean action(FormView view, int action, int selector) {
+        public boolean action(FormContext view, int action, int selector) {
             // TODO Auto-generated method stub
             return false;
         }   

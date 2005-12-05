@@ -19,7 +19,7 @@
  * Created on 2005/06/16 14:44:20
  * 
  */
-package jp.haw.grain.sprout.test.doja;
+package jp.grain.sprout.test.doja;
 
 import j2meunit.framework.Test;
 import j2meunit.framework.TestResult;
@@ -38,16 +38,16 @@ public class TestRunner extends IApplication {
 
     public void start() {
         TestSuite suite = new TestSuite();
-        suite.addTest(new jp.haw.grain.sprout.xml.BinaryXMLParserTest().suite());
-        suite.addTest(new jp.haw.grain.sprout.xml.BinaryXMLSerializerTest().suite());
-        suite.addTest(new jp.haw.grain.xforms.FormDocumentBuilderTest().suite());
-        suite.addTest(new jp.haw.grain.sprout.LayoutManagerTest().suite());      
-        suite.addTest(new jp.haw.grain.xforms.RowTest().suite());
-        suite.addTest(new jp.haw.grain.xforms.ColumnTest().suite());
-        suite.addTest(new jp.haw.grain.doja.CharactorSequenceTest().suite());
-        suite.addTest(new jp.haw.grain.doja.ButtonTest().suite());
-        suite.addTest(new jp.haw.grain.xforms.BlockTest().suite());
-        suite.addTest(new jp.haw.grain.doja.FormViewImplTest().suite());
+        suite.addTest(new jp.grain.sprout.xml.BinaryXMLParserTest().suite());
+        suite.addTest(new jp.grain.sprout.xml.BinaryXMLSerializerTest().suite());
+        suite.addTest(new jp.grain.xforms.FormDocumentBuilderTest().suite());
+        suite.addTest(new jp.grain.sprout.LayoutManagerTest().suite());      
+        suite.addTest(new jp.grain.xforms.RowTest().suite());
+        suite.addTest(new jp.grain.xforms.ColumnTest().suite());
+        suite.addTest(new jp.grain.doja.CharactorSequenceTest().suite());
+        suite.addTest(new jp.grain.doja.ButtonTest().suite());
+        suite.addTest(new jp.grain.xforms.BlockTest().suite());
+        suite.addTest(new jp.grain.doja.FormViewImplTest().suite());
         DojaTestRunner runner = new DojaTestRunner();
         runner.doRun(suite);
     }

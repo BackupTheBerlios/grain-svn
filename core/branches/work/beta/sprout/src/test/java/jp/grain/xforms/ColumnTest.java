@@ -19,16 +19,16 @@
  * Created on 2005/07/09 15:30:31
  * 
  */
-package jp.haw.grain.xforms;
+package jp.grain.xforms;
 
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
 import j2meunit.framework.TestSuite;
-import jp.haw.grain.sprout.Column;
-import jp.haw.grain.sprout.DrawContext;
-import jp.haw.grain.sprout.FormView;
-import jp.haw.grain.sprout.InlineElement;
+import jp.grain.sprout.ui.Column;
+import jp.grain.sprout.ui.DrawContext;
+import jp.grain.sprout.ui.FormContext;
+import jp.grain.sprout.ui.InlineElement;
 
 /**
  * A test of Column
@@ -45,9 +45,8 @@ public class ColumnTest extends TestCase {
     }
 
     public void testSimpleColumn() {
-        XHTMLElement p = new XHTMLElement("p");
-        p.setStyle("width", "300px");
-        Column column = new Column(p);
+        Column column = new Column();
+        column.setWidth(300);
         column.apply();
         assertEquals("width", 300, column.getWidth());
         assertEquals("line count", 0, column.getRowCount());
@@ -106,7 +105,7 @@ public class ColumnTest extends TestCase {
         /* (non-Javadoc)
          * @see jp.haw.grain.sprout.InlineElement#action(jp.haw.grain.sprout.FormView, int, int)
          */
-        public boolean action(FormView view, int action, int selector) {
+        public boolean action(FormContext view, int action, int selector) {
             // TODO Auto-generated method stub
             return false;
         }
