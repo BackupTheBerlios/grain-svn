@@ -18,12 +18,12 @@
  * 
  * Created on 2005/07/24 16:50:00 
  */
-package jp.haw.grain.sprout;
+package jp.grain.sprout.ui;
 
 import com.hp.hpl.sparta.Event;
 
-import jp.haw.grain.xforms.FormControlElement;
-import jp.haw.grain.xforms.XFormsElement;
+import jp.grain.xforms.FormControlElement;
+import jp.grain.xforms.XFormsElement;
 
 /**
  * TextBox
@@ -33,6 +33,9 @@ import jp.haw.grain.xforms.XFormsElement;
  */
 public class TextBox extends InlineElement {
 
+    public static final int INPUT_DEVICE_IME = 0;
+    public static final int INPUT_DEVICE_QR = 0;
+        
     private static final int COLOR_BLACK = 0x000000; // çï
     private static final int COLOR_FIELD = 0xFFFFFF; // îwåi
     private static final int COLOR_EDGE_DARK = 0x333333; // ÉGÉbÉW(à√Åj
@@ -44,12 +47,13 @@ public class TextBox extends InlineElement {
     private static final int SIZE_MINIMUM = SIZE_MARGIN + 3;
     
     private int padding = 2;
-        
+    private int inputDevice;
+    private String inputMode;
+    
     /**
      * 
      */
-    public TextBox(FormControlElement element) {
-       this.element = element;
+    public TextBox() {
     }
     
     public void apply() {
@@ -77,7 +81,7 @@ public class TextBox extends InlineElement {
             dc.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
         }
         dc.setColor(COLOR_BLACK);
-        String text = ((FormControlElement)this.element).getBindingSimpleContent();
+        String text = getBindingSimpleContent();
         dc.clipRect(SIZE_MARGIN, SIZE_MARGIN, getWidth() - SIZE_MARGIN * 2, getHeight() - SIZE_MARGIN * 2);
         dc.drawString((text != null) ? text : "", SIZE_MARGIN + this.padding, SIZE_MARGIN + this.padding);    
     }
@@ -85,23 +89,21 @@ public class TextBox extends InlineElement {
     /* (non-Javadoc)
      * @see jp.haw.grain.sprout.InlineElement#action(int, int)
      */
-    public boolean action(FormView view, int action, int selector) {
+    public boolean action(FormContext view, int action, int selector) {
         super.action(view, action, selector);
-        if (action == FormView.ACT_RELEASED) {
-            if (selector == FormView.SEL_SELECT) {
-                FormControlElement fce = (FormControlElement)this.element;
-                String type = fce.getAttribute(XFormsElement.GRAIN_NS_URI, "type");
-                if ("qr".equals(type)) {
+        if (action == FormContext.ACT_RELEASED) {
+            if (selector == FormContext.SEL_SELECT) {
+                if (this.inputDevice == INPUT_DEVICE_QR) {
                     view.launchCodeReader();                    
                 } else {
-                    view.launchIME(fce.getBindingSimpleContent(), fce.getInputMode(), false);
+                    view.launchIME(getBindingSimpleContent(), this.inputMode, false);
                 }
             }
-        } else if (action == FormView.ACT_IME_RESULT) {
-            if (selector == FormView.SEL_IME_COMMIT) {
-                FormControlElement fce = (FormControlElement)this.element;
-                fce.setBindingSimpleContent(view.getIMEText());
-                fce.dispatchEvent(new Event("xforms-value-changed", true, false));
+        } else if (action == FormContext.ACT_IME_RESULT) {
+            if (selector == FormContext.SEL_IME_COMMIT) {
+                setBindingSimpleContent(view.getIMEText());
+                //TODO dispatch event
+                //fce.dispatchEvent(new Event("xforms-value-changed", true, false));
                 return true;
             }
         }

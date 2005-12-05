@@ -19,13 +19,13 @@
  * Created on 2005/08/07 18:09:57
  * 
  */
-package jp.haw.grain.doja;
+package jp.grain.sprout.platform.doja;
 
 import com.nttdocomo.ui.Font;
 import com.nttdocomo.ui.Graphics;
 
-import jp.haw.grain.sprout.DrawContext;
-import jp.haw.grain.sprout.FormView;
+import jp.grain.sprout.ui.DrawContext;
+import jp.grain.sprout.ui.FormContext;
 
 /**
  * Implementation of interface DrawContext for doja
@@ -38,7 +38,7 @@ public class DrawContextImpl implements DrawContext {
     private Graphics grp;
     private int originX;
     private int originY;
-    private FormView view;
+    private FormContext view;
     private Font font;
     
     /**
@@ -122,14 +122,14 @@ public class DrawContextImpl implements DrawContext {
     /* (non-Javadoc)
      * @see jp.haw.grain.sprout.DrawContext#setFormView(jp.haw.grain.xforms.FormView)
      */
-    public void setFormView(FormView view) {
+    public void setFormView(FormContext view) {
         this.view = view;
     }
 
     /* (non-Javadoc)
      * @see jp.haw.grain.sprout.DrawContext#getFormView()
      */
-    public FormView getFormView() {
+    public FormContext getFormView() {
         return this.view;
     }
 
@@ -151,7 +151,7 @@ public class DrawContextImpl implements DrawContext {
     /* (non-Javadoc)
      * @see jp.haw.grain.sprout.DrawContext#setFont(jp.haw.grain.sprout.Font)
      */
-    public void setFont(jp.haw.grain.sprout.Font font) {
+    public void setFont(jp.grain.sprout.ui.Font font) {
         Font df = ((FontImpl)font).getFont();
         this.grp.setFont(df);
         this.font = df;

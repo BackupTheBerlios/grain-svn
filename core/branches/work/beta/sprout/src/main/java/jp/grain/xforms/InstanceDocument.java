@@ -19,7 +19,7 @@
  * Created on 2004/12/19
  *
  */
-package jp.haw.grain.xforms;
+package jp.grain.xforms;
 
 import com.hp.hpl.sparta.Document;
 

@@ -19,7 +19,7 @@
  * Created on 2005/02/05
  * 
  */
-package jp.haw.grain.doja;
+package jp.grain.sprout.platform.doja;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,11 +29,11 @@ import java.io.OutputStreamWriter;
 import javax.microedition.io.Connection;
 import javax.microedition.io.Connector;
 
-import jp.haw.grain.sprout.FormDocumentSerializeOperation;
-import jp.haw.grain.sprout.xml.BinaryXMLParser;
-import jp.haw.grain.sprout.xml.BinaryXMLSerializer;
-import jp.haw.grain.xforms.FormDocument;
-import jp.haw.grain.xforms.FormDocumentBuilder;
+import jp.grain.sprout.FormDocumentSerializeOperation;
+import jp.grain.sprout.xml.BinaryXMLParser;
+import jp.grain.sprout.xml.BinaryXMLSerializer;
+import jp.grain.xforms.FormDocument;
+import jp.grain.xforms.FormDocumentBuilder;
 
 import org.xmlpull.v1.XmlPullParserException;
 

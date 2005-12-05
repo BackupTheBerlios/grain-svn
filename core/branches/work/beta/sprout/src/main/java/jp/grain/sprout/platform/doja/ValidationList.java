@@ -19,7 +19,7 @@
  * Created on 2005/02/06
  * 
  */
-package jp.haw.grain.doja;
+package jp.grain.sprout.platform.doja;
 
 import java.util.Enumeration;
 import java.util.Vector;

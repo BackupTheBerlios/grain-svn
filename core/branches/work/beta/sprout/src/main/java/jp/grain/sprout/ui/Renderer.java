@@ -19,9 +19,8 @@
  * Created on 2005/08/08 4:25:55
  * 
  */
-package jp.haw.grain.sprout;
+package jp.grain.sprout.ui;
 
-import jp.haw.grain.xforms.RenderableElement;
 
 /**
  * Renderer is an element draws something to display.
@@ -37,12 +36,11 @@ public abstract class Renderer {
     
     protected int x;
     protected int y;
-    protected int width;
-    protected int height;
+    protected int width = -1;
+    protected int height = -1;
     protected int margin;
     protected int border;
     protected int padding;
-    protected RenderableElement element;
     protected Renderer parent;
     
     public int getX() {
@@ -65,8 +63,17 @@ public abstract class Renderer {
         return this.width;
     }
     
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
     public int getHeight() {
         return this.height;
+    }
+    
+
+    public void setHeight(int height) {
+        this.height = height;
     }
     
     public int getBoxWidth() {
@@ -117,24 +124,24 @@ public abstract class Renderer {
     }
     
     protected void applyStyles(DrawContext dc) {
-        int bgColor = dc.getColorByHex(this.element.getStyle("background-color"));
-        if (bgColor != -1 || this.parent == null) {
-            dc.setColor((bgColor < 0) ? DEFAULT_BG_COLOR : bgColor);
-            dc.fillRect(this.margin, this.margin, getBoxWidth() - this.margin * 2, getBoxHeight() - this.margin * 2);
-        }
-        if (this.border > 0) {
-            if ("inset".equals(this.element.getStyle("border-style"))) {
-                dc.setColor(COLOR_EDGE_DARK);
-                dc.drawLine(this.margin, this.margin, getBoxWidth() - this.margin - 1, this.margin);
-                dc.drawLine(this.margin, this.margin, this.margin, getBoxHeight() - this.margin - 1);
-                dc.setColor(COLOR_EDGE_LIGHT);
-                dc.drawLine(getBoxWidth() - this.margin - 1, this.margin, getBoxWidth() - this.margin - 1, getBoxHeight() - this.margin - 1);
-                dc.drawLine(this.margin, getBoxHeight() - this.margin - 1, getBoxWidth() - this.margin - 1, getBoxHeight() - this.margin - 1);
-            } else {
-                dc.setColor(COLOR_EDGE_DARK);
-                dc.drawRect(this.margin, this.margin, getBoxWidth() - this.margin * 2 - 1, getBoxHeight() - this.margin * 2 - 1);
-            }
-        }
+//        int bgColor = dc.getColorByHex(this.element.getStyle("background-color"));
+//        if (bgColor != -1 || this.parent == null) {
+//            dc.setColor((bgColor < 0) ? DEFAULT_BG_COLOR : bgColor);
+//            dc.fillRect(this.margin, this.margin, getBoxWidth() - this.margin * 2, getBoxHeight() - this.margin * 2);
+//        }
+//        if (this.border > 0) {
+//            if ("inset".equals(this.element.getStyle("border-style"))) {
+//                dc.setColor(COLOR_EDGE_DARK);
+//                dc.drawLine(this.margin, this.margin, getBoxWidth() - this.margin - 1, this.margin);
+//                dc.drawLine(this.margin, this.margin, this.margin, getBoxHeight() - this.margin - 1);
+//                dc.setColor(COLOR_EDGE_LIGHT);
+//                dc.drawLine(getBoxWidth() - this.margin - 1, this.margin, getBoxWidth() - this.margin - 1, getBoxHeight() - this.margin - 1);
+//                dc.drawLine(this.margin, getBoxHeight() - this.margin - 1, getBoxWidth() - this.margin - 1, getBoxHeight() - this.margin - 1);
+//            } else {
+//                dc.setColor(COLOR_EDGE_DARK);
+//                dc.drawRect(this.margin, this.margin, getBoxWidth() - this.margin * 2 - 1, getBoxHeight() - this.margin * 2 - 1);
+//            }
+//        }
     }
 
 }

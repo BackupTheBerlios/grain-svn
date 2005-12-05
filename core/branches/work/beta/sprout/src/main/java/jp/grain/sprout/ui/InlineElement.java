@@ -19,11 +19,8 @@
  * Created on 2005/07/19 13:11:28
  * 
  */
-package jp.haw.grain.sprout;
+package jp.grain.sprout.ui;
 
-import com.hp.hpl.sparta.Event;
-
-import jp.haw.grain.xforms.FormControlElement;
 
 /**
  * インライン要素をあらわす抽象クラス。
@@ -67,13 +64,13 @@ abstract public class InlineElement extends Renderer {
     }
     
     public void apply() {
-        if (this.element == null) {
-            this.width = -1;
-            this.height = -1;
-        } else {
-            this.width = this.element.getStyleByPixel("width");
-            this.height = this.element.getStyleByPixel("height");
-        }
+//        if (this.element == null) {
+//            this.width = -1;
+//            this.height = -1;
+//        } else {
+//            this.width = this.element.getStyleByPixel("width");
+//            this.height = this.element.getStyleByPixel("height");
+//        }
     }
    
     /**
@@ -82,18 +79,26 @@ abstract public class InlineElement extends Renderer {
      * @param action
      * @return returns true when this element need to repaint, otherwise false 
      */
-    public boolean action(FormView view, int action, int selector) {
-        if (this.element == null) return false;
-        if (action == FormView.ACT_FOCUS_IN) {
-            if (this.element instanceof FormControlElement) {
-                ((FormControlElement)this.element).dispatchEvent(new Event("DOMFocusIn", true, false));
-            }
-        } else if (action == FormView.ACT_FOCUS_OUT) {
-            if (this.element instanceof FormControlElement) {
-                ((FormControlElement)this.element).dispatchEvent(new Event("DOMFocusOut", true, false));
-            }
+    public boolean action(FormContext ctx, int action, int selector) {
+        if (action == FormContext.ACT_FOCUS_IN) {
+//            if (this.element instanceof FormControlElement) {
+//                ((FormControlElement)this.element).dispatchEvent(new Event("DOMFocusIn", true, false));
+//            }
+        } else if (action == FormContext.ACT_FOCUS_OUT) {
+//            if (this.element instanceof FormControlElement) {
+//                ((FormControlElement)this.element).dispatchEvent(new Event("DOMFocusOut", true, false));
+//            }
         }
         return false;
     }
     
+    public String getBindingSimpleContent() {
+        //TODO Not Implemented Yet.
+        return null;
+    }
+
+    public void setBindingSimpleContent(String content) {
+        //TODO Not Implemented Yet.
+    }
+
 }

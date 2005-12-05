@@ -19,12 +19,10 @@
  * Created on 2005/07/20 17:26:36
  * 
  */
-package jp.haw.grain.sprout;
+package jp.grain.sprout.ui;
 
 import java.util.Enumeration;
 import java.util.Vector;
-
-import jp.haw.grain.xforms.RenderableElement;
 
 /**
  * インライン要素を内包する物理レイアウト要素
@@ -42,18 +40,15 @@ public class Column extends Box {
 
     
     // psuide column
-    public Column(RenderableElement element) {
-        this(element, false);
+    public Column() {
+        this(false);
     }
     
-    public Column(RenderableElement element, boolean fictional) {
-        this.element = element;
+    public Column(boolean fictional) {
         this.fictional = fictional;
-        this.width = element.getStyleByPixel("width");
     }
     
     public void apply() {
-        this.width = element.getStyleByPixel("width");
         if (this.width < 0) {
             if (this.parent != null) {
                 this.width = this.parent.getBoxWidth();
@@ -67,7 +62,7 @@ public class Column extends Box {
         InlineElement ie = null;
         boolean pending = false;
         while (elems.hasMoreElements() || pending) {
-            Row row = new Row(this.element, getBoxWidth());
+            Row row = new Row(getBoxWidth());
             while(elems.hasMoreElements() || pending) {
                 if (!pending) ie = (InlineElement)elems.nextElement();
                 pending = !row.append(ie) || ie.isContinue();

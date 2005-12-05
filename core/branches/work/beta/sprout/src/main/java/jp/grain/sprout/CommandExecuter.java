@@ -19,19 +19,20 @@
  * Created on 2005/02/04
  *
  */
-package jp.haw.grain.sprout;
+package jp.grain.sprout;
 
-import jp.haw.grain.xforms.FormDocument;
-import jp.haw.grain.xforms.InstanceElement;
-import jp.haw.grain.xforms.SubmissionElement;
+import jp.grain.sprout.ui.FormContext;
+import jp.grain.xforms.FormDocument;
+import jp.grain.xforms.InstanceElement;
+import jp.grain.xforms.SubmissionElement;
 
 /**
  * sproutアプリケーションのインターフェース
  * 
- * @version $Id$
+ * @version $Id: SproutApp.java 46 2005-11-20 03:41:49Z goking $
  * @author Go Takahashi
  */
-public interface SproutApp {
+public interface CommandExecuter {
 	void goToDefaultForm();
 	void saveCurrentForm();
 	void storeBasicPref();
@@ -41,7 +42,7 @@ public interface SproutApp {
 	void openApplicationMenu();
 	void closeApplicationMenu();
 	void exitApplication();
-	FormView createFormView(FormDocument doc);
+	FormContext createFormView(FormDocument doc);
 	String getDefaultFormUrl();
 	void setDefaultFormUrl(String url);
 	int getDefaultFormLocation();

@@ -19,10 +19,11 @@
  * Created on 2004/12/02 14:11:18
  * 
  */
-package jp.haw.grain.xforms;
+package jp.grain.xforms;
 
 import java.io.IOException;
-import jp.haw.grain.sprout.xml.BinaryXMLParser;
+
+import jp.grain.sprout.xml.BinaryXMLParser;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

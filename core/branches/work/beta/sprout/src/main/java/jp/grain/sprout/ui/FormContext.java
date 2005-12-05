@@ -19,16 +19,16 @@
  * Created on 2004/12/17
  *
  */
-package jp.haw.grain.sprout;
+package jp.grain.sprout.ui;
 
 
 /**
  * フォームの表示
  * 
- * @version $Id$
+ * @version $Id: FormView.java 46 2005-11-20 03:41:49Z goking $
  * @author Go Takahashi
  */
-public interface FormView {
+public interface FormContext {
     
     public static final int SEL_NONE = -1;
     public static final int SEL_SELECT = 0;
@@ -49,8 +49,8 @@ public interface FormView {
 	void render();
 	void refresh();
     void setTitle(String title);
-    void setRootBlock(Block block);
-    Block getRootBlock();
+    void setForm(Form form);
+    Form getForm();
     void addNavigativeElement(InlineElement e);
     InlineElement getFocused();
     /**

@@ -19,13 +19,13 @@
  * Created on 2005/08/08 12:30:36
  * 
  */
-package jp.haw.grain.doja;
+package jp.grain.sprout.platform.doja;
 
 import java.util.Hashtable;
 
-import jp.haw.grain.sprout.Font;
-import jp.haw.grain.sprout.LayoutManager;
-import jp.haw.grain.xforms.RenderableElement;
+import jp.grain.sprout.ui.Font;
+import jp.grain.sprout.ui.LayoutManager;
+import jp.grain.xforms.RenderableElement;
 
 import com.hp.hpl.sparta.Text;
 

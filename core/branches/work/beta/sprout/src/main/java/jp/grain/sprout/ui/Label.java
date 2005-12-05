@@ -18,9 +18,7 @@
  * 
  * Created on 2005/08/12 20:07:00 
  */
-package jp.haw.grain.sprout;
-
-import jp.haw.grain.xforms.FormControlElement;
+package jp.grain.sprout.ui;
 
 /**
  * TextBox
@@ -40,14 +38,13 @@ public class Label extends InlineElement {
     /**
      * 
      */
-    public Label(FormControlElement element) {
-       this.element = element;
+    public Label() {
     }
     
     public void apply() {
         super.apply();
         if (this.width < SIZE_MINIMUM) {
-            String text = ((FormControlElement)this.element).getBindingSimpleContent();
+            String text = getBindingSimpleContent();
             this.width = Font.getDefaultFont().getWidth(text);
         }
         if (this.height < SIZE_MINIMUM)
@@ -59,7 +56,7 @@ public class Label extends InlineElement {
      */
     public void draw(DrawContext dc) {
         applyStyles(dc);
-        String text = ((FormControlElement)this.element).getBindingSimpleContent();
+        String text = getBindingSimpleContent();
         dc.clipRect(this.margin, this.margin, getBoxWidth() - this.margin * 2, getBoxHeight() - this.margin * 2);
         dc.drawString((text != null) ? text : "", getContentX(), getContentY() + (getHeight() - Font.getDefaultFont().getHeight()) / 2);
     }
@@ -67,7 +64,7 @@ public class Label extends InlineElement {
     /* (non-Javadoc)
      * @see jp.haw.grain.sprout.InlineElement#action(int, int)
      */
-    public boolean action(FormView view, int action, int selector) {
+    public boolean action(FormContext view, int action, int selector) {
         return false;
     }
 

@@ -19,7 +19,7 @@
  * Created on 2005/02/14
  *
  */
-package jp.haw.grain.xforms;
+package jp.grain.xforms;
 
 /**
  * XForms‚Ìactionƒ‚ƒWƒ…[ƒ‹

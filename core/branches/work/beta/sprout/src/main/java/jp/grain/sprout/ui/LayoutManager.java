@@ -19,18 +19,18 @@
  * Created on 2005/07/03 16:27:05
  * 
  */
-package jp.haw.grain.sprout;
+package jp.grain.sprout.ui;
 
-import jp.haw.grain.sprout.Block;
-import jp.haw.grain.sprout.Box;
-import jp.haw.grain.sprout.Column;
-import jp.haw.grain.xforms.FormControlElement;
-import jp.haw.grain.xforms.FormDocument;
-import jp.haw.grain.xforms.Processor;
-import jp.haw.grain.xforms.RenderableElement;
-import jp.haw.grain.xforms.Visitor;
-import jp.haw.grain.xforms.XFormsElement;
-import jp.haw.grain.xforms.XHTMLElement;
+import jp.grain.sprout.ui.Block;
+import jp.grain.sprout.ui.Box;
+import jp.grain.sprout.ui.Column;
+import jp.grain.xforms.FormControlElement;
+import jp.grain.xforms.FormDocument;
+import jp.grain.xforms.Processor;
+import jp.grain.xforms.RenderableElement;
+import jp.grain.xforms.Visitor;
+import jp.grain.xforms.XFormsElement;
+import jp.grain.xforms.XHTMLElement;
 
 import com.hp.hpl.sparta.Element;
 import com.hp.hpl.sparta.Node;
@@ -46,14 +46,14 @@ import com.hp.hpl.sparta.Text;
 public class LayoutManager implements Visitor {
 
     private FormDocument doc;
-    private FormView view;
+    private FormContext view;
     private Box box;
 //    private LayoutElementFactory factory;
     
     /**
      * 
      */
-    public LayoutManager(FormDocument doc, FormView view) {
+    public LayoutManager(FormDocument doc, FormContext view) {
         this.doc = doc;
         this.view = view;
 //        this.factory = factory;
@@ -292,7 +292,7 @@ public class LayoutManager implements Visitor {
                 Text label = (Text)labelElem.getFirstChild();
                 this.box.append(new CharactorSequence(label));
             }
-            InlineElement text = new jp.haw.grain.sprout.Label(element);
+            InlineElement text = new jp.grain.sprout.ui.Label(element);
             this.box.append(text);
         } else {
             throw new RuntimeException("fce unexpected tag: " +  name);

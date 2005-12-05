@@ -19,9 +19,9 @@
  * Created on 2004/11/21
  * 
  */
-package jp.haw.grain.doja;
+package jp.grain.sprout.platform.doja;
 
-import jp.haw.grain.sprout.SproutApp;
+import jp.grain.sprout.CommandExecuter;
 
 import com.nttdocomo.ui.Button;
 import com.nttdocomo.ui.Component;
@@ -61,11 +61,11 @@ public class BasicPrefPanel extends Panel implements ComponentListener {
 	private TextBox _urlText;
 	private ListBox _defaultLocationList;
 	private HTMLLayout _layout = new HTMLLayout();
-	private SproutApp _app;
+	private CommandExecuter _app;
 
 	private boolean _closed;
 	
-	public BasicPrefPanel(SproutApp app) {
+	public BasicPrefPanel(CommandExecuter app) {
 		setComponentListener(this);	
 		_app = app;
 		// TODO use resource bundle

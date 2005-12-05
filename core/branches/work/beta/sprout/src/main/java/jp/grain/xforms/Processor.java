@@ -19,16 +19,16 @@
  * To change the template for this generated file go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-package jp.haw.grain.xforms;
+package jp.grain.xforms;
 
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import jp.haw.grain.sprout.DocumentManager;
-import jp.haw.grain.sprout.FormDocumentSerializeOperation;
-import jp.haw.grain.sprout.FormView;
-import jp.haw.grain.sprout.SproutApp;
+import jp.grain.sprout.DocumentManager;
+import jp.grain.sprout.FormDocumentSerializeOperation;
+import jp.grain.sprout.CommandExecuter;
+import jp.grain.sprout.ui.FormContext;
 
 import com.hp.hpl.sparta.Element;
 import com.hp.hpl.sparta.Event;
@@ -50,10 +50,10 @@ public class Processor {
 	private boolean _submitting;
 	private boolean _constractDoneProcessed;
 	private FormDocument doc_;
-	private FormView view_;
-	private SproutApp _app;
+	private FormContext view_;
+	private CommandExecuter _app;
 
-	private Processor(SproutApp app) {
+	private Processor(CommandExecuter app) {
 		_app = app;		
 	}
 
@@ -61,7 +61,7 @@ public class Processor {
 		return _instance;
 	}
 	
-	public static void setup(SproutApp app) {
+	public static void setup(CommandExecuter app) {
 		if (_instance == null) {
 			_instance = new Processor(app);
 		}
@@ -121,7 +121,7 @@ public class Processor {
 		return doc_;
 	}
 	
-	public FormView getCurrentFormView() {
+	public FormContext getCurrentFormView() {
 		return view_;
 	}
 	
@@ -381,7 +381,7 @@ public class Processor {
     /**
      * 
      */
-    public SproutApp getCurrentApp() {
+    public CommandExecuter getCurrentApp() {
         return this._app;
     }
 

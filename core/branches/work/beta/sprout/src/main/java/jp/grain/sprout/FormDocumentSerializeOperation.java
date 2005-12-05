@@ -19,9 +19,9 @@
  * Created on 2005/02/06
  *
  */
-package jp.haw.grain.sprout;
+package jp.grain.sprout;
 
-import jp.haw.grain.xforms.FormDocument;
+import jp.grain.xforms.FormDocument;
 
 /**
  * フォームドキュメントのシリアライズ操作のためのインターフェース

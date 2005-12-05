@@ -19,12 +19,8 @@
  * Created on 2005/07/20 14:57:21
  * 
  */
-package jp.haw.grain.sprout;
+package jp.grain.sprout.ui;
 
-import jp.haw.grain.xforms.FormControlElement;
-
-import com.hp.hpl.sparta.Event;
-import com.hp.hpl.sparta.Text;
 
 /**
  * ButtonŽÀ‘•ƒNƒ‰ƒX
@@ -45,16 +41,15 @@ public class Button extends InlineElement {
     private static final int SIZE_MINIMUM = SIZE_MARGIN + 3;
     private static final int SIZE_PADDING = 2;
     
-    private Text label;
+    private String label;
     private boolean pressed;
     
-    public Button(FormControlElement element, Text label) {
-        this.element = element;
+    public Button(String label) {
         this.label = label;
     }
     
     private String getLabelName() {
-        return this.label.getData();
+        return this.label;
     }
     
     public void apply() {
@@ -82,21 +77,22 @@ public class Button extends InlineElement {
             dc.drawRect(0, 0, getBoxWidth() - 1, getBoxHeight() - 1);
         }
         dc.setColor(COLOR_BLACK);
-        dc.drawString(this.label.getData(), SIZE_MARGIN + SIZE_PADDING, SIZE_MARGIN + SIZE_PADDING);
+        dc.drawString(this.label, SIZE_MARGIN + SIZE_PADDING, SIZE_MARGIN + SIZE_PADDING);
     }
 
     /* (non-Javadoc)
      * @see jp.haw.grain.sprout.InlineElement#action(int, int)
      */
-    public boolean action(FormView view, int action, int selector) {
+    public boolean action(FormContext view, int action, int selector) {
         super.action(view, action, selector);
-        if (selector == FormView.SEL_SELECT) {
-            if (action == FormView.ACT_PRESSED) {
+        if (selector == FormContext.SEL_SELECT) {
+            if (action == FormContext.ACT_PRESSED) {
                 this.pressed = true;
                 return true;
-            } else if (action == FormView.ACT_RELEASED) {
+            } else if (action == FormContext.ACT_RELEASED) {
                 this.pressed = false;
-                this.element.dispatchEvent(new Event("DOMActivate", true, true));
+                //TODO change dispatch mothod
+                //this.element.dispatchEvent(new Event("DOMActivate", true, true));
                 return true;
             }
         }

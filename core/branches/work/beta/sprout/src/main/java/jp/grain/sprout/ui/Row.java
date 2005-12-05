@@ -19,11 +19,9 @@
  * Created on 2005/07/14 15:15:16
  * 
  */
-package jp.haw.grain.sprout;
+package jp.grain.sprout.ui;
 
 import java.util.Vector;
-
-import jp.haw.grain.xforms.RenderableElement;
 
 /**
  * 物理レイアウト上の一行を表す。
@@ -37,8 +35,7 @@ public class Row extends Renderer {
     private int maxWidth;
     private int minHeight;
     
-    public Row(RenderableElement element, int maxWidth) {
-        this.element = element;
+    public Row(int maxWidth) {
         this.maxWidth = maxWidth;
     }
     

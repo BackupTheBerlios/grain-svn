@@ -19,9 +19,9 @@
  * Created on 2004/11/21
  * 
  */
-package jp.haw.grain.doja;
+package jp.grain.sprout.platform.doja;
 
-import jp.haw.grain.sprout.SproutApp;
+import jp.grain.sprout.CommandExecuter;
 
 import com.nttdocomo.ui.AnchorButton;
 import com.nttdocomo.ui.Component;
@@ -47,11 +47,11 @@ public class AppMenuPanel extends Panel implements ComponentListener {
 	private AnchorButton _exitApp;
 	private AnchorButton _closeAppMenu;	
 	private HTMLLayout _layout = new HTMLLayout();
-	private SproutApp _app;
+	private CommandExecuter _app;
 
 	private boolean _closed;
 	
-	public AppMenuPanel(SproutApp app) {
+	public AppMenuPanel(CommandExecuter app) {
 		setComponentListener(this);	
 		_app = app;
 

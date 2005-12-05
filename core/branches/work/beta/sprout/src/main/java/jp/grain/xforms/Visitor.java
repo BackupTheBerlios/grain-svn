@@ -19,7 +19,7 @@
  * Created on 2005/07/13 16:45:50
  * 
  */
-package jp.haw.grain.xforms;
+package jp.grain.xforms;
 
 /**
  * An interface to visit the document element

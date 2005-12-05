@@ -19,7 +19,7 @@
  * Created on 2004/11/21
  * 
  */
-package jp.haw.grain.doja;
+package jp.grain.sprout.platform.doja;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -31,17 +31,17 @@ import javax.microedition.io.Connector;
 import javax.microedition.io.InputConnection;
 import javax.microedition.io.OutputConnection;
 
-import jp.haw.grain.sprout.DocumentManager;
-import jp.haw.grain.sprout.Font;
-import jp.haw.grain.sprout.FormDocumentSerializeOperation;
-import jp.haw.grain.sprout.FormView;
-import jp.haw.grain.sprout.LayoutManager;
-import jp.haw.grain.sprout.SerializeOperation;
-import jp.haw.grain.sprout.SproutApp;
-import jp.haw.grain.xforms.FormDocument;
-import jp.haw.grain.xforms.InstanceElement;
-import jp.haw.grain.xforms.Processor;
-import jp.haw.grain.xforms.SubmissionElement;
+import jp.grain.sprout.DocumentManager;
+import jp.grain.sprout.FormDocumentSerializeOperation;
+import jp.grain.sprout.SerializeOperation;
+import jp.grain.sprout.CommandExecuter;
+import jp.grain.sprout.ui.Font;
+import jp.grain.sprout.ui.FormContext;
+import jp.grain.sprout.ui.LayoutManager;
+import jp.grain.xforms.FormDocument;
+import jp.grain.xforms.InstanceElement;
+import jp.grain.xforms.Processor;
+import jp.grain.xforms.SubmissionElement;
 
 import com.hp.hpl.sparta.Node;
 import com.hp.hpl.sparta.ParseException;
@@ -56,7 +56,7 @@ import com.nttdocomo.ui.IApplication;
  * @version $Id$
  * @author go
  */
-public class GrainApp extends IApplication implements SproutApp {
+public class GrainApp extends IApplication implements CommandExecuter {
 	
 	public static final int DEFAULT_FORM_LOC_LOCAL = 0;
 	public static final int DEFAULT_FORM_LOC_HTTP = 1;
@@ -88,8 +88,8 @@ public class GrainApp extends IApplication implements SproutApp {
 	/* (non-Javadoc)
 	 * @see jp.haw.grain.xforms.FormViewFactory#create(jp.haw.grain.xforms.FormDocument)
 	 */
-	public FormView createFormView(FormDocument doc) {
-        FormViewImpl view = FormViewImpl.recycle();
+	public FormContext createFormView(FormDocument doc) {
+        FormContextImpl view = FormContextImpl.recycle();
         LayoutManager manager = new LayoutManager(doc, view);
         manager.layout();
         view.init();

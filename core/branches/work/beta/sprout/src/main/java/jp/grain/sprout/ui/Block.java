@@ -19,11 +19,9 @@
  * Created on 2005/07/21 16:11:59
  * 
  */
-package jp.haw.grain.sprout;
+package jp.grain.sprout.ui;
 
 import java.util.Vector;
-
-import jp.haw.grain.xforms.RenderableElement;
 
 /**
  * ボックス要素を内包できる物理レイアウト要素。
@@ -37,19 +35,16 @@ public class Block extends Box {
     protected Vector children = new Vector();
     private int maxWidth;
     
-    public Block(RenderableElement element) {
-        this(element, -1);
+    public Block() {
+        this(-1);
     }
 
-    public Block(RenderableElement element, int maxWidth) {
-        this.element = element;
+    public Block(int maxWidth) {
         this.maxWidth = maxWidth;
     }
 
     public void apply() {
-        this.border = this.element.getStyleByPixel("border");
         if (this.border < 0) this.border = 0;
-        this.width = this.element.getStyleByPixel("width");
         if (this.width < 0) {
             if (this.maxWidth >= 0) {
                 this.width = this.maxWidth;
@@ -59,7 +54,6 @@ public class Block extends Box {
                 this.width = 0;
             }
         }
-        this.height = this.element.getStyleByPixel("height");
         if (this.height < 0) {
             this.height = 0;
             for (int i = 0; i < this.children.size(); ++i) {
@@ -106,7 +100,7 @@ public class Block extends Box {
         Box box = null;
         if (size > 0) box = (Box)this.children.elementAt(size - 1);
         if (box == null || box instanceof Block || !((Column)box).isFictional()) {
-            box = new Column(this.element, true);
+            box = new Column(true);
             addChildBox(box);
         }
         return (Column)box;

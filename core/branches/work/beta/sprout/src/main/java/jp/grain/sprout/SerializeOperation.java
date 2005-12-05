@@ -19,7 +19,7 @@
  * Created on 2005/02/05
  * 
  */
-package jp.haw.grain.sprout;
+package jp.grain.sprout;
 
 import java.io.IOException;
 import javax.microedition.io.Connection;

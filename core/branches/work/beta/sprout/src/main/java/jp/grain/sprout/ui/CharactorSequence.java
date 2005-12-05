@@ -18,11 +18,11 @@
  * 
  * Created on 2005/07/19 16:21:04
  */
-package jp.haw.grain.sprout;
+package jp.grain.sprout.ui;
 
 import java.util.Vector;
 
-import jp.haw.grain.xforms.RenderableElement;
+import jp.grain.xforms.RenderableElement;
 
 import com.hp.hpl.sparta.Node;
 import com.hp.hpl.sparta.Text;
@@ -129,7 +129,7 @@ public class CharactorSequence extends InlineElement {
     /* (non-Javadoc)
      * @see jp.haw.grain.sprout.InlineElement#action(jp.haw.grain.sprout.FormView, int, int)
      */
-    public boolean action(FormView view, int action, int selector) {
+    public boolean action(FormContext view, int action, int selector) {
         // TODO Auto-generated method stub
         return false;
     }
@@ -175,7 +175,7 @@ public class CharactorSequence extends InlineElement {
         /* (non-Javadoc)
          * @see jp.haw.grain.sprout.InlineElement#action(jp.haw.grain.sprout.FormView, int, int)
          */
-        public boolean action(FormView view, int action, int selector) {
+        public boolean action(FormContext view, int action, int selector) {
             // TODO Auto-generated method stub
             return false;
         }

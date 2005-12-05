@@ -19,7 +19,7 @@
  * Created on 2005/07/14 4:15:54
  * 
  */
-package jp.haw.grain.xforms;
+package jp.grain.xforms;
 
 import java.util.Hashtable;
 

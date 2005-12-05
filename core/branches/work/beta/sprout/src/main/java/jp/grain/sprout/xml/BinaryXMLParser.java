@@ -19,7 +19,7 @@
  * Created on 2005/06/16 13:53:33
  * 
  */
-package jp.haw.grain.sprout.xml;
+package jp.grain.sprout.xml;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

@@ -19,16 +19,15 @@
  * Created on 2005/07/28 14:15:07
  * 
  */
-package jp.haw.grain.doja;
+package jp.grain.sprout.platform.doja;
 
 import java.util.Vector;
 
-import jp.haw.grain.sprout.Block;
-import jp.haw.grain.sprout.DrawContext;
-import jp.haw.grain.sprout.FormView;
-import jp.haw.grain.sprout.InlineElement;
-import jp.haw.grain.xforms.Processor;
-
+import jp.grain.sprout.ui.DrawContext;
+import jp.grain.sprout.ui.Form;
+import jp.grain.sprout.ui.FormContext;
+import jp.grain.sprout.ui.InlineElement;
+import jp.grain.xforms.Processor;
 
 import com.nttdocomo.device.CodeReader;
 import com.nttdocomo.system.InterruptedOperationException;
@@ -45,15 +44,15 @@ import com.nttdocomo.ui.TextBox;
  * @version $Id$
  * @author Go Takahashi
  */
-public class FormViewImpl extends Canvas implements FormView {
+public class FormContextImpl extends Canvas implements FormContext {
 
     public static final int KEY_REPEAT_TIMER = 0;
     public static final int ACCERALATION_TIMER = 1;
     private static int SCAN_CAMERA_ID = 0;
     
-    private static FormViewImpl instance = new FormViewImpl();
+    private static FormContextImpl instance = new FormContextImpl();
     private String title;
-    private Block root;
+    private Form form;
     private Vector navigativeElements = new Vector();
     private InlineElement focused;
     private int vOffset = 0;
@@ -65,18 +64,18 @@ public class FormViewImpl extends Canvas implements FormView {
     /**
      * 
      */
-    private FormViewImpl() {
+    private FormContextImpl() {
     }
     
     /**
      * @return
      */
-    public static FormViewImpl recycle() {
+    public static FormContextImpl recycle() {
         instance.navigativeElements.removeAllElements();
         instance.title = null;
         instance.vOffset = 0;
         instance.focused = null;
-        instance.root = null;
+        instance.form = null;
         return instance;
     }
 
@@ -87,7 +86,7 @@ public class FormViewImpl extends Canvas implements FormView {
         g.lock();
         DrawContext dc = new DrawContextImpl(g, 0, - this.vOffset);
         dc.setFormView(this);
-        this.root.draw(dc);
+        this.form.draw(dc);
         g.unlock(true);
     }
 
@@ -120,15 +119,15 @@ public class FormViewImpl extends Canvas implements FormView {
     /* (non-Javadoc)
      * @see jp.haw.grain.xforms.FormView#setRootBlock(jp.haw.grain.xforms.Block)
      */
-    public void setRootBlock(Block root) {
-        this.root = root;
+    public void setForm(Form form) {
+        this.form = form;
     }
 
     /* (non-Javadoc)
      * @see jp.haw.grain.xforms.FormView#getRootBlock()
      */
-    public Block getRootBlock() {
-        return this.root;
+    public Form getForm() {
+        return this.form;
     }
 
     /**
@@ -183,9 +182,9 @@ public class FormViewImpl extends Canvas implements FormView {
                     this.focused = (param == Display.KEY_RIGHT) ? findNextNavigation() : findPreviousNavigation();
                     if (this.focused == null) return;
                     if (current == this.focused) return;
-                    current.action(this, FormView.ACT_FOCUS_OUT, FormView.SEL_NONE);
+                    current.action(this, FormContext.ACT_FOCUS_OUT, FormContext.SEL_NONE);
                     sctollToFocusedElement();
-                    this.focused.action(this, FormView.ACT_FOCUS_IN, FormView.SEL_NONE);                
+                    this.focused.action(this, FormContext.ACT_FOCUS_IN, FormContext.SEL_NONE);                
                     refresh();
                 } else if (param == Display.KEY_DOWN) {
                     scroll(10);
@@ -194,7 +193,7 @@ public class FormViewImpl extends Canvas implements FormView {
                     scroll(-10);
                     refresh();
                 } else if (param == Display.KEY_SELECT) {
-                    boolean repaint = this.focused.action(this, FormView.ACT_RELEASED, FormView.SEL_SELECT);
+                    boolean repaint = this.focused.action(this, FormContext.ACT_RELEASED, FormContext.SEL_SELECT);
                     if (repaint) refresh();
                 } else if (param == Display.KEY_SOFT2) {
                     Processor.getInstance().getCurrentApp().openApplicationMenu();
@@ -206,7 +205,7 @@ public class FormViewImpl extends Canvas implements FormView {
                     this.activeTimer = ShortTimer.getShortTimer(this, KEY_REPEAT_TIMER, 400, false);
                     this.activeTimer.start();
                 } else if (param == Display.KEY_SELECT){
-                    boolean repaint = this.focused.action(this, FormView.ACT_PRESSED, FormView.SEL_SELECT);
+                    boolean repaint = this.focused.action(this, FormContext.ACT_PRESSED, FormContext.SEL_SELECT);
                     if (repaint) refresh();
                 }
             } else if (type == Display.TIMER_EXPIRED_EVENT) {
@@ -237,12 +236,12 @@ public class FormViewImpl extends Canvas implements FormView {
 
     public void processIMEEvent(int type, String text) {
         this.imeText = text;
-        boolean repaint = this.focused.action(this, FormView.ACT_IME_RESULT, (type == IME_CANCELED) ? FormView.SEL_IME_CANCEL : FormView.SEL_IME_COMMIT);
+        boolean repaint = this.focused.action(this, FormContext.ACT_IME_RESULT, (type == IME_CANCELED) ? FormContext.SEL_IME_CANCEL : FormContext.SEL_IME_COMMIT);
         if (repaint) refresh();
     }
     
     private void scroll(int delta) {
-        int contentHeight = this.root.getHeight();
+        int contentHeight = this.form.getHeight();
         if (delta > 0 && this.vOffset + Display.getHeight() < contentHeight) {
             this.vOffset += delta;
             if (this.vOffset + Display.getHeight() > contentHeight) {
@@ -261,10 +260,10 @@ public class FormViewImpl extends Canvas implements FormView {
         int bottom = ay + this.focused.getHeight();
         int mid = ay + this.focused.getHeight() / 2;
         int margin = getHeight() / 2;
-        if (mid < margin || this.root.getHeight() < getHeight()) {
+        if (mid < margin || this.form.getHeight() < getHeight()) {
             this.vOffset = 0;
-        } else if (this.root.getHeight() - margin < mid) {
-            this.vOffset = this.root.getHeight() - getHeight();
+        } else if (this.form.getHeight() - margin < mid) {
+            this.vOffset = this.form.getHeight() - getHeight();
         } else {
             this.vOffset = mid - margin;
         }        
@@ -275,9 +274,9 @@ public class FormViewImpl extends Canvas implements FormView {
      */
     public void launchIME(String text, String inputMode, boolean secret) {
         int mode;
-        if (inputMode == FormView.IME_SCRIPT_LATIN) {
+        if (inputMode == FormContext.IME_SCRIPT_LATIN) {
             mode = TextBox.NUMBER;
-        } else if (inputMode == FormView.IME_SCRIPT_DIGITS) {
+        } else if (inputMode == FormContext.IME_SCRIPT_DIGITS) {
             mode = TextBox.NUMBER;
         } else {
             mode = TextBox.KANA;

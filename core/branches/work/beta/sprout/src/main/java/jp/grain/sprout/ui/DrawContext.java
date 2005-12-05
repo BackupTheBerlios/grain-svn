@@ -19,7 +19,7 @@
  * Created on 2005/08/07 18:07:01
  * 
  */
-package jp.haw.grain.sprout;
+package jp.grain.sprout.ui;
 
 
 /**
@@ -73,9 +73,9 @@ public interface DrawContext {
     /**
      * @param impl
      */
-    void setFormView(FormView view);
+    void setFormView(FormContext view);
     
-    FormView getFormView();
+    FormContext getFormView();
     
     public void saveOrigin(int[] origin);
     

@@ -16,40 +16,27 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * 
- * Created on 2004/11/21
+ * Created on 2005/11/20 13:53:44
  * 
  */
-package jp.grain.sprout.platform.doja;
+package jp.grain.sprout.ui;
 
-import jp.grain.sprout.CommandExecuter;
-
-import com.nttdocomo.ui.Frame;
-import com.nttdocomo.ui.IApplication;
-import com.nttdocomo.ui.Panel;
-import com.nttdocomo.ui.SoftKeyListener;
 
 /**
- * TODO FormViewImplÇ…ìùçá
- * ì‡óeÇ™ãÛÇÃÉpÉlÉã
+ * TODO Session
  * 
  * @version $Id$
  * @author Go Takahashi
  */
-public class EmptyPanel extends Panel implements SoftKeyListener {
+public class Form extends Block {
 
-	public EmptyPanel() {
-		setSoftLabel(Frame.SOFT_KEY_2, "MENU");
-		setSoftKeyListener(this);
-	}
-
-	public void softKeyPressed(int arg0) {
-		// Nothing to do
-	}
-
-	public void softKeyReleased(int softKey) {
-		if (softKey == Frame.SOFT_KEY_2) {
-			((CommandExecuter)IApplication.getCurrentApp()).openApplicationMenu();
-		}
-	}
-
+    /**
+     * @param dc
+     */
+    public void draw(DrawContext dc) {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    
 }
