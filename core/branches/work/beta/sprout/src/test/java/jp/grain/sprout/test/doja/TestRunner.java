@@ -44,10 +44,10 @@ public class TestRunner extends IApplication {
         suite.addTest(new jp.grain.sprout.LayoutManagerTest().suite());      
         suite.addTest(new jp.grain.xforms.RowTest().suite());
         suite.addTest(new jp.grain.xforms.ColumnTest().suite());
-        suite.addTest(new jp.grain.doja.CharactorSequenceTest().suite());
-        suite.addTest(new jp.grain.doja.ButtonTest().suite());
+        suite.addTest(new jp.grain.sprout.platform.doja.CharactorSequenceTest().suite());
+        suite.addTest(new jp.grain.sprout.platform.doja.ButtonTest().suite());
         suite.addTest(new jp.grain.xforms.BlockTest().suite());
-        suite.addTest(new jp.grain.doja.FormViewImplTest().suite());
+        suite.addTest(new jp.grain.sprout.platform.doja.FormViewImplTest().suite());
         DojaTestRunner runner = new DojaTestRunner();
         runner.doRun(suite);
     }
