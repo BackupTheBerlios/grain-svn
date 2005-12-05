@@ -19,7 +19,7 @@
  * Created on 2005/07/09 15:30:31
  * 
  */
-package jp.grain.doja;
+package jp.grain.sprout.platform.doja;
 
 
 import j2meunit.framework.Test;
