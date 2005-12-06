@@ -62,9 +62,9 @@ public class LayoutManager implements Visitor {
     public void layout() {
         if (this.doc == null) {
             this.view.setTitle("指定されたフォームが見つかりませんでした。");
-            Block root = new Block(new XHTMLElement("body"));
-            this.view.setRootBlock(root);
-            root.apply();
+//            Block root = new Block(new XHTMLElement("body"));
+//            this.view.setRootBlock(root);
+//            root.apply();
             return;
         }
         try {
@@ -86,9 +86,9 @@ public class LayoutManager implements Visitor {
     
     private void processBody() {
         RenderableElement body = (RenderableElement)this.doc.xpathSelectElement("/html/body");
-        Block block = new Block(body, this.view.getWidth());
-        this.view.setRootBlock(block);
-        this.box = block;
+        //Block block = new Block(body, this.view.getWidth());
+        //this.view.setRootBlock(block);
+        //this.box = block;
         traverseChildren(body);
     }
 
@@ -274,26 +274,26 @@ public class LayoutManager implements Visitor {
         if ("trigger".equals(name) || "submit".equals(name)) {
             Element labelElem = element.xpathSelectElement("label"); 
             Text label = (labelElem != null) ? (Text)labelElem.getFirstChild() : new Text("");
-            InlineElement button = new Button(element, label);
-            this.box.append(button);
-            this.view.addNavigativeElement(button);
+//            InlineElement button = new Button(element, label);
+//            this.box.append(button);
+//            this.view.addNavigativeElement(button);
         } else if ("input".equals(name)) {
             Element labelElem = element.xpathSelectElement("label");
             if (labelElem != null) {
                 Text label = (Text)labelElem.getFirstChild();
                 this.box.append(new CharactorSequence(label));
             }
-            InlineElement textBox = new TextBox(element);
-            this.box.append(textBox);
-            this.view.addNavigativeElement(textBox);
+//            InlineElement textBox = new TextBox(element);
+//            this.box.append(textBox);
+//            this.view.addNavigativeElement(textBox);
         } else if ("output".equals(name)) {
             Element labelElem = element.xpathSelectElement("label");
             if (labelElem != null) {
                 Text label = (Text)labelElem.getFirstChild();
                 this.box.append(new CharactorSequence(label));
             }
-            InlineElement text = new jp.grain.sprout.ui.Label(element);
-            this.box.append(text);
+//            InlineElement text = new jp.grain.sprout.ui.Label(element);
+//            this.box.append(text);
         } else {
             throw new RuntimeException("fce unexpected tag: " +  name);
         }
@@ -335,13 +335,13 @@ public class LayoutManager implements Visitor {
                 element.setStyle("border", "1px", false);                
                 element.setStyle("border-style", "inset", false);                
             }
-            Block block = new Block(element);
-            this.box.addChildBox(block);
-            this.box = block;
+//            Block block = new Block(element);
+//            this.box.addChildBox(block);
+//            this.box = block;
         } else if ("p".equals(name)) {
-            Column column = new Column(element);
-            this.box.addChildBox(column);
-            this.box = column;
+//            Column column = new Column(element);
+//            this.box.addChildBox(column);
+//            this.box = column;
         } else if ("br".equals(name)) {
             this.box.append(new CharactorSequence(CharactorSequence.LINE_BREAK));
         } else if ("b".equals(name)) {
@@ -349,7 +349,7 @@ public class LayoutManager implements Visitor {
                 element.setStyle("font-weight", "bold");
             }
         } else if ("span".equals(name)) {
-            
+          
         } else {
             throw new RuntimeException("xhe unexpected tag: " +  name);
         }
