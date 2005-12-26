@@ -1,7 +1,0 @@
-UseNetwork = http
-SPSize = 100,100000
-LastModified = Mon, 07 Feb 2005 03:03:30
-AppClass = jp.haw.grain.doja.GrainApp
-AppName = grain
-AppSize = 72527
-PackageURL = http://grain.jp:8080/grain/grain.jar
