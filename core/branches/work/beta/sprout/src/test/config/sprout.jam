@@ -1,0 +1,8 @@
+UseNetwork = http
+SPSize = 100,100000
+LastModified = Mon, 07 Feb 2005 03:03:30
+AppTrace = on
+AppClass = jp.grain.sprout.test.doja.TestRunner
+AppName = grain
+AppSize = 72527
+PackageURL = http://localhost:8080/grain/grain.jar
