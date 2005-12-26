@@ -1,0 +1,277 @@
+<!-- 
+
+	Grain Core - A XForms processor for mobile terminals.
+	$Id$ 
+	
+	Copyright (C) 2005 HAW International Inc.
+	
+	This library is free software; you can redistribute it and/or
+	modify it under the terms of the GNU Lesser General Public
+	License as published by the Free Software Foundation; either
+	version 2.1 of the License, or (at your option) any later version.
+	
+	This library is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	Lesser General Public License for more details.
+	
+	You should have received a copy of the GNU Lesser General Public
+	License along with this library; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+	xmlns:artifact="urn:maven-artifact-ant">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>jp.grain.sprout</groupId>
+	<artifactId>grain-sprout</artifactId>
+	<packaging>pom</packaging>
+	<version>b01</version>
+	<name>Grain Sprout</name>
+	<url>http://grain.sourceforge.jp/</url>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.0</version>
+				<executions>
+					<execution>
+						<id>antCompile</id>
+						<phase>compile</phase>
+						<configuration>
+							<tasks>
+								<ant target="compile">
+									<property name="dependency.classpath" refid="maven.compile.classpath"/>
+									<property name="dest.dir" value="${project.build.outputDirectory}"/>
+									<property name="src.dir" value="${project.build.sourceDirectory}"/>
+									<property name="compile.debug" value="${compile.debug}"/>
+									<property name="compile.debuglevel" value="${compile.debuglevel}"/>
+									<property name="compile.optimize" value="${compile.optimize}"/>
+								</ant>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>antTestCompile</id>
+						<phase>test-compile</phase>
+						<configuration>
+							<tasks>
+								<echo>obfuscate=${obfuscate}</echo>
+								<echo>emulator=${emulator}</echo>
+								<echo>debug=${compile.debug}</echo>
+								<ant target="test-compile">
+									<property name="dependency.classpath" refid="maven.compile.classpath"/>
+									<property name="application.classpath" value="${project.build.outputDirectory}"/>
+									<property name="dest.dir" value="${project.build.testOutputDirectory}"/>
+									<property name="src.dir" value="${project.build.testSourceDirectory}"/>
+									<property name="compile.debug" value="${compile.debug}"/>
+									<property name="compile.debuglevel" value="${compile.debuglevel}"/>
+									<property name="compile.optimize" value="${compile.optimize}"/>
+								</ant>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>antProcessTestResources</id>
+						<phase>process-test-resources</phase>
+						<configuration>
+							<tasks>
+								<property name="dependency.classpath" refid="maven.compile.classpath"/>
+								<property name="test-resources.dir" value="${project.build.directory}/test-resources"/>
+								<property name="resources.dir" value="${project.build.testSourceDirectory}/../resources"/>
+								<ant target="process-test-resources"/>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>antTest</id>
+						<phase>test</phase>
+						<configuration>
+							<tasks>
+								<echo>obfuscate=${obfuscate}</echo>
+								<echo>emulator=${emulator}</echo>
+								<echo>debug=${compile.debug}</echo>
+								<condition property="obfuscate.run">
+									<istrue value="${obfuscate}"/>
+								</condition>
+								<property name="dependency.classpath" refid="maven.compile.classpath"/>
+								<property name="bin.dir" value="${project.build.directory}/test-bin"/>
+								<property name="work.dir" value="${project.build.directory}/work"/>
+								<property name="classes.dir" value="${project.build.outputDirectory}"/>
+								<property name="test-classes.dir" value="${project.build.testOutputDirectory}"/>
+								<property name="conf.dir" value="${project.build.testSourceDirectory}/../config"/>
+								<property name="app.jar.filename" value="${app.jar.filename}"/>
+								<property name="app.descriptor.filename" value="${app.descriptor.filename}"/>
+								<property name="app.url" value="${app.url}"/>
+								<ant target="package"/>
+								<ant target="run"/>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>antPackage</id>
+						<phase>package</phase>
+						<configuration>
+							<tasks>
+								<echo>obfuscate=${obfuscate}</echo>
+								<echo>emulator=${emulator}</echo>
+								<echo>debug=${compile.debug}</echo>
+								<condition property="obfuscate.run">
+									<istrue value="${obfuscate}"/>
+								</condition>
+								<condition property="emulator.run">
+									<istrue value="${emulator}"/>
+								</condition>
+								<property name="dependency.classpath" refid="maven.compile.classpath"/>
+								<property name="bin.dir" value="${project.build.directory}/bin"/>
+								<property name="work.dir" value="${project.build.directory}/work"/>
+								<property name="classes.dir" value="${project.build.outputDirectory}"/>
+								<property name="conf.dir" value="${project.build.sourceDirectory}/../config"/>
+								<property name="app.jar.filename" value="${app.jar.filename}"/>
+								<property name="app.descriptor.filename" value="${app.descriptor.filename}"/>
+								<property name="app.url" value="${app.url}"/>
+								<ant target="package"/>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>antIntegrationTest</id>
+						<phase>integration-test</phase>
+						<configuration>
+							<tasks>
+								<echo>emulator=${emulator}</echo>
+								<condition property="emulator.run">
+									<istrue value="${emulator}"/>
+								</condition>
+								<property name="dependency.classpath" refid="maven.compile.classpath"/>
+								<property name="bin.dir" value="${project.build.directory}/bin"/>
+								<property name="app.jar.filename" value="${app.jar.filename}"/>
+								<property name="app.descriptor.filename" value="${app.descriptor.filename}"/>
+								<ant target="run"/>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+		<profile>
+			<id>doja</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>target</name>
+					<value>doja</value>
+				</property>
+			</activation>
+			<properties>
+				<output.dir>${project.build.outputDirectory}/doja</output.dir>
+				<test.output.dir>${project.build.testOutputDirectory}/doja</test.output.dir>
+				<app.bootsrtap.class>jp.grain.sprout.platform.doja.GrainApp</app.bootsrtap.class>
+				<test.bootstrap.class>jp.grain.sprout.test.doja.TestRunner</test.bootstrap.class>
+				<app.jar.filename>sprout.jar</app.jar.filename>
+				<app.descriptor.filename>sprout.jam</app.descriptor.filename>
+				<app.url>http://localhost:8080/</app.url>
+			</properties>
+		</profile>
+		<profile>
+			<id>debug.off</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>debug</name>
+					<value>off</value>
+				</property>
+			</activation>
+			<properties>
+				<obfuscate>on</obfuscate>
+				<emulator>off</emulator>
+				<compile.debug>off</compile.debug>
+				<compile.debuglevel>none</compile.debuglevel>
+				<compile.optimize>on</compile.optimize>
+			</properties>
+		</profile>
+		<profile>
+			<id>debug.emu</id>
+			<activation>
+				<property>
+					<name>debug</name>
+					<value>emu</value>
+				</property>
+			</activation>
+			<properties>
+				<obfuscate>off</obfuscate>
+				<emulator>on</emulator>
+				<compile.debug>on</compile.debug>
+				<compile.debuglevel>lines,vars,source</compile.debuglevel>
+				<compile.optimize>on</compile.optimize>
+			</properties>
+		</profile>
+		<profile>
+			<id>debug.dev</id>
+			<activation>
+				<property>
+					<name>debug</name>
+					<value>dev</value>
+				</property>
+			</activation>
+			<properties>
+				<obfuscate>on</obfuscate>
+				<emulator>off</emulator>
+				<compile.debug>on</compile.debug>
+				<compile.debuglevel>lines,vars,source</compile.debuglevel>
+				<compile.optimize>on</compile.optimize>
+			</properties>
+		</profile>
+	</profiles>
+
+	<repositories>
+		<repository>
+			<id>grain-repository</id>
+			<name>library repository for grain</name>
+			<url>http://grain.sourceforge.jp/repos</url>
+		</repository>
+	</repositories>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-artifact-ant</artifactId>
+			<version>2.0.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>sprout</groupId>
+			<artifactId>jam-task</artifactId>
+			<version>1.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>sprout</groupId>
+			<artifactId>proguard</artifactId>
+			<version>3.3</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+</project>  

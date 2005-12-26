@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<my:payment xmlns:my="http://www.haw.co.jp/ns/my" as="credit">
+	<my:card-code-input>49891128387</my:card-code-input>
+	<my:card-code>49891128387</my:card-code>
+	<my:exp-year>2005</my:exp-year>
+	<my:exp-month>11</my:exp-month>
+	<my:name>SPROUT GRAIN</my:name>
+</my:payment>
