@@ -21,6 +21,7 @@
  */
 package jp.grain.sprout.test.doja;
 
+import jp.grain.cfs.FileSystemTest;
 import j2meunit.framework.Test;
 import j2meunit.framework.TestResult;
 import j2meunit.framework.TestSuite;
@@ -38,18 +39,20 @@ public class TestRunner extends IApplication {
 
     public void start() {
         TestSuite suite = new TestSuite();
-        suite.addTest(new jp.grain.sprout.xml.BinaryXMLParserTest().suite());
-        suite.addTest(new jp.grain.sprout.xml.BinaryXMLSerializerTest().suite());
-        suite.addTest(new jp.grain.xforms.FormDocumentBuilderTest().suite());
-        suite.addTest(new jp.grain.sprout.LayoutManagerTest().suite());      
-        suite.addTest(new jp.grain.xforms.RowTest().suite());
-        suite.addTest(new jp.grain.xforms.ColumnTest().suite());
-        suite.addTest(new jp.grain.sprout.platform.doja.CharactorSequenceTest().suite());
-        suite.addTest(new jp.grain.sprout.platform.doja.ButtonTest().suite());
-        suite.addTest(new jp.grain.xforms.BlockTest().suite());
-        suite.addTest(new jp.grain.sprout.platform.doja.FormViewImplTest().suite());
+//        suite.addTest(new jp.grain.sprout.xml.BinaryXMLParserTest().suite());
+//        suite.addTest(new jp.grain.sprout.xml.BinaryXMLSerializerTest().suite());
+//        suite.addTest(new jp.grain.xforms.FormDocumentBuilderTest().suite());
+//        suite.addTest(new jp.grain.sprout.LayoutManagerTest().suite());      
+//        suite.addTest(new jp.grain.xforms.RowTest().suite());
+//        suite.addTest(new jp.grain.xforms.ColumnTest().suite());
+//        suite.addTest(new jp.grain.sprout.platform.doja.CharactorSequenceTest().suite());
+//        suite.addTest(new jp.grain.sprout.platform.doja.ButtonTest().suite());
+//        suite.addTest(new jp.grain.xforms.BlockTest().suite());
+//        suite.addTest(new jp.grain.sprout.platform.doja.FormViewImplTest().suite());
+        suite.addTest(new FileSystemTest().suite());
         DojaTestRunner runner = new DojaTestRunner();
         runner.doRun(suite);
+        terminate();
     }
     
     class DojaTestRunner extends j2meunit.textui.TestRunner {
