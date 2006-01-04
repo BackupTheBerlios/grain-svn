@@ -85,6 +85,12 @@
 						<phase>process-test-resources</phase>
 						<configuration>
 							<tasks>
+								<condition property="emulator.resources.dir" value="${emulator.resources}">
+									<istrue value="${emulator}"/>
+								</condition>
+								<echo>emures=${emulator.resources}</echo>
+								<echo>emu=${emulator}</echo>
+								<echo>emuresdir=${emulator.resources.dir}</echo>
 								<property name="dependency.classpath" refid="maven.compile.classpath"/>
 								<property name="test-resources.dir" value="${project.build.directory}/test-resources"/>
 								<property name="resources.dir" value="${project.build.testSourceDirectory}/../resources"/>
@@ -105,6 +111,12 @@
 								<echo>debug=${compile.debug}</echo>
 								<condition property="obfuscate.run">
 									<istrue value="${obfuscate}"/>
+								</condition>
+								<condition property="executable.emulator" value="${sdk.home}/${sdk.emulator}">
+									<istrue value="${emulator}"/>
+								</condition>
+								<condition property="java.option" value="-debugger -debugport 5005 -suspend">
+									<istrue value="${use.debugger}"/>
 								</condition>
 								<property name="dependency.classpath" refid="maven.compile.classpath"/>
 								<property name="bin.dir" value="${project.build.directory}/test-bin"/>
@@ -134,9 +146,6 @@
 								<condition property="obfuscate.run">
 									<istrue value="${obfuscate}"/>
 								</condition>
-								<condition property="emulator.run">
-									<istrue value="${emulator}"/>
-								</condition>
 								<property name="dependency.classpath" refid="maven.compile.classpath"/>
 								<property name="bin.dir" value="${project.build.directory}/bin"/>
 								<property name="work.dir" value="${project.build.directory}/work"/>
@@ -158,8 +167,11 @@
 						<configuration>
 							<tasks>
 								<echo>emulator=${emulator}</echo>
-								<condition property="emulator.run">
+								<condition property="executable.emulator" value="${sdk.home}/${sdk.emulator}">
 									<istrue value="${emulator}"/>
+								</condition>
+								<condition property="java.option" value="-debugger -debugport 5005 -suspend">
+									<istrue value="${use.debugger}"/>
 								</condition>
 								<property name="dependency.classpath" refid="maven.compile.classpath"/>
 								<property name="bin.dir" value="${project.build.directory}/bin"/>
@@ -194,6 +206,9 @@
 				<app.jar.filename>sprout.jar</app.jar.filename>
 				<app.descriptor.filename>sprout.jam</app.descriptor.filename>
 				<app.url>http://localhost:8080/</app.url>
+		        <sdk.home>D:/usr/local/lib/iDKDoJa3.5</sdk.home>
+		        <sdk.emulator>bin/doja_g.exe</sdk.emulator>
+		        <emulator.resources>${project.build.directory}/sp</emulator.resources>
 			</properties>
 		</profile>
 		<profile>
@@ -243,6 +258,18 @@
 				<compile.debug>on</compile.debug>
 				<compile.debuglevel>lines,vars,source</compile.debuglevel>
 				<compile.optimize>on</compile.optimize>
+			</properties>
+		</profile>
+		<profile>
+			<id>debugger</id>
+			<activation>
+				<property>
+					<name>debugger</name>
+					<value>on</value>
+				</property>
+			</activation>
+			<properties>
+				<use.debugger>true</use.debugger>
 			</properties>
 		</profile>
 	</profiles>

@@ -38,38 +38,43 @@
 	
 	<artifact:remoteRepository id="remote.repository" url="http://grain.sourceforge.jp/repos" />
 	
-	<artifact:dependencies pathId="boot.classpathref">
-	    <dependency groupId="doja" artifactId="cldc_classes" version="3.5"/>
-	    <dependency groupId="doja" artifactId="doja_classes" version="3.5"/>
-	</artifact:dependencies>		
+	<target name="-bootclasspath">
+		<artifact:dependencies pathId="boot.classpathref">
+		    <dependency groupId="doja" artifactId="cldc_classes" version="3.5"/>
+		    <dependency groupId="doja" artifactId="doja_classes" version="3.5"/>
+		</artifact:dependencies>		
+	</target>
 
-	<artifact:dependencies pathId="compile.classpathref">
-		<remoteRepository refid="remote.repository" />
-	</artifact:dependencies>		
-
-	<artifact:dependencies pathId="test.classpathref">
-	    <dependency groupId="sprout" artifactId="j2meunit" version="1.1.1"/>
-		<remoteRepository refid="remote.repository" />
-	</artifact:dependencies>		
-
-	<artifact:dependencies filesetId="test.lib.filesetref">
-	    <dependency groupId="sprout" artifactId="j2meunit" version="1.1.1"/>
-		<remoteRepository refid="remote.repository" />
-	</artifact:dependencies>
-		
-	<artifact:dependencies pathId="cldc.preverifyer">
-	    <dependency groupId="doja" artifactId="preverify" version="3.5"/>
-	</artifact:dependencies>
-
-	<artifact:dependencies pathId="doja.emulator">
-	    <dependency groupId="doja" artifactId="emulator" version="3.5"/>
-	</artifact:dependencies>	
+	<target name="-compileclasspath">
+		<artifact:dependencies pathId="compile.classpathref">
+			<remoteRepository refid="remote.repository" />
+		</artifact:dependencies>		
+	</target>
 	
-	<artifact:dependencies pathId="gbxml-filter.classpathref">
-	    <dependency groupId="jp.grain" artifactId="grain-gbxml-filter" version="a03"/>
-	    <dependency groupId="log4j" artifactId="log4j" version="1.2.9"/>
-		<remoteRepository refid="remote.repository" />
-	</artifact:dependencies>			
+	<target name="-testclasspath">
+		<artifact:dependencies pathId="test.classpathref">
+		    <dependency groupId="sprout" artifactId="j2meunit" version="1.1.1"/>
+			<remoteRepository refid="remote.repository" />
+		</artifact:dependencies>
+		<artifact:dependencies filesetId="test.lib.filesetref">
+		    <dependency groupId="sprout" artifactId="j2meunit" version="1.1.1"/>
+			<remoteRepository refid="remote.repository" />
+		</artifact:dependencies>
+	</target>
+		
+	<target name="-preverifyclasspath">
+		<artifact:dependencies pathId="cldc.preverifyer">
+		    <dependency groupId="doja" artifactId="preverify" version="3.5"/>
+		</artifact:dependencies>
+	</target>
+	
+	<target name="-gbxmlclasspath">
+		<artifact:dependencies pathId="gbxml-filter.classpathref">
+		    <dependency groupId="jp.grain" artifactId="grain-gbxml-filter" version="a03"/>
+		    <dependency groupId="log4j" artifactId="log4j" version="1.2.9"/>
+			<remoteRepository refid="remote.repository" />
+		</artifact:dependencies>			
+	</target>
 	
 	<patternset id="j2meunit.patternsetref">
 		<exclude name="j2meunit/midletui/**"/>
@@ -84,7 +89,7 @@
 		<property name="java.option" value="-debugger -suspend -debugport 5005" />
 	</target>
 		
-	<target name="compile" description="Compile">
+	<target name="compile" description="Compile" depends="-bootclasspath">
 	    <property name="bootpath" refid="boot.classpathref"/>
 	    <echo message="bootpath=${bootpath}"/>
 		<mkdir dir="${dest.dir}" />
@@ -103,7 +108,7 @@
 		</javac>
 	</target>
 	
-	<target name="test-compile" description="Compile tests">
+	<target name="test-compile" description="Compile tests" depends="-bootclasspath, -testclasspath">
 		<mkdir dir="${dest.dir}" />
 		<echo message="src.dir=${src.dir}"/>
 		<echo message="dest.dir=${dest.dir}"/>
@@ -131,8 +136,13 @@
 			<patternset refid="j2meunit.patternsetref"/>
 		</unjar>
 	</target>
+
+	<target name="emulator-resources" if="emulator.resources.dir">
+		<echo>${emulator.resources.dir}</echo>
+		<delete dir="${emulator.resources.dir}" failonerror="false"/>
+	</target>
 	
-	<target name="process-test-resources" if="test-resources.dir">
+	<target name="process-test-resources" if="test-resources.dir" depends="emulator-resources">
 		<delete dir="${test-resources.dir}" failonerror="false" includeemptydirs="true"/>
 		<mkdir dir="${test-resources.dir}"/>
 		<antcall target="generate.gbxml">
@@ -152,7 +162,7 @@
 		</antcall>
 	</target>
 	
-	<target name="generate.gbxml">
+	<target name="generate.gbxml" depends="-gbxmlclasspath">
 		<java classname="jp.haw.grain.framework.xml.BinaryXMLOutputter" fork="true" failonerror="true">
 			<classpath>
 				<path refid="gbxml-filter.classpathref"/>
@@ -164,7 +174,7 @@
 		</java>
 	</target>
 	
-	<target name="obfuscate" if="obfuscate.run">
+	<target name="obfuscate" if="obfuscate.run" depends="-bootclasspath">
 		<delete failonerror="no" dir="${work.dir}/obfuscate-classes"/>
 		<mkdir dir="${work.dir}/obfuscated-classes"/>
 		<property file="${conf.dir}/${app.descriptor.filename}" prefix="jam."/>
@@ -209,7 +219,7 @@
 		</copy>		
 	</target>
 
-	<target name="preverify" description="preverify" >
+	<target name="preverify" description="preverify" depends="-bootclasspath, -preverifyclasspath">
 		<property name="preverifyer" refid="cldc.preverifyer"/>
 		<exec executable="${preverifyer}" failonerror="true">
 			<arg value="-cldc" />
@@ -227,7 +237,7 @@
 		<delete dir="${work.dir}" failonerror="false" includeemptydirs="true" />
 		<mkdir dir="${work.dir}"/>
 		<mkdir dir="${work.dir}/target-classes"/>
-		<mkdir dir="${work.dir}/preverified-classes"/>		
+		<mkdir dir="${work.dir}/preverified-classes"/>
 	</target>
 
 	<target name="package" description="update doja jam file" depends="init.target, copy-classes, obfuscate, preverify, jar">
@@ -243,20 +253,21 @@
 		<delete includeemptydirs="true" failonerror="false" dir="${work.dir}"/>
 	</target>
 	
-	<target name="run" if="emulator.run">
+	<target name="run" if="executable.emulator">
 		<condition property="java.option" value="">
 			<not>
 				<isset property="java.option" />
 			</not>
 		</condition>
-		<exec executable="${doja.doja_g.exe}" failonerror="true">
+		<echo>java.option=${java.option}</echo>
+		<exec executable="${executable.emulator}" failonerror="true">
 			<arg line="${java.option}" />
 			<arg value="-i" />
 			<arg file="${bin.dir}/${app.descriptor.filename}" />
 			<arg value="-j" />
 			<arg file="${bin.dir}/${app.jar.filename}" />
 		</exec>
-	</target>	
+	</target>
 	
 	<target name="release">
 		<antcall target="target.dist.doja" inheritall="false"/>
