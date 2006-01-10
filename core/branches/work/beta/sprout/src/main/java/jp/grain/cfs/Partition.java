@@ -262,6 +262,35 @@ public class Partition {
         }        
     }
     
+    public void truncateClusterEntry(int cluster, long skipAlloc, long delAlloc) throws IOException {
+        int current = cluster;
+        int fff = 0;
+        int[] ooo = new int[(int)delAlloc];
+        for(int i=0; i<skipAlloc; i++) {
+            fff = current;
+            current = processClusterEntry(current, PROCESS_FIND_NEXT_CLUSTER);
+        }
+        int i = 0;
+        while(current != -1) {
+            ooo[i] = current;
+            current = processClusterEntry(current, PROCESS_FIND_NEXT_CLUSTER);
+            i++;
+        }
+        final byte[] fatBlock = new byte[3];
+        String sURL = createFatBlockUrlFor(fff);
+        DataInputStream dis = Connector.openDataInputStream(sURL);     
+        dis.read(fatBlock);
+        dis.close();
+        updateClusterEntry(fatBlock, fff, 0xfff);
+        for(int j=0; j<ooo.length; j++) {
+            sURL = createFatBlockUrlFor(ooo[j]);
+            dis = Connector.openDataInputStream(sURL);       
+            dis.read(fatBlock);
+            dis.close();
+            updateClusterEntry(fatBlock, ooo[j], 0x000);
+        }
+    }
+    
     /**
      * @param i
      * @return
