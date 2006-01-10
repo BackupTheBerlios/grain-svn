@@ -142,8 +142,20 @@ public class FileAccessor {
         return 0;
     }
     
-    public void truncate() {
-        //TODO
+    public void truncate(long byteOffset) throws IOException {
+        int cluster = entry.startCluster;
+        long newFileSize = entry.fileSize - byteOffset;
+        long numerOfOldAlloc = entry.fileSize / Partition.DEFAULT_BYTES_PER_SECTOR;
+        long numberOfNewAlloc = newFileSize / Partition.DEFAULT_BYTES_PER_SECTOR;
+        long delAlloc = numerOfOldAlloc - (numerOfOldAlloc - numberOfNewAlloc);
+        if(newFileSize < 0)
+        {
+            return;
+        }
+        //fat area
+        partition.truncateClusterEntry(cluster, (numerOfOldAlloc - numberOfNewAlloc), delAlloc);
+        //data area
+        entry.fileSize = byteOffset;
     }
     
     public Enumeration list() {
