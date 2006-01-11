@@ -424,6 +424,7 @@ public class Partition {
         try {
             if (entry.startCluster == 0) {
                 entry.startCluster = processClusterEntry(2, PROCESS_SEEK_EMPTY_CLUSTER);
+                if(entry.startCluster < 0) throw new IOException("File System is Full. Can not create " + entry.name);
             }
             int offset = this.bytesPerSector * (this.reservedSector + this.sectorsPerFAT);
             offset += entryIndex * ROOT_ENTRY_LENGTH;
